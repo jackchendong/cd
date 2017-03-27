@@ -18,3 +18,5 @@ https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html  微信jss
 
 
 http://expressjs.jser.us/jade.html     express jade文档 
+
+http://220.169.236.108:4020/hnjyjcService/service1.asmx  soap例子
