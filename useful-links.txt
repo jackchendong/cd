@@ -20,3 +20,20 @@ https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html  微信jss
 http://expressjs.jser.us/jade.html     express jade文档 
 
 http://220.169.236.108:4020/hnjyjcService/service1.asmx  soap例子
+
+http://yun.itheima.com/  黑马云课堂
+
+http://www.csdn.net/    CSDN
+
+http://www.cssmoban.com/   前端模版之家
+
+http://www.jb51.net/article/53557.htm   php链接数据库例子
+
+http://kf.qq.com/faq/120911VrYVrA130805byM32u.html?scene_id=kf2850   各种微信公众号的区别
+
+http://linux.vbird.org/linux_basic/0160startlinux.php  鸟哥私房菜lnux系统
+
+
+
+
+
