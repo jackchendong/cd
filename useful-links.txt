@@ -39,3 +39,4 @@ http://www.iconfont.cn/         阿里图标库
 
 http://www.haorooms.com/post/input_file_leixing     前端图片上传、前端资料
 
+http://mirrors.163.com/      网易镜像站
