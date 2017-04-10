@@ -37,3 +37,5 @@ https://yq.aliyun.com/          阿里云析
 
 http://www.iconfont.cn/         阿里图标库
 
+http://www.haorooms.com/post/input_file_leixing     前端图片上传、前端资料
+
