@@ -1,0 +1,7 @@
+软件名
+webstorm            前端开发工具
+lantern             蓝灯翻墙
+editplus            轻量级IDE
+微信web开发工具
+nero                光盘刻录软件
+Robomongo           mongo可视化工具
