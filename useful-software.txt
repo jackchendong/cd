@@ -5,3 +5,4 @@ editplus            轻量级IDE
 微信web开发工具
 nero                光盘刻录软件
 Robomongo           mongo可视化工具
+rufus               iso刻录软件
