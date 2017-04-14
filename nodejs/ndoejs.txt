@@ -1,0 +1,16 @@
+/***/小知识点
+	1& {}对象没有length属性
+        2& []有length属性
+	3& 如果下载了服务压缩文件的话 C:>npm install 路径+解压后的文件名
+
+/***/nodejs中将json字符串与对象
+	var obj = eval('(' + str + ')');
+	var obj = str.parseJSON(); //由JSON字符串转换为JSON对象
+	var obj = JSON.parse(str); //由JSON字符串转换为JSON对象
+	var last=obj.toJSONString(); //将JSON对象转化为JSON字符
+	var last=JSON.stringify(obj); //将JSON对象转化为JSON字符
+	
+	#注：只有json字符串才能用parse解析成对象，意思是先用JSON.stringify(obj),
+	     将对象转成json字符串。不过eval()可以在浏览器里面使用
+
+
