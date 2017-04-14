@@ -10,7 +10,7 @@
 	var last=obj.toJSONString(); //将JSON对象转化为JSON字符
 	var last=JSON.stringify(obj); //将JSON对象转化为JSON字符
 	
-	#注：只有json字符串才能用parse解析成对象，意思是先用JSON.stringify(obj),
-	     将对象转成json字符串。不过eval()可以在浏览器里面使用
+	#注：var='{"name":"xiao","age":"18","sex":"1"}' //!!只有双引号在里面才可以用
+	     eval()可以在浏览器里面使用
 
 
