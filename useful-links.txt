@@ -43,4 +43,9 @@ http://mirrors.163.com/      网易镜像站
 
 http://lib.csdn.net/article/nodejs/12597    nodejs设置改变就自动启动
 
+http://man.linuxde.net/            linux命令大全
+
+
+
+
 
