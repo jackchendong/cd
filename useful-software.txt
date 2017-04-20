@@ -6,4 +6,5 @@ editplus            轻量级IDE
 nero                光盘刻录软件
 Robomongo           mongo可视化工具
 rufus               iso刻录软件
+usb universal          刻录软件
 navicat premium     数据库可视化工具，可以远程连接数据库，支持很多数据库
