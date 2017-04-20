@@ -45,7 +45,7 @@ http://lib.csdn.net/article/nodejs/12597    nodejs设置改变就自动启动
 
 http://man.linuxde.net/            linux命令大全
 
-
+http://louiszhai.github.io/2017/04/07/http-cache/     浏览器缓存机制剖析 
 
 
 
