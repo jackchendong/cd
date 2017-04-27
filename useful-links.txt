@@ -10,7 +10,8 @@ http://www.html5tricks.com/page/2   H5案例
 
 http://jingyan.baidu.com/article/154b46316044c128ca8f4107.html  win10局域网网络共享
 
-http://mp.weixin.qq.com/wiki/home/ 微信开发者文档
+https://mp.weixin.qq.com/wiki/2/ae9782fb42e47ad79eb7b361c2149d16.html
+http://mp.weixin.qq.com/wiki/home/                                  微信开发者文档
 
 http://kf.qq.com/faq/120911VrYVrA130805byM32u.html?scene_id=kf2850  各个号的区别微信客服
 
