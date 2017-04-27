@@ -1,3 +1,6 @@
 /***/小知识点
 	1& 前端xhr发起get请求都是拼接在url路径后面?k=v&k=v...
-	2& js聚焦 dom.focus();
+	2& js聚焦 dom.focus();   #主动聚焦
+		  dom.onfocus=function(){};
+	3& js失去焦点
+		  dom.onblur=function(){};
