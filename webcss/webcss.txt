@@ -1,0 +1,6 @@
+/***/小知识点 
+	1& css中自动换行代码，就算全英文不空格也能换行
+
+	   <div style='width: 100px;display:block;word-break: break-all;word-wrap: break-word;'>
+		  内容超出div宽度后自动换行的css代码
+	   </div>
