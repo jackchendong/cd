@@ -4,3 +4,5 @@
 	   <div style='width: 100px;display:block;word-break: break-all;word-wrap: break-word;'>
 		  内容超出div宽度后自动换行的css代码
 	   </div>
+	2& 手机上点一个电话号码就弹出来打电话
+            例子：<a href="tel:13588427405">13588427405</a>
