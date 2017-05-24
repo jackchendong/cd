@@ -4,3 +4,7 @@
 		  dom.onfocus=function(){};
 	3& js失去焦点
 		  dom.onblur=function(){};
+	4& 静止用户输入框粘贴
+	         onpaste="return false";
+		 <input type="text" onpaste="return false"/>
+	5&  base64可以将图片转成字符串
