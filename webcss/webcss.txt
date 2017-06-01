@@ -6,3 +6,8 @@
 	   </div>
 	2& 手机上点一个电话号码就弹出来打电话
             例子：<a href="tel:13588427405">13588427405</a>
+    3& 修改select的样式
+       原理是将浏览器默认的下拉框样式清除，然后应用上自己的，再附一张向右对齐小箭头的图片即可。
+       	   appearance:none;
+		  -moz-appearance:none;
+		  -webkit-appearance:none;
