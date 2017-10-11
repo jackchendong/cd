@@ -1,0 +1,159 @@
+0：mysql的配置  找到配置文件设置默认的编码格式，不然每次创建数据库的时候都要指定编码格式
+        [client]
+        default-character-set = utf8
+        [mysqld]
+        character-set-server = utf8
+        default-storage-engine=INNODB
+1：增
+        create database database_name  --  创建数据库
+        create database database_name charset=utf8  --  创建数据库,并指定字符编码，如果改了配置文件就不用写charset=utf8
+        create table table_name (
+                column_name data_type,
+                column_name data_type,
+                .
+                .
+                .
+        )                            --  创建表的格式
+
+             ex : create table account (   --例子
+                id bigint(20),
+                time DATETIME,
+                ip varchar(255),
+                info text
+        )     
+
+        alter table table_name add column_name data_type [not null] [default "..."]   -- 增加一列
+                ex:alter table users add addr varchar(255) not null default 1;
+        插入数据：
+                insert into table_name values (值1，值2，...)   -- 插入表的全部数据，少一个都报错
+                insert into table_name (列1，列2，列3,...) values (值1，值2，...) -- 插入表的指定列数据
+        
+
+2：删
+        drop database database_name  --  删除数据库
+        drop table   table_name   --  删除表
+        alter table table_name drop column_name;   --  删除列
+                ex:alter table users drop addr;
+3：改
+        修改列的信息 1：只改列的名data_type和原来一样，old 和 new 不一样就行
+                    2：只改数据类型，old 和 new 一样 就行
+                    3：两者都改,则都不一样就行
+                alter table table_name change old_column_name new_column_name data_type; 
+        修改表名：
+                 alter table  old_table_name rename new_table_name;
+
+        修改表的数据：
+                修改单列:
+                        update 表名 set 列名 = xxx [where语句]
+                        ex: update book set content = "我的世界";
+                            update book set content = "我的世界" where id =3;
+
+                修改多列：
+                        update 表名 set 列名1 =xxx ,列名2=xxx ... [where语句]
+                        ex: update book set title="头部",content="我的世界" where id =3;  -- 将id=3的数据title和content的数据改变
+
+4：查
+        use database_name  -- 切换数据库
+        show databases  -- 查看所有的数据库
+        show tables  --  查看所有的表
+        查看Mysql表结构的命令，如下:
+                desc 表名;  -- 查看表的结构
+                describe 表名; --查看表的结构
+                show columns from 表名; --查看表的结构
+                show create table 表名; -- 查看表创建时的结构，sql语句的形式
+        查看表的数据：
+                select * from table_name;    -- 查看所有的数据
+                select column_name1,column_name2,... from table_name;   -- 查看指定列的数据
+5:数据类型
+        a:文本类
+                char(size) : 保存固定长度的字符串，最多255个字符
+                varchar(size): 保存可变长度的字符，最多255个字符
+                tinytext : 存放最大长度为255个字符的字符串
+                text    : 存放最大长度为65535个字符的字符串
+                blob : 用于blobs (binary large objects),二进制形式的长文本数据,存放最多65535字节的数据 
+                MEDIUMBLOB   0-16 777 215字节 二进制形式的中等长度文本数据 
+                MEDIUMTEXT   0-16 777 215字节 中等长度文本数据 
+                LOGNGBLOB    0-4 294 967 295字节 二进制形式的极大文本数据 
+                LONGTEXT     0-4 294 967 295字节 极大文本数据
+        b:数字类
+                整数类型(size为最大位数,d为小数点右侧的最大位数)               字节       范围（有符号）      范围（无符号）               用途 
+                TINYINT(size)         1字节        (-128，127)          (0，255)            小整数值 
+                SMALLINT(size)        2字节     (-32 768，32 767)       (0，65 535)         大整数值 
+                MEDIUMINT(size)       3字节    (-8 388 608，8 388 607) (0，16 777 215)      大整数值 
+                INT或INTEGER(size)    4字节   (-2 147 483 648，2 147 483 647) (0，4 294 967 295) 大整数值 
+                BIGINT(size)          8字节   (-9 233 372 036 854 775 808，9 223 372 036 854 775 807) (0，18 446 744 073 709 551 615) 极大整数值 
+                FLOAT(size,d)         4字节   (-3.402 823 466 E+38，1.175 494 351 E-38)，0，(1.175 494 351 E-38，3.402 823 466 351 E+38) 0，(1.175 494 351 E-38，3.402 823 466 E+38) 单精度浮点数值 
+                DOUBLE(size,d)        8字节 (1.797 693 134 862 315 7 E+308，2.225 073 858 507 201 4 E-308)，0，(2.225 073 858 507 201 4 E-308，1.797 693 134 862 315 7 E+308) 0，(2.225 073 858 507 201 4 E-308，1.797 693 134 862 315 7 E+308) 双精度浮点数值 
+                DECIMAL(size,d)    对DECIMAL(M,D) ，如果M>D，为M+2否则为D+2 依赖于M和D的值 依赖于M和D的值 小数值
+        c:日期类
+                类型     大小(字节)     范围               格式          用途 
+                DATE()       4        1000-01-01/9999-12-31 YYYY-MM-DD    日期值 
+                TIME()       3        '-838:59:59'/'838:59:59' HH:MM:SS    时间值或持续时间 
+                YEAR()       1         1901/2155               YYYY       年份值 
+                DATETIME()   8       1000-01-01 00:00:00/9999-12-31 23:59:59 YYYY-MM-DD HH:MM:SS 混合日期和时间值 
+                TIMESTAMP()  4       1970-01-01 00:00:00/2037 年某时 YYYYMMDD HHMMSS 混合日期和时间值，时间戳
+        d:复合类型
+                enum(x,y,z,...) : 允许输入的可能值列表，只允许在集合中取得一个值，有点类似于单选项，最多65535个值，插入的时候不存在就插入空值。另外如果插入值的大小写与集合中值的大小写不匹配，MySQL 会自动使用插入值的大小写转换成与集合中大小写一致的值
+                set : 与enum类似，最多包含64个列表，可以存储一个以上的值
+
+6：where语句筛选
+        常用的运算符 
+                =
+                != 
+                >
+                <
+                >=
+                <= 
+                between    在两个值范围内
+                like       安某个模式查找
+
+        select * from table_name where column_name 运算符 值;
+                ex: select * from book where table title = "t";
+
+        null的判断
+                select * from table_name where column_name is null;   -- 查询列为null的字段
+                        注意：不能这样 select * from table_name where column_name = null; 错误
+                select * from table_name where column_name is not null  -- 查询列不为null的字段
+        between : 
+                select * from 表名 where 列名 between 值1 and 值2;  -- 在值1和值2之间
+                select * from 表名 where 列名 not between 值1 and 值2; 
+        like : 
+                select * from 表名 where 列名 [not] like pattern;
+                pattern:匹配模式
+                        "abc"   : 匹配字符串abc
+                        "%abc"  : 匹配以abc结尾的字符串
+                        "abc%"  : 匹配以abc开头的字符串
+                        "%abd%" : 匹配含有abc的字符串
+                        注解：% 是一个通配符，理解上可以当成任意字符串。
+
+7：distinct去重
+        select distinct column_name from table_name;  -- 去掉列中一样的数据，在显示本列之后的数据
+        select distinct column_name1,column_name2... from table_name  -- 去掉指定每行中指定两列一样的数据
+8：order by 排序
+        单一列排序
+                select * from table_name [where 子句] order by column_name [asc/desc]  -- 默认asc
+        按多列排序
+                select * from table_name [where 子句] order by column_name1 [asc/desc],column_name2[asc/desc] -- column_name1 排序之后 col_name1相同的内容再按照column_name2排序
+
+9：limit
+        语法:
+                select * from table_name [where语句] [order by 语句]  limit [offset] , rowCount
+                        offset:查询结果的起始位置,第一条是0
+                        rowCount:从offset位置开始获取记录的条数
+                        注意：limit rowCount = limit 0,rowCount
+
+10：组合条件  and、or、还可以用()
+        select * from table_name where col1=xxx and col2=xxx or col3 > xxx;
+
+11:insert into 与 select组合使用  -- 一般用于数据的迁移
+        insert into [表1] select 列1，列2 from [表2]
+                ex: insert into book2(title) select title from book where id != 1;  -- 找到book中的title并插入到book2中的title
+        insert into [表1] (列1，列2) select 列3，列4 from [表2]
+
+12： where语句的高阶
+        in:
+                语法：
+                        select * from 表名 where 列名 in (value1,value2...);
+                                ex:select * from book where title in ("sun","color")  -- 找tilte 在sun 和 color 的数据
+                        select * from 表名 where 列名 in (select 列名 from 表名)；
+                          注解：列名 in (value1,value2...) 等同 列名 =value1 or 列名=value2 ...
