@@ -159,3 +159,19 @@
                                 ex:select * from book where title in ("sun","color")  -- 找tilte 在sun 和 color 的数据
                         select * from 表名 where 列名 in (select 列名 from 表名)；
                           注解：列名 in (value1,value2...) 等同 列名 =value1 or 列名=value2 ...
+13：myslq中的函数
+        时间函数：
+                now(),current_timestamp() ,current_timestamp ,localtime() ,localtime ,localtimestamp    -- (v4.0.6) ,localtimestamp() -- (v4.0.6)
+                        ex:  select now();
+                                +---------------------+ 
+                                | now()               | 
+                                +---------------------+ 
+                                | 2008-08-08 22:20:46 | 
+                                +---------------------+
+                curdate(),current_date(),current_date
+                        ex: SELECT CURDATE()
+                                +------------+
+                                | CURDATE()  |
+                                +------------+
+                                | 2017-10-17 |
+                                +------------+
