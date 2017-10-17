@@ -64,6 +64,8 @@
         查看表的数据：
                 select * from table_name;    -- 查看所有的数据
                 select column_name1,column_name2,... from table_name;   -- 查看指定列的数据
+        查询TIMESTAMP类型的数字数据
+                ex: select t1+0 from time1;//查询的值返回为数字，后面+0就会是数字了
 5:数据类型
         a:文本类
                 char(size) : 保存固定长度的字符串，最多255个字符
