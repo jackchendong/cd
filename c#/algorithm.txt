@@ -1,0 +1,7 @@
+1:交换
+    数值的交换：
+        ex: int num1=12;
+            int num2=11;
+            num1=num1+num2; //23
+            num2=num1-num2; //12
+            num1=num1-num2; //11
