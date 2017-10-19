@@ -58,3 +58,5 @@ http://javacheng.oschina.io/socket.io/docs/       //socketio中文文档
 
 
 http://open.163.com/special/opencourse/bianchengdaolun.html   //麻省理工学院公开课：计算机科学及编程导论
+
+https://funteas.com/           //SegmentFault  解决技术问题 干货
