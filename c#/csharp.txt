@@ -13,9 +13,12 @@
         /***ctrl+shift+空格 可以强制提示--在把()打完之后没有提示了，就将光标放到括号里面在按快捷键就有提示了。
 
         /***CPU只会执行Main函数中的代码. 当CPU将Main函数中的代码执完毕以后,那么程序就自动结束了.main函数即使入口也是出口
-
+        /***声明一个局部变量的时候，声明完以后始终没有用到这个变量那么c#编译器在编译的时候会将这个声明省略掉。
         /***为什么使用面向对象？
             修改维护几位方便。
+        /***我们在为类声明字段并赋值的时候，编译器在编译的时候会在构造函数中赋值。
+                因为字段赋值的代码，是执行代码，只有CPU执行才会有结果。
+
         /***面向对象的思维。
                 ex:  人开门
                     class Person                class Door                    Main(){
@@ -147,6 +150,9 @@
                             16 位 Unicode 字符	U +0000 到 U +ffff	'\0'
                             char可以存储单个字符，要用单引号引起来，空格也算字符
                             char类型的数据可以参与算数运算
+            enum枚举：
+
+            结构：
                     
     引用类型：--值都是在堆里面
             string ：  -- 他的值存在堆里面，但是是个特殊的引用类型！！！
@@ -163,8 +169,12 @@
                 数组的默认值：
                     数值类型的数组  --> 默认值是0
                     bool值类型的数组 -->默认值是fals
-                    char类型的数组  -- > 默认值是'\0' 代表'a'
+                    char类型的数组  -- > 默认值是'\0' 
                     string类型的数组 -- >默认值是null
+
+            Array:
+
+            class:
 
 2:变量
     命名规则：
@@ -494,6 +504,7 @@
 10：关键字：
         static:直接在内存中生成。可以直接在其他地方使用。--一直在内存中存在
                 在program类中的成员变量，要想被Main函数访问就得加static.!!!
+                    因为Main是static类型的函数。
                 但是在其他类里面得成员变量可以不加static就被成员函数访问。
                 ex:
                     class Person
@@ -501,7 +512,7 @@
                         private string name;
                         void Sing()
                         {
-                            name = "陈冬";   //可以直接访问。也可以用实例对象.就可以出来
+                            this.name = "陈冬";   //可以直接访问。也可以用实例对象.就可以出来
                         }
                     }
         new:   在内存中开辟空间，实例化类。
@@ -513,7 +524,71 @@
                     4：返回这个空间的引用地址。
         using：引用命名空间这样就可以直接访问当中的类了。不用加命名空间的前缀了。
 
+        this:指当前对象
 
+        set和get： 属性 属性不能存值。。。实际有点像触发器本质是方法。去掉get只有set就是只写属性
+                                                                 去掉set只有get就是只读属性
+                    自动属性：
+                            ex：public int Height{get;set;}    //不做逻辑判断，可读并且可写
+
+
+                ex: private int age; 
+                    public int Age
+                    {
+                          get
+                          {
+                                return Age;  //在取值的时候触发，取到的值是return的值。
+                                //或 return this.age;
+                          }
+                          set
+                          {
+                             Console.WriteLine("你刚才赋的值是："+value)   //赋值的时候触发的代码块
+                                                                        // value 能在set中使用
+                                //this.age = value 赋值给保存起来
+                          }
+                    }
+
+                ex:死循环
+                    private string name;
+                    public string Name
+                    {
+                            get
+                            {
+                                return Name;
+                            }
+                            set
+                            {
+                                if (value == "毛泽东"){
+                                    Name = "无名";
+                                }else
+                                {
+                                    Name =value;   //死循环
+                                }
+                            }
+
+                    }
+
+        partial（部分）：用来修饰部分类，或者叫伙伴类。
+                    用法：在同一个命名空间中写相同的类名，但是都用partial关键字修饰。
+                    原因：c#编译器在编译的时候会将他们编译为一个类。所以在一个类中访问部分类的成员。
+                    满足部分类的条件：
+                        1：类名相同
+                        2：在同一个命名空间
+                        3：都被partial修饰
+
+        null : 
+            null是值，不是数据类型不是类。而且只能是引用类型的变量的值。
+            作用：如果一个引用类型的变量值为null，代表引用类型的变量没有指向任何对象。 
+
+        readonly： 
+                1：readonly只读，只能用来修饰字段，不能修饰局部变量。
+                                字段：类的成员变量。
+                2：只能取值，不能改值。
+                3：只读字段的值只能在构造函数中改变，其他地方不能改变。！！！
+                4：与const的区别
+                    const是在编译的时候确定。 //例如PI
+                    readonly 是在运行的时候确定。 //例如用户输入的名字。
+            
 11：访问修饰符：成员的访问修饰符
                 作用：限定成员在什么位置访问。
         public ： 公共的。被修饰的成员可以在任意的地方通过 对象. 出来访问。
@@ -537,5 +612,95 @@
            namespace room.room2
            {
 
-           }     
+           }   
 
+        4：在同一个命名空间不能写同名称的类
+            但是，如果相同名称的类都被partial关键字修饰就可以了，因为他们是一个类
+
+13：构造函数：
+        1:也是类的成员之一，是一个特殊的方法.
+        2:构造函数没有返回值，void也没有。
+        3:不能被程序员手动调用。
+        4：在我们创建对象的时候 new 后面的小括弧 是在调用构造函数。
+        5：构造函数可以重载。-- 重载：参数的个数或是类型不一样。
+        方法名 必须与类名一致。
+        语法: 访问修饰符（一般情况下是public）  函数名字（必须与所在的类名一致） ([参数列表])
+                {
+
+                } 
+        构造函数的作用：
+            1：创建对象的同时自动执行构造函数的代码。
+        注意：不要在构造函数中写特别耗时耗性能的代码。
+             一般为对象的属性或字段赋值。
+            new的时候也可以使用对象的初始化器；
+            ex: Student s1 = new Student(){name = "chen",age = 19};  //无参数的构造函数
+                Student s1 = new Student {name = "chen",age =19};  //这个调用的是无参数的构造函数。
+                Student s1 = new Student{}; //构造函数无参数。
+
+                Student s1 = new Student ("chen" , 18);  //带参数的构造函数。没有用对象的初始化器
+        
+        隐士构造函数：
+            如果我们没有为一个类写任何的构造函数，c#编译器就会自动生成一个无参数的空的构造函数，这个构造函数就是隐士构造函数。
+            但是：当我们写了一个任意的构造函数的时候那么 c#编译器就不会生成无参数的构造函数。
+            如果在有参数的构造函数的情况下非要用无参数的构造函数 就可以利用 重载 手动写一个无参数的构造函数。
+
+        构造函数直接的调用：
+            语法：在括号的后面加 : this ([参数列表])
+            注意: 先调用其:this()的构造函数,如果A调用了B构造函数 则先执行B在执行A
+                  不能一个同时掉两个，但是可以 一个调用一个 在调用另一个。
+            ex:  class Student
+                {
+                    public Student() {
+                        Console.WriteLine("我是无参数的构造函数。");
+                    }
+                    public Student(string a):this() {   //这里调用无参数的构造函数，无参数的构造函数先执行
+                        Console.WriteLine("我是有参数的构造函数");
+                    }
+                }
+
+                Student s = new Student("aaa");
+
+            ex:
+                public Student() {
+                    Console.WriteLine("我是无参数的构造函数。");
+                }
+                public Student(string a):this(12) {    //调用int的构造函数
+                    Console.WriteLine("我是有参数的构造函数");
+                }
+                public Student(int b):this() {         //再调用无参数的构造函数
+                    Console.WriteLine("我是int");
+                }
+            构造函数之间的传参：
+                ex:
+                     class Student
+                    {
+                        private string name;
+                        private int age;
+                        private bool gender;
+                        public Student(string name ,int age) {
+                            this.name = name;
+                            this.age = age;
+                        }
+
+                        public Student(string name , int age ,bool gender):this(name,age) {  //这样代码省了代码
+                            //this.name=name;
+                            //this.age=age;        省略了代码。
+                            this.gender = gender;
+                        }
+                    }
+
+14：常量const
+        常量：被const修饰的数据叫做常量
+            特性： 1：常量一旦声明他的值就无法修改；
+                   2:我们声明一个常量的时候，编译器会将常量的那句话去掉直接用值代替，然后在使用到常量的值的地方用常量的值直接代替。
+                   3：声明常量的同时必须赋值。 
+                   4：常量的值要求在编译的时候就就要确定，给常量赋值的是时候不能有变量参与。
+                      ex:  string str = "aaaa";
+                         const string name = "jack" + str ;  // 报错 因为这里变量只有在编译的时候才知道冲突了
+
+                      ex: const  str = "aaaa";
+                          const  name = str + "bbbbb";  //这里可以 因为str是const编译的时候可以确定的。
+
+
+            语法： 
+                const 数据类型  变量名字  = 值 ;
