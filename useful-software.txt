@@ -1,4 +1,4 @@
-软件名
+﻿软件名
 webstorm            前端开发工具
 lantern             蓝灯翻墙
 editplus            轻量级IDE
@@ -8,3 +8,5 @@ Robomongo           mongo可视化工具
 rufus               iso刻录软件
 usb universal          刻录软件
 navicat premium     数据库可视化工具，可以远程连接数据库，支持很多数据库
+http://bigjpg.com   放大图片清晰
+花生壳		    域名可以映射到内网 -- 调试很有用
