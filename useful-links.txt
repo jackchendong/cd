@@ -64,3 +64,6 @@ https://funteas.com/           //SegmentFault  解决技术问题 干货
 https://zhuanlan.zhihu.com/p/30240417  //一些有用的网站
 
 http://ip.qq.com/              //可以查看自己在的外网IP
+
+http://blog.csdn.net/linuxnews/article/details/51023644
+https://www.cnblogs.com/airoot/p/7252987.html   //安装openVPN

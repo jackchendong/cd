@@ -1,0 +1,308 @@
+﻿        bash快捷键
+            ctrl + b  //后退   back
+            ctrl + f  //前进   front
+            ctrl + a  //光标移到最前  ago
+            ctrl + e  //光标移到最后  end
+            ctrl + u  //从当前光标删除到最前面   undo 
+            ctrl + /  //撤销
+            ctrl + k   //从当前光标删除到最后面
+            ctrl + w  //往左删除一个单词
+
+        重启:
+            shutdown -r now
+            reboot
+        退出登陆:
+            exit
+        修改主机名：
+            hostname xxxxx   //临时修改只在本次开机有效，下次重启之后会回到原来的主机名
+            /etc/sysconfig/network  //修改配置文件
+            /etc/hostname        //这个文件是阿里云的主机名文件。可以直接修改重启生效。
+            hostnamectl --static set-hostname 主机名
+        查看主机名：
+            hostname
+        查看IP
+            ifconfig
+            curl ifconfig.me  //直接查看本机外网IP
+        对选项进行补全：
+            yum install bash-completion   //安装模块
+                //安装之后重启
+        上传和下载：
+            yum install lrzsz   //包含rz和sz
+        查看服务的端口，udp还是tcp和线程
+            netstat -tlunp |grep vpn
+        查看服务的状态
+            systemctl status openvpn@server.service
+        扫描端口，IP。。
+            1:yum install nmap   //先安装
+            nmap localhost   //查询服务和state和 port
+        linux之间传送文件
+            scp   文件  root@地址
+        看命令在哪个包里面
+            yum provides 命令
+    
+     
+
+cd:
+    cd命令用来切换工作目录至dirname。 其中dirName表示法可为绝对路径或相对路径。
+    若目录名称省略，则变换至使用者的home directory(也就是刚login时所在的目录)。
+    另外，~也表示为home directory的意思，
+        .则是表示目前所在的目录，
+        ..则表示目前目录位置的上一层目录。
+
+    语法: cd (选项) (参数)
+    选项:
+         -p 如果要切换到的目标目录是一个符号连接，直接切换到符号连接指向的目标目录
+         -L 如果要切换的目标目录是一个符号的连接，直接切换到字符连接名代表的目录，
+            而非符号连接所指向的目标目录。 
+         -  当仅实用"-"一个选项时，当前工作目录将被切换到环境变量"OLDPWD"所表示的目录。
+    ex:
+        cd        进入用户主目录； 
+        cd ~      进入用户主目录； 
+        cd -      返回进入此目录之前所在的目录；
+        cd ..     返回上级目录（若当前目录为“/“，则执行完后还在“/"；".."为上级目录的意思）； 
+        cd ../..  返回上两级目录； 
+        cd !$     把上个命令的参数作为cd参数使用。
+
+rmdir:
+    rmdir命令用来删除空目录,目录里面有目录是空目录也不行。
+    语法：rmdir(选项)(参数)
+    选项：
+        -p或--parents：删除指定目录后，若该目录的上层目录已变成空目录，则将其一并删除；
+        --ignore-fail-on-non-empty：此选项使rmdir命令忽略由于删除非空目录时导致的错误信息；
+        -v或-verboes：显示命令的详细执行过程； --help：显示命令的帮助信息；
+        --version：显示命令的版本信息。
+    参数：
+        目录列表：要删除的空目录列表。当删除多个空目录时，目录名之间使用空格隔开。
+    ex:
+        删除子目录os_1和其父目录bin
+            cd /usr/meng/test
+            rmdir -p bin/os_1
+
+yum:
+    yum命令是在Fedora和RedHat以及SUSE中基于rpm的软件包管理器，它可以使系统管理人员交互和自动化地更细与管理RPM软件包，
+    能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软体包，无须繁琐地一次次下载、安装。
+    语法:
+        yum(选项)(参数)
+    选项:
+        -h：显示帮助信息；
+        -y：对所有的提问都回答“yes”；
+        -c：指定配置文件； 
+        -q：安静模式； 
+        -v：详细模式； 
+        -d：设置调试等级（0-10）； 
+        -e：设置错误等级（0-10）； 
+        -R：设置yum处理一个命令的最大等待时间； 
+        -C：完全从缓存中运行，而不去下载或者更新任何头文件。
+    参数:
+        install：安装rpm软件包； 
+        update：更新rpm软件包； 
+        check-update：检查是否有可用的更新rpm软件包；
+        remove：删除指定的rpm软件包； 
+        list：显示软件包的信息； 
+        search：检查软件包的信息； 
+        info：显示指定的rpm软件包的描述信息和概要信息； 
+        clean：清理yum过期的缓存； 
+        shell：进入yum的shell提示符； 
+        resolvedep：显示rpm软件包的依赖关系； 
+        localinstall：安装本地的rpm软件包； 
+        localupdate：显示本地rpm软件包进行更新； 
+        deplist：显示rpm软件包的所有依赖关系。
+    ex：
+        yum install nodejs
+    安装:
+        yum install #全部安装 
+        yum install package1 #安装指定的安装包package1 
+        yum groupinsall group1 #安装程序组group1
+    更新和升级：
+        yum update #全部更新 
+        yum update package1 #更新指定程序包package1 
+        yum check-update #检查可更新的程序 
+        yum upgrade package1 #升级指定程序包package1 
+        yum groupupdate group1 #升级程序组group1
+    查找和显示:
+        yum info package1 #显示安装包信息package1 
+        yum list #显示所有已经安装和可以安装的程序包 
+        yum list package1 #显示指定程序包安装情况package1 
+        yum groupinfo group1 #显示程序组group1信息
+        yum search string 根据关键字string查找安装包
+    删除程序:
+        yum remove | erase package1 #删除程序包package1 
+        yum groupremove group1 #删除程序组group1 
+        yum deplist package1 #查看程序package1依赖情况
+    清除缓存:
+        yum clean packages #清除缓存目录下的软件包 
+        yum clean headers #清除缓存目录下的 headers 
+        yum clean oldheaders #清除缓存目录下旧的 headers
+find:
+    find命令用来在指定目录下查找文件。任何位于参数之前的字符串都将被视为欲查找的目录名。
+    如果使用该命令时，不设置任何参数，则find命令将在当前目录下查找子目录与文件。并且将查找到的子目录和文件全部进行显示。
+    语法：
+        find(选项)(参数)
+    选项:
+        -amin<分钟>：查找在指定时间曾被存取过的文件或目录，单位以分钟计算； 
+        -anewer<参考文件或目录>：查找其存取时间较指定文件或目录的存取时间更接近现在的文件或目录； 
+        -atime<24小时数>：查找在指定时间曾被存取过的文件或目录，单位以24小时计算； 
+        -cmin<分钟>：查找在指定时间之时被更改过的文件或目录； 
+        -cnewer<参考文件或目录>查找其更改时间较指定文件或目录的更改时间更接近现在的文件或目录； 
+        -ctime<24小时数>：查找在指定时间之时被更改的文件或目录，单位以24小时计算； 
+        -daystart：从本日开始计算时间； 
+        -depth：从指定目录下最深层的子目录开始查找； 
+        -expty：寻找文件大小为0 Byte的文件，或目录下没有任何子目录或文件的空目录； 
+        -exec<执行指令>：假设find指令的回传值为True，就执行该指令； 
+        -false：将find指令的回传值皆设为False； 
+        -fls<列表文件>：此参数的效果和指定“-ls”参数类似，但会把结果保存为指定的列表文件； 
+        -follow：排除符号连接； 
+        -fprint<列表文件>：此参数的效果和指定“-print”参数类似，但会把结果保存成指定的列表文件； 
+        -fprint0<列表文件>：此参数的效果和指定“-print0”参数类似，但会把结果保存成指定的列表文件； 
+        -fprintf<列表文件><输出格式>：此参数的效果和指定“-printf”参数类似，但会把结果保存成指定的列表文件； 
+        -fstype<文件系统类型>：只寻找该文件系统类型下的文件或目录； -gid<群组识别码>：查找符合指定之群组识别码的文件或目录； 
+        -group<群组名称>：查找符合指定之群组名称的文件或目录； 
+        -help或——help：在线帮助； 
+        -ilname<范本样式>：此参数的效果和指定“-lname”参数类似，但忽略字符大小写的差别； 
+        -iname<范本样式>：此参数的效果和指定“-name”参数类似，但忽略字符大小写的差别； 
+        -inum：查找符合指定的inode编号的文件或目录； 
+        -ipath<范本样式>：此参数的效果和指定“-path”参数类似，但忽略字符大小写的差别； 
+        -iregex<范本样式>：此参数的效果和指定“-regexe”参数类似，但忽略字符大小写的差别； 
+        -links<连接数目>：查找符合指定的硬连接数目的文件或目录； 
+        -iname<范本样式>：指定字符串作为寻找符号连接的范本样式； 
+        -ls：假设find指令的回传值为Ture，就将文件或目录名称列出到标准输出； 
+        -maxdepth<目录层级>：设置最大目录层级； 
+        -mindepth<目录层级>：设置最小目录层级； 
+        -mmin<分钟>：查找在指定时间曾被更改过的文件或目录，单位以分钟计算； 
+        -mount：此参数的效果和指定“-xdev”相同； 
+        -mtime<24小时数>：查找在指定时间曾被更改过的文件或目录，单位以24小时计算； 
+        -name<范本样式>：指定字符串作为寻找文件或目录的范本样式； 
+        -newer<参考文件或目录>：查找其更改时间较指定文件或目录的更改时间更接近现在的文件或目录； 
+        -nogroup：找出不属于本地主机群组识别码的文件或目录； 
+        -noleaf：不去考虑目录至少需拥有两个硬连接存在； 
+        -nouser：找出不属于本地主机用户识别码的文件或目录； 
+        -ok<执行指令>：此参数的效果和指定“-exec”类似，但在执行指令之前会先询问用户，若回答“y”或“Y”，则放弃执行命令； 
+        -path<范本样式>：指定字符串作为寻找目录的范本样式； 
+        -perm<权限数值>：查找符合指定的权限数值的文件或目录； 
+        -print：假设find指令的回传值为Ture，就将文件或目录名称列出到标准输出。格式为每列一个名称，每个名称前皆有“./”字符串； 
+        -print0：假设find指令的回传值为Ture，就将文件或目录名称列出到标准输出。格式为全部的名称皆在同一行； 
+        -printf<输出格式>：假设find指令的回传值为Ture，就将文件或目录名称列出到标准输出。格式可以自行指定； 
+        -prune：不寻找字符串作为寻找文件或目录的范本样式; 
+        -regex<范本样式>：指定字符串作为寻找文件或目录的范本样式； 
+        -size<文件大小>：查找符合指定的文件大小的文件； 
+        -true：将find指令的回传值皆设为True； 
+        -typ<文件类型>：只寻找符合指定的文件类型的文件； 
+        -uid<用户识别码>：查找符合指定的用户识别码的文件或目录； 
+        -used<日数>：查找文件或目录被更改之后在指定时间曾被存取过的文件或目录，单位以日计算； 
+        -user<拥有者名称>：查找符和指定的拥有者名称的文件或目录； 
+        -version或——version：显示版本信息； 
+        -xdev：将范围局限在先行的文件系统中； 
+        -xtype<文件类型>：此参数的效果和指定“-type”参数类似，差别在于它针对符号连接检查
+    参数：
+        起始目录：查找文件的起始目录。
+    ex:
+        find .                          列出当前目录及子目录下所有文件和文件夹
+        find /home -name "*.txt"        在/home目录下查找以.txt结尾的文件名
+        find /home -iname "*.txt"       同上，但忽略大小写
+        find . \( -name "*.txt" -o -name "*.pdf" \)
+        find . -name "*.txt" -o -name "*.pdf"    当前目录及子目录下查找所有以.txt和.pdf结尾的文件
+        find /usr/ -path "*local*"          匹配文件路径或者文件,**模糊匹配 一个*name 表示以什么结尾，name* 以什么结尾
+        find . -type 类型参数                  根据文件类型进行搜索
+            类型参数列表： 
+                f 普通文件 
+                l 符号连接      快捷方式
+                d 目录 
+                c 字符设备  
+                b 块设备 
+                s 套接字 
+                p Fifo
+        find . -maxdepth 3 -type f       向下最大深度限制为3
+        find . -mindepth 2 -type f       搜索出深度距离当前目录至少2个子目录的所有文件
+        find . -type f 时间戳
+            UNIX/Linux文件系统每个文件都有三种时间戳： 
+            访问时间（-atime/天，-amin/分钟）：用户最近一次访问时间。 
+            修改时间（-mtime/天，-mmin/分钟）：文件最后一次修改时间。 
+            变化时间（-ctime/天，-cmin/分钟）：文件数据元（例如权限等）最后一次修改时间
+        find . -type f -atime -7        搜索最近七天内被访问过的所有文件
+        find . -type f -atime +7        搜索超过七天内被访问过的所有文件
+        find . -type f -amin +10        搜索访问时间超过10分钟的所有文件
+        find . -type f -newer file.log  找出比file.log修改时间更长的所有文件
+        find . -type f -size 文件大小单元
+            文件大小单元： 
+            b —— 块（512字节） 
+            c —— 字节 
+            w —— 字（2字节） 
+            k —— 千字节 
+            M —— 兆字节 
+            G —— 吉字节
+        find . -type f -size +10k       搜索大于10KB的文件
+        find . -type f -size -10k       搜索小于10KB的文件
+        find . -type f -size 10k        搜索等于10KB的文件
+        find . -type f -name "*.txt" -delete        删除当前目录下所有.txt文件
+        find . -type f -perm 777            当前目录下搜索出权限为777的文件
+        find . -type f -name "*.php" ! -perm 644        找出当前目录下权限不是644的php文件
+        find . -type f -user tom        找出当前目录用户tom拥有的所有文件
+        find . -type f -group sunk      找出当前目录用户组sunk拥有的所有文件
+        find .-type f -user root -exec chown tom {} \;      找出当前目录下所有root的文件，并把所有权更改为用户tom
+                                                            {} 用于与-exec选项结合使用来匹配所有文件，然后会被替换为相应的文件名。
+        find $HOME/. -name "*.txt" -ok rm {} \;     找出自己家目录下所有的.txt文件并删除
+                                                    -ok和-exec行为一样，不过它会给出提示，是否执行相应的操作。
+        find . -type f -name "*.txt" -exec cat {} \;> all.txt      查找当前目录下所有.txt文件并把他们拼接起来写入到all.txt文件中
+                                                                    cat {} \;  一个一个执行
+        find . -type f -mtime +30 -name "*.log" -exec cp {} old \;      将30天前的.log文件移动到old目录中
+        find . -type f -name "*.txt" -exec printf "File: %s\n" {} \;        找出当前目录下所有.txt文件并以“File:文件名”的形式打印出来
+            -exec ./text.sh {} \;           因为单行命令中-exec参数中无法使用多个命令，以下方法可以实现在-exec之后接受多条命令
+        find . -path "./sk" -prune -o -name "*.txt" -print      查找当前目录或者子目录下所有.txt文件，但是跳过子目录sk
+        find . -empty       要列出所有长度为零的文件
+hostnamectl:
+        在CentOS7中有三种定义的主机名:
+        静态的（static）、瞬态的（transient）、和灵活的（pretty）。
+        静态主机名也称为内核主机名，是系统在启动时从/etc/hostname内自动初始化的主机名。
+        瞬态主机名是在系统运行时临时分配的主机名。
+        灵活主机名则允许使用特殊字符的主机名。
+        选项：
+                    -h --help              显示帮助
+                    --version           显示安装包的版本
+                    --transient         修改临时主机名
+                    --static            修改瞬态主机名
+                    --pretty            修改灵活主机名
+                -P --privileged        在执行之前获得的特权
+                    --no-ask-password   输入密码不提示
+                -H --host=[USER@]HOST  操作远程主机
+        参数： 
+            status                 显示当前主机名设置
+            set-hostname NAME      设置系统主机名
+            set-icon-name NAME     为主机设置icon名
+            set-chassis NAME       设置主机平台类型名
+        ex:
+            hostnamectl                       查看状态
+            hostnamectl status                查看状态
+            hostnamectl set-hostname 主机名   修改主机名称
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
