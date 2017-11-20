@@ -22,7 +22,7 @@ set softtabstop=4 "使用或自动插入或删除相应的空格数
 
 nnoremap <leader>w :w<enter>
 nnoremap <leader>q :q<enter>
-"nnoremap a A
+nnoremap a A
 
 
 set nocompatible "打开不兼容模式

@@ -1,0 +1,41 @@
+1: vscode要安装的插件
+    Code Runner
+    mssql
+    open in browser
+    Vim
+    vscode-icons
+2:用户设置
+    {
+        //CTRL + , 打开用户设置
+        //CTRL + ALT + N  运行文件
+        //CTRL + ALT + M  终止运行文件
+        // CTRL + J  打开或关闭控制台
+        // CTRL + /  注释
+        // ALT + B 用浏览器打开html
+        //CTRL + D 删除当前行
+        "window.zoomLevel": 0,
+        "editor.fontSize": 14,  
+        "open-in-browser.default": "chrome", //open in browser
+        "files.autoSave": "afterDelay",
+        "workbench.iconTheme": "vscode-icons",
+        "vsicons.dontShowNewVersionMessage": true
+    }
+
+3: 快捷键设置
+    // 将键绑定放入此文件中以覆盖默认值
+    [
+        {
+            "key": "ctrl+n",
+            "command": "explorer.newFile"
+        },
+        {
+            "key": "ctrl+d",
+            "command": "editor.action.deleteLines",
+            "when": "editorTextFocus && !editorReadonly"
+        },
+        {
+            "key": "ctrl+shift+k",
+            "command": "-editor.action.deleteLines",
+            "when": "editorTextFocus && !editorReadonly"
+        }
+    ]
