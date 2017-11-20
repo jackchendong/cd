@@ -71,3 +71,4 @@ https://www.cnblogs.com/airoot/p/7252987.html   //安装openVPN
 http://tool.chinaz.com/				//站长工具
 
 http://blog.csdn.net/u011054333/article/details/52496303    //安装shadowsocks
+https://github.com/shadowsocks
