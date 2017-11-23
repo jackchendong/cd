@@ -72,3 +72,7 @@ http://tool.chinaz.com/				//站长工具
 
 http://blog.csdn.net/u011054333/article/details/52496303    //安装shadowsocks
 https://github.com/shadowsocks
+
+http://vimcdoc.sourceforge.net/doc/usr_03.html#usr_03.txt    //VIM中文文档。
+
+https://www.cnblogs.com/Rainr/archive/2012/01/21/2328046.html   //Windows修改注册表按键映射
