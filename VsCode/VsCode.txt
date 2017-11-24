@@ -5,7 +5,7 @@
     Vim
     vscode-icons
 2:用户设置
-    {
+  {
     //CTRL + , 打开用户设置
     //CTRL + ALT + N  运行文件
     //CTRL + ALT + M  终止运行文件
@@ -16,17 +16,53 @@
     "window.zoomLevel": 0,
     "editor.fontSize": 14,  
     "open-in-browser.default": "chrome", //open in browser
-    "files.autoSave": "afterDelay",      //自动保存
+    "files.autoSave": "afterDelay",
     "workbench.iconTheme": "vscode-icons",
     "vsicons.dontShowNewVersionMessage": true,
-    
-    "vim.leader": "<space>",   //自定以leader键
-    "vim.otherModesKeyBindingsNonRecursive": [  //自定义快捷键
+
+    "vim.leader": "<space>",
+    "vim.hlsearch": true,
+    "vim.otherModesKeyBindingsNonRecursive": [
         {
             "before": ["a"],
             "after": ["A"]
+        },
+        {
+            "before":["<C-a>"],
+            "after":["g","g","v","G","$"]
+        },
+        {
+            "before":["leader","leader"],
+            "after":[],
+            "commands":[
+                {
+                    "command":":nohl"
+                }
+            ]
+        },
+        {
+            "before":["leader","w"],
+            "after":[],
+            "commands":[
+                {
+                    "command":"workbench.action.files.save"
+                    ,"args":[]
+                }
+            ]
+
+        },
+        {
+            "before":["leader","q"],
+            "after":[],
+            "commands":[
+                {
+                    "command":"workbench.action.closeActiveEditor",                                                                                                    
+                    "args":[]
+                }
+            ]
         }
     ]
+    
 }
 
 3: 快捷键设置
