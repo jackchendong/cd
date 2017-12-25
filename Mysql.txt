@@ -130,36 +130,107 @@
 
 7：distinct去重
         select distinct column_name from table_name;  -- 去掉列中一样的数据，在显示本列之后的数据
-        select distinct column_name1,column_name2... from table_name  -- 去掉指定每行中指定两列一样的数据
+        select distinct column_name1,column_name2... from table_name  -- 去掉指定每行中指定两列一样的数据,注意是两列都一样。
 8：order by 排序
         单一列排序
                 select * from table_name [where 子句] order by column_name [asc/desc]  -- 默认asc
         按多列排序
                 select * from table_name [where 子句] order by column_name1 [asc/desc],column_name2[asc/desc] -- column_name1 排序之后 col_name1相同的内容再按照column_name2排序
+9:group by 分组查询
+        ex: select tname a ,count(*) from testscore group by tname; 
+                 //加空格给tname取别名。这路a可以写汉子，但要用引号引起来
+                 //count(*)  返回的条数。
+                 //group by tname  以tname分组
+                        +------+----------+
+                        | a    | count(*) |
+                        +------+----------+
+                        | 张三 |        3 |
+                        | 李四 |        3 |
+                        +------+----------+
 
-9：limit
+             select tname "姓名" , ttype from testscore group by tname;   //根据tname分组，同样的数据就不进去。所以都是语文第一个。
+                +------+-------+
+                | 姓名 | ttype |
+                +------+-------+
+                | 张三 | 语文  |
+                | 李四 | 语文  |
+                +------+-------+
+
+10：limit
         语法:
                 select * from table_name [where语句] [order by 语句]  limit [offset] , rowCount
                         offset:查询结果的起始位置,第一条是0
                         rowCount:从offset位置开始获取记录的条数
                         注意：limit rowCount = limit 0,rowCount
 
-10：组合条件  and、or、还可以用()
-        select * from table_name where col1=xxx and col2=xxx or col3 > xxx;
+11：组合条件  and、or、还可以用()
+        select * from table_name where col1=xxx and col2=xxx or col3 > xxx; 
 
-11:insert into 与 select组合使用  -- 一般用于数据的迁移
+12:insert into 与 select组合使用  -- 一般用于数据的迁移
         insert into [表1] select 列1，列2 from [表2]
                 ex: insert into book2(title) select title from book where id != 1;  -- 找到book中的title并插入到book2中的title
         insert into [表1] (列1，列2) select 列3，列4 from [表2]
 
-12： where语句的高阶
+13： where语句的高阶
         in:
                 语法：
                         select * from 表名 where 列名 in (value1,value2...);
                                 ex:select * from book where title in ("sun","color")  -- 找tilte 在sun 和 color 的数据
                         select * from 表名 where 列名 in (select 列名 from 表名)；
                           注解：列名 in (value1,value2...) 等同 列名 =value1 or 列名=value2 ...
-13：myslq中的函数
+14:左链接，右链接，等值链接
+                left join(左联接) 返回包括左表中的所有记录和右表中联结字段相等的记录 
+                right join(右联接) 返回包括右表中的所有记录和左表中联结字段相等的记录
+                inner join(等值连接) 只返回两个表中联结字段相等的行
+          语法：FROM table1 LEFT JOIN table2 ON table1.field1 [关系运算符] table2.field2
+                [关系运算符]参数指定关系比较运算符："="， "<"， ">"， "<="， ">=" 或 "<>"。
+
+                --------------------------------------------
+                表A记录如下：
+                aID　　　　　aNum
+                1　　　　　a20050111
+                2　　　　　a20050112
+                3　　　　　a20050113
+                4　　　　　a20050114
+                5　　　　　a20050115
+
+                表B记录如下:
+                bID　　　　　bName
+                1　　　　　2006032401
+                2　　　　　2006032402
+                3　　　　　2006032403
+                4　　　　　2006032404
+                8　　　　　2006032408
+
+                --------------------------------------------
+
+                ex: select * from A left join B on A.aID = B.bID
+
+                结果如下:
+                        aID　　　　　aNum　　　　　bID　　　　　bName
+                        1　　　　　a20050111　　　　1　　　　　2006032401
+                        2　　　　　a20050112　　　　2　　　　　2006032402
+                        3　　　　　a20050113　　　　3　　　　　2006032403
+                        4　　　　　a20050114　　　　4　　　　　2006032404
+                        5　　　　　a20050115　　　　NULL　　　　　NULL
+
+             ex:  select * from A right join B on A.aID = B.bID
+
+             结果如下:
+                aID　　　　　aNum　　　　　bID　　　　　bName
+                1　　　　　a20050111　　　　1　　　　　2006032401
+                2　　　　　a20050112　　　　2　　　　　2006032402
+                3　　　　　a20050113　　　　3　　　　　2006032403
+                4　　　　　a20050114　　　　4　　　　　2006032404
+                NULL　　　　　NULL　　　　　8　　　　　2006032408
+
+               ex: select * from A inner join B on A.aID = B.bID
+                        aID　　　　　aNum　　　　　bID　　　　　bName
+                        1　　　　　a20050111　　　　1　　　　　2006032401
+                        2　　　　　a20050112　　　　2　　　　　2006032402
+                        3　　　　　a20050113　　　　3　　　　　2006032403
+                        4　　　　　a20050114　　　　4　　　　　2006032404
+15：myslq中的函数
         时间函数：
                 now(),current_timestamp() ,current_timestamp ,localtime() ,localtime ,localtimestamp    -- (v4.0.6) ,localtimestamp() -- (v4.0.6)
                         ex:  select now();

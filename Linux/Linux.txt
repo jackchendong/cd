@@ -7,6 +7,14 @@
             ctrl + /  //撤销
             ctrl + k   //从当前光标删除到最后面
             ctrl + w  //往左删除一个单词
+            ctrl + l  //清屏
+            ctrl + j  //回车键
+            ctrl + h  //往左删除一个字符
+            ctrl + d  //往右删除一个字符,没有字符就是退出登陆
+            ctrl + s  //暂停
+            ctrl + q  //从暂停中恢复
+            ctrl + p  //历史回溯
+            ctrl + n  //与ctrl + p 相反
 
         重启:
             shutdown -r now
@@ -39,8 +47,25 @@
             scp   文件  root@地址
         看命令在哪个包里面
             yum provides 命令
-    
-     
+        不用输入y的确认
+            在命令的前面加 \      //防止吐血的操作
+        筛选：
+            |grep 字符  #好多命令都可以这样进行筛选
+       生成大文件：
+            dd if=/dev/zero of=sun.txt bs=1M count=1
+        判断文件大小：
+            du -sh sun.txt 
+        判断文件权限：
+            ll 文件路径
+        查看文件状态：
+            stat 文件路径
+        设置文件权限：
+            chmode 777 文件路径
+            x : 1    #可执行
+            r : 2    #只读
+            w : 4    #可以写
+        后台运行程序：
+            node 01.js&   #后台运行程序，但是但用户退出的时候就会结束。 
 
 cd:
     cd命令用来切换工作目录至dirname。 其中dirName表示法可为绝对路径或相对路径。
@@ -59,6 +84,7 @@ cd:
         cd        进入用户主目录； 
         cd ~      进入用户主目录； 
         cd -      返回进入此目录之前所在的目录；
+        cd --     返回上两次所在的目录
         cd ..     返回上级目录（若当前目录为“/“，则执行完后还在“/"；".."为上级目录的意思）； 
         cd ../..  返回上两级目录； 
         cd !$     把上个命令的参数作为cd参数使用。
@@ -77,6 +103,23 @@ rmdir:
         删除子目录os_1和其父目录bin
             cd /usr/meng/test
             rmdir -p bin/os_1
+rm:
+    可以删除一个目录中的一个或多个文件或目录，也可以将某个目录及其下属的所有文件及其子目录均删除掉。
+    语法:
+        rm (选项)(参数)
+    选项:
+        -d：直接把欲删除的目录的硬连接数据删除成0，删除该目录； 
+        -f：强制删除文件或目录； -i：删除已有文件或目录之前先询问用户； 
+        -r或-R：递归处理，将指定目录下的所有文件与子目录一并处理； 
+        --preserve-root：不对根目录进行递归操作； 
+        -v：显示指令的详细执行过程。
+    参数： 
+        路径，支持正则
+    ex:
+        rm -rf ./01.txt    //删除当前目录下的01.txt
+        rm -r *           //删除当前目录下除隐含文件外的所有文件和子目录
+
+
 
 yum:
     yum命令是在Fedora和RedHat以及SUSE中基于rpm的软件包管理器，它可以使系统管理人员交互和自动化地更细与管理RPM软件包，
@@ -273,6 +316,693 @@ hostnamectl:
             hostnamectl                       查看状态
             hostnamectl status                查看状态
             hostnamectl set-hostname 主机名   修改主机名称
+curl:
+    curl命令是一个利用URL规则在命令行下工作的文件传输工具。它支持文件的上传和下载，
+    所以是综合传输工具，但按传统，习惯称curl为下载工具。作为一款强力工具，
+    curl支持包括HTTP、HTTPS、ftp等众多协议，
+    还支持POST、cookies、认证、从指定偏移处下载部分文件、用户代理字符串、限速、文件大小、进度条等特征。
+    做网页处理流程和数据检索自动化，curl可以祝一臂之力。
+
+    选项： 
+        -a  --append    上传文件时，附加到目标文件
+        -C  --continue-at 断点续传
+        -I  --head       只显示响应头
+        -o  --output     把输出写到该文件中
+        -O  --remote-name 把输出写到该文件中，保留远程文件的文件名
+        -s  --silent     静默模式。不输出任何东西。输出返回的文件
+    ex:
+          curl http://www.baidu.com -o test.txt --progress  //将文件下载到test.txt文件中，并显示进度条
+        断点续传
+          curl URL/File -C 偏移量         //偏移量是以字节为单位的整数，如果让curl自动推断出正确的续传位置使用-C -： curl -C -URL
+
+            curl http://man.linuxde.net --cookie "user=root;pass=123456"   //用curl设置cookies
+
+            curl URL --limit-rate 50k   //curl的带宽控制和下载配额,使用--limit-rate限制curl的下载速度
+                                        命令中用k（千字节）和m（兆字节）指定下载速度限制
+
+            curl URL --max-filesize bytes  //使用--max-filesize指定可下载的最大文件大小：
+
+            curl -I http://man.linuxde.net   //只打印响应头部信息
+        模拟登陆
+            curl -u 1701:shh88407 http://www.langjie.com:8090/admin   //模拟登陆打印返回的信息
+
+            curl -u 陈冬:shh8640712 http://www.langjie.net/signs/main.php   //模拟登陆可以不是basic认证
+
+            curl -u user:pwd http://man.linuxde.net 
+            
+            curl -u user http://man.linuxde.net    //使用curl选项 -u 可以完成HTTP或者FTP的认证，可以指定密码，也可以不指定密码在后续操作中输入密码：
+        下载文件
+            curl http://man.linuxde.net/text.iso --silent -O   //使用选项-O将下载的数据写入到文件，必须使用文件的绝对地址：
+            curl http://www.baidu.com/index.html -O
+
+
+cp: 
+    选项：
+        -a：此参数的效果和同时指定"-dpR"参数相同； 
+        -d：当复制符号连接时，把目标文件或目录也建立为符号连接，并指向与源文件或目录连接的原始文件或目录； 
+        -f：强行复制文件或目录，不论目标文件或目录是否已存在； 
+        -i：覆盖既有文件之前先询问用户； 
+        -l：对源文件建立硬连接，而非复制文件； 
+        -p：保留源文件或目录的属性； 
+        -R/r：递归处理，将指定目录下的所有文件与子目录一并处理； 
+        -s：对源文件建立符号连接，而非复制文件； 
+        -u：使用这项参数后只会在源文件的更改时间较目标文件更新时或是名称相互对应的目标文件并不存在时，才复制文件； 
+        -S：在备份文件时，用指定的后缀“SUFFIX”代替文件的默认后缀； 
+        -b：覆盖已存在的文件目标前将目标文件备份； 
+        -v：详细显示命令执行的操作
+    参数： 
+        源文件   目标文件或目录    //支持正则，注意.
+
+    ex:
+        cp 01.py /home/chendong/000.py  //将01.py复制到指定目录下并改名为000.py
+        cp test /home/chendong/ -r      //复制目录要加r
+        \cp -r -a aaa/* /bbb           // 成功，没有提示按Y、传递了目录属性、没有略过目录。
+
+ls:
+    ls命令用来显示目标列表，在Linux中是使用率较高的命令。
+    ls命令的输出信息可以进行彩色加亮显示，以分区不同类型的文件。
+    选项：
+        -a：显示所有档案及目录（ls内定将档案名或目录名称为“.”的视为影藏，不会列出）； 
+        -A：显示除影藏文件“.”和“..”以外的所有文件列表； 
+        -C：多列显示输出结果。这是默认选项； 
+        -l：与“-C”选项功能相反，所有输出信息用单列格式输出，不输出为多列； 
+        -F：在每个输出项后追加文件的类型标识符，具体含义：“*”表示具有可执行权限的普通文件，“/”表示目录，“@”表示符号链接，“|”表示命令管道FIFO，“=”表示sockets套接字。当文件为普通文件时，不输出任何标识符； 
+        -b：将文件中的不可输出的字符以反斜线“”加字符编码的方式输出； 
+        -c：与“-lt”选项连用时，按照文件状态时间排序输出目录内容，排序的依据是文件的索引节点中的ctime字段。与“-l”选项连用时，则排序的一句是文件的状态改变时间； 
+        -d：仅显示目录名，而不显示目录下的内容列表。显示符号链接文件本身，而不显示其所指向的目录列表； 
+        -f：此参数的效果和同时指定“aU”参数相同，并关闭“lst”参数的效果； 
+        -i：显示文件索引节点号（inode）。一个索引节点代表一个文件； 
+        --file-type：与“-F”选项的功能相同，但是不显示“*”； 
+        -k：以KB（千字节）为单位显示文件大小； 
+        -l：以长格式显示目录下的内容列表。输出的信息从左到右依次包括文件名，文件类型、权限模式、硬连接数、所有者、组、文件大小和文件的最后修改时间等； 
+        -m：用“,”号区隔每个文件和目录的名称； 
+        -n：以用户识别码和群组识别码替代其名称； 
+        -r：以文件名反序排列并输出目录内容列表； 
+        -s：显示文件和目录的大小，以区块为单位； 
+        -t：用文件和目录的更改时间排序； 
+        -L：如果遇到性质为符号链接的文件或目录，直接列出该链接所指向的原始文件或目录； 
+        -R：递归处理，将指定目录下的所有文件及子目录一并处理； 
+        --full-time：列出完整的日期与时间； 
+        --color[=WHEN]：使用不同的颜色高亮显示不同类型的。
+    参数： 
+        目录路径或是具体的文件
+    ex:
+        ls        #显示非隐藏的文件和目录
+        ls -a     #显示所有的文件和目录，包括隐藏的
+        ls -l     #以列表的形式显示，含有其他信息，包括创建人，和时间
+        ls -i -l a.txt   #显示a.txt的信息
+        ls -m     #水平输出文件列表，用的少
+        ls -t     #以时间排序，默认以文件名排序
+        ls -R     #以递归显示，显示子文件
+        ls -ld /etx   #以输出目录的信息
+
+touch:
+    touch命令有两个功能：一是用于把已存在文件的时间标签更新为系统当前的时间（默认方式），
+                         它们的数据将原封不动地保留下来；
+                       二是用来创建新的空文件。
+    选项：
+        -a：或--time=atime或--time=access或--time=use 只更改存取时间； 
+        -c：或--no-create 不建立任何文件； 
+        -d：<时间日期> 使用指定的日期时间，而非现在的时间； 
+        -f：此参数将忽略不予处理，仅负责解决BSD版本touch指令的兼容性问题；
+        -m：或--time=mtime或--time=modify 只更该变动时间； 
+        -r：<参考文件或目录> 把指定文件或目录的日期时间，统统设成和参考文件或目录的日期时间相同； 
+        -t：<日期时间> 使用指定的日期时间，而非现在的时间； 
+        --help：在线帮助； 
+        --version：显示版本信息。
+
+    参数：
+        文件路径
+    ex:
+        touch a.txt    #在当前目录下创建一个文件a.txt,如果文件以存在就不会在创建。
+
+rename:
+    rename命令用字符串替换的方式批量改变文件名。
+
+    参数(支持正则)：
+        原字符串：将文件名需要替换的字符串； 
+        目标字符串：将文件名中含有的原字符替换成目标字符串； 
+        文件：指定要改变文件名的文件列表。
+    正则:
+        ? 可替代单个字符 
+        * 可替代多个字符 
+        [charset] 可替代charset集中的任意单个字符
+    ex:
+        rename a  asd  a    #将a文件换成asd
+        rename a  b   asd   #将文件asd中的a换成b
+        rename .txt .js *.txt  #将.txt结尾的文件换成.js
+        rename e he *      #将所有文件中的e换成he
+        rename a o hh?lla  # 将hh?lla的所有文件中的a 换成 o ,但是一个文件中有多个a 将只换第一个
+
+cat:
+    在屏幕上面打印文件的内容，可以合并文件到一个新文件
+    
+    选项：
+        -n或-number：有1开始对所有输出的行数编号； 
+        -b或--number-nonblank：和-n相似，只不过对于空白行不编号； 
+        -s或--squeeze-blank：当遇到有连续两行以上的空白行，就代换为一行的空白行； 
+        -A：显示不可打印字符，行尾显示“$”； 
+        -e：等价于"-vE"选项； 
+        -t：等价于"-vT"选项；
+    参数:
+        文件列表 
+    ex:
+        cat 01    #打印01内容
+        cat 01 02 #打印01和02 的内容
+        cat 01 02 > file #合并到新文件中
+du:
+    查看文件和目录的大小
+    选项:
+        -a或-all 显示目录中个别文件的大小。 
+        -b或-bytes 显示目录或文件大小时，以byte为单位。 
+        -c或--total 除了显示个别目录或文件的大小外，同时也显示所有目录或文件的总和。 
+        -k或--kilobytes 以KB(1024bytes)为单位输出。 
+        -m或--megabytes 以MB为单位输出。 
+        -s或--summarize 仅显示总计，只列出最后加总的值。 
+        -h或--human-readable 以K，M，G为单位，提高信息的可读性。 
+        -x或--one-file-xystem 以一开始处理时的文件系统为准，若遇上其它不同的文件系统目录则略过。 
+        -L<符号链接>或--dereference<符号链接> 显示选项中所指定符号链接的源文件大小。 
+        -S或--separate-dirs 显示个别目录的大小时，并不含其子目录的大小。 
+        -X<文件>或--exclude-from=<文件> 在<文件>指定目录或文件。 
+        --exclude=<目录或文件> 略过指定的目录或文件。 
+        -D或--dereference-args 显示指定符号链接的源文件大小。 
+        -H或--si 与-h参数相同，但是K，M，G是以1000为换算单位。 
+        -l或--count-links 重复计算硬件链接的文件。
+    参数:
+        文件路径或目录
+    ex:
+        du -sh hello  #查看hello目录的大小
+        du -sh 01 02  #查看01和02的文件大小
+
+iptables:
+    iptables命令是Linux上常用的防火墙软件，是netfilter项目的一部分。可以直接配置，也可以通过许多前端和图形界面配置。
+    选项： 
+        -t<表>：指定要操纵的表； 
+        -A：向规则链中添加条目； 
+        -D：从规则链中删除条目； 
+        -i：向规则链中插入条目； 
+        -R：替换规则链中的条目； 
+        -L：显示规则链中已有的条目； 
+        -F：清楚规则链中已有的条目； 
+        -Z：清空规则链中的数据包计算器和字节计数器；
+        -N：创建新的用户自定义规则链； 
+        -P：定义规则链中的默认目标； 
+        -h：显示帮助信息； 
+        -p：指定要匹配的数据包协议类型； 
+        -s：指定要匹配的数据包源ip地址； 
+        -j<目标>：指定要跳转的目标； 
+        -i<网络接口>：指定数据包进入本机的网络接口； 
+        -o<网络接口>：指定数据包要离开本机所使用的网络接口。
+
+        iptables命令选项输入顺序： 
+            iptables -t 表名 <-A/I/D/R> 规则链名 [规则号] <-i/o 网卡名> -p 协议名 <-s 源IP/源子网> --sport 源端口 <-d 目标IP/目标子网> --dport 目标端口 -j 动作 
+        表名包括： 
+            raw：高级功能，如：网址过滤。 
+            mangle：数据包修改（QOS），用于实现服务质量。 
+            net：地址转换，用于网关路由器。 
+            filter：包过滤，用于防火墙规则。 
+        规则链名包括： 
+            INPUT链：处理输入数据包。 
+            OUTPUT链：处理输出数据包。 
+            PORWARD链：处理转发数据包。 
+            PREROUTING链：用于目标地址转换（DNAT）。 
+            POSTOUTING链：用于源地址转换（SNAT）。 
+        动作包括： 
+            accept：接收数据包。 
+            DROP：丢弃数据包。 
+            REDIRECT：重定向、映射、透明代理。 
+            SNAT：源地址转换。 
+            DNAT：目标地址转换。 
+            MASQUERADE：IP伪装（NAT），用于ADSL。 
+            LOG：日志记录。
+
+        ex:
+            清除iptables规则
+                iptables -F
+                iptables -x
+                iptables -Z 
+            开放指定的端口
+
+                iptables -A INPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT #允许本地回环接口(即运行本机访问本机) 
+                iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT #允许已建立的或相关连的通行 
+                iptables -A OUTPUT -j ACCEPT #允许所有本机向外的访问 
+                iptables -A INPUT -p tcp --dport 22 -j ACCEPT #允许访问22端口 
+                iptables -A INPUT -p tcp --dport 80 -j ACCEPT #允许访问80端口 
+                iptables -A INPUT -p tcp --dport 21 -j ACCEPT #允许ftp服务的21端口 
+                iptables -A INPUT -p tcp --dport 20 -j ACCEPT #允许FTP服务的20端口 
+                iptables -A INPUT -j reject #禁止其他未允许的规则访问 
+                iptables -A FORWARD -j REJECT #禁止其他未允许的规则访问
+            屏蔽端口
+                iptables -I INPUT -s 123.45.6.7 -j DROP #屏蔽单个IP的命令 
+                iptables -I INPUT -s 123.0.0.0/8 -j DROP #封整个段即从123.0.0.1到123.255.255.254的命令 
+                iptables -I INPUT -s 124.45.0.0/16 -j DROP #封IP段即从123.45.0.1到123.45.255.254的命令 
+                iptables -I INPUT -s 123.45.6.0/24 -j DROP #封IP段即从123.45.6.1到123.45.6.254的命令是
+            查看iptables规则
+                iptables -L -n -v   #查看规则
+service:
+
+    service命令是Redhat Linux兼容的发行版中用来控制系统服务的实用工具，它以启动、停止、重新启动和关闭系统服务，
+            还可以显示所有系统服务的当前状态。
+    选项:
+        -h：显示帮助信息； 
+        --status-all：显示所服务的状态。
+
+    参数:
+        服务名：自动要控制的服务名，即/etc/init.d目录下的脚本文件名；
+        控制命令：系统服务脚本支持的控制命令。
+    ex:
+        service httpd status  #查看状态
+        service httpd stop    #停止
+        service httpd start   #开始
+        service httpd restart #重启
+
+systemctl:
+    systemctl命令是系统服务管理器指令，它实际上将 service 和 chkconfig 
+    这两个命令组合到一起。
+          任务	旧指令	新指令 
+        使某服务自动启动	chkconfig --level 3 httpd on	systemctl enable httpd.service 
+        使某服务不自动启动	chkconfig --level 3 httpd off	systemctl disable httpd.service 
+        检查服务状态	service httpd status	systemctl status httpd.service （服务详细信息） systemctl is-active httpd.service （仅显示是否 Active) 
+        显示所有已启动的服务	chkconfig --list	systemctl list-units --type=service 
+        启动某服务	service httpd start	systemctl start httpd.service 
+        停止某服务	service httpd stop	systemctl stop httpd.service 
+        重启某服务	service httpd restart	systemctl restart httpd.service
+
+    ex:
+        systemctl -a -t service  #查看所有的service状态
+        systemctl status httpd   #查看http的状态
+        systemctl enable httpd   #开机自动启动
+        systemctl disable httpd  #停止开机自动启动
+        systemctl restart httpd  #重启httpd服务
+        systemctl status         #查看所有的服务状态
+
+        彻底关闭防火墙:
+            sudo systemctl status firewalld.service  #查看状态 
+            sudo systemctl stop firewalld.service    #关闭       
+            sudo systemctl disable firewalld.service #禁止自动启动
+
+su:
+    切换用户
+        从root用户可以变成任何用户并且不需要输入密码。
+        其他用户就需要密码了。
+    ex:
+        su chendong  #切换用户为chendong,不换工作目录
+        su -l chendong #切换用户为chendong，换到chendong的家目录
+sudo:
+    提升权限
+    sudo命令用来以其他身份来执行命令，预设的身份为root。
+    在/etc/sudoers中设置了可执行sudo指令的用户。
+    若其未经授权的用户企图使用sudo，则会发出警告的邮件给管理员。
+    用户使用sudo时，必须先输入密码，之后有5分钟的有效期限，超过期限则必须重新输入密码。
+
+    选项:
+        -b：在后台执行指令； 
+        -h：显示帮助； 
+        -H：将HOME环境变量设为新身份的HOME环境变量； 
+        -k：结束密码的有效期限，也就是下次再执行sudo时便需要输入密码；。 
+        -l：列出目前用户可执行与无法执行的指令； 
+        -p：改变询问密码的提示符号； 
+        -s：执行指定的shell； 
+        -u<用户>：以指定的用户作为新的身份。若不加上此参数，则预设以root作为新的身份； 
+        -v：延长密码有效期限5分钟；
+        -V ：显示版本信息。
+    ex： 
+        sudo ls /root  #查看root用户目录下的非隐藏文件
+
+rpm:
+    rpm命令是RPM软件包的管理工具。rpm原本是Red Hat Linux发行版专门用来管理Linux各项套件的程序，
+    由于它遵循GPL规则且功能强大方便，因而广受欢迎。逐渐受到其他发行版的采用。
+    RPM套件管理方式的出现，让Linux易于安装，升级，间接提升了Linux的适用度。
+
+    选项：
+        -a：查询所有套件； 
+        -b<完成阶段><套件档>+或-t <完成阶段><套件档>+：设置包装套件的完成阶段，并指定套件档的文件名称； 
+        -c：只列出组态配置文件，本参数需配合"-l"参数使用； 
+        -d：只列出文本文件，本参数需配合"-l"参数使用； 
+        -e<套件档>或--erase<套件档>：删除指定的套件； 
+        -f<文件>+：查询拥有指定文件的套件； 
+        -h或--hash：套件安装时列出标记； 
+        -i：显示套件的相关信息； 
+        -i<套件档>或--install<套件档>：安装指定的套件档； 
+        -l：显示套件的文件列表； 
+        -p<套件档>+：查询指定的RPM套件档； 
+        -q：使用询问模式，当遇到任何问题时，rpm指令会先询问用户； 
+        -R：显示套件的关联性信息； 
+        -s：显示文件状态，本参数需配合"-l"参数使用； 
+        -U<套件档>或--upgrade<套件档>：升级指定的套件档； 
+        -v：显示指令执行过程； 
+        -vv：详细显示指令执行过程，便于排错。
+    参数： 
+        指定的软件包
+    ex:
+        rpm -ivh package.rpm  #安装包
+        删除指定的包
+            rpm -e 包名
+                使用命令rpm -e包名，包名可以包含版本号等信息，
+                但是不可以有后缀.rpm，比如卸载软件包proftpd-1.2.8-1，可以使用下列格式：
+
+                    rpm -e proftpd-1.2.8-1 
+                    rpm -e proftpd-1.2.8 
+                    rpm -e proftpd- 
+                    rpm -e proftpd
+
+ifconfig:
+        配置在你的/etc/sysconfig/network-scripts/ifcfg-ethx文件中,x表示你的第几块网卡。
+        配置完以后重启动服务.，p地址就配置好了
+
+        ex:
+            ifconfig eth0 up  #启动网卡
+            ifconfig eth0 down #关闭网卡。这个不能做，除非有两个网卡
+
+            ifconfig eth0 mtu 1500 #设置能通过的最大数据包大小为 1500 bytes
+
+            [root@localhost ~]# ifconfig eth0 192.168.2.10 
+            [root@localhost ~]# ifconfig eth0 192.168.2.10 netmask 255.255.255.0 
+            [root@localhost ~]# ifconfig eth0 192.168.2.10 netmask 255.255.255.0 broadcast 192.168.2.255
+nmap:
+    nmap命令是一款开放源代码的网络探测和安全审核工具，它的设计目标是快速地扫描大型网络。
+   选项: 
+    -O：激活操作探测； 
+    -P0：值进行扫描，不ping主机； 
+    -PT：是同TCP的ping； 
+    -sV：探测服务版本信息； 
+    -sP：ping扫描，仅发现目标主机是否存活； 
+    -ps：发送同步（SYN）报文； 
+    -PU：发送udp ping； 
+    -PE：强制执行直接的ICMPping； 
+    -PB：默认模式，可以使用ICMPping和TCPping； 
+    -6：使用IPv6地址； -v：得到更多选项信息； 
+    -d：增加调试信息地输出； 
+    -oN：以人们可阅读的格式输出； 
+    -oX：以xml格式向指定文件输出信息； 
+    -oM：以机器可阅读的格式输出； 
+    -A：使用所有高级扫描选项； 
+    --resume：继续上次执行完的扫描； 
+    -P：指定要扫描的端口，可以是一个单独的端口，用逗号隔开多个端口，使用“-”表示端口范围； 
+    -e：在多网络接口Linux系统中，指定扫描使用的网络接口； 
+    -g：将指定的端口作为源端口进行扫描； 
+    --ttl：指定发送的扫描报文的生存期； 
+    --packet-trace：显示扫描过程中收发报文统计； 
+    --scanflags：设置在扫描报文中的TCP标志。
+
+    参数：
+        IP地址，哪个的地址都行
+    ex:
+        nmap localhost
+        nmap www.langjie.com 
+
+wget:
+    wget命令用来从指定的URL下载文件。wget非常稳定，它在带宽很窄的情况下和不稳定网络中有很强的适应性，
+    如果是由于网络的原因下载失败，wget会不断的尝试，直到整个文件下载完毕。如果是服务器打断下载过程，
+    它会再次联到服务器上从停止的地方继续下载。这对从那些限定了链接时间的服务器上下载大文件非常有用。
+
+    选项:
+        -a<日志文件>：在指定的日志文件中记录资料的执行过程； 
+        -A<后缀名>：指定要下载文件的后缀名，多个后缀名之间使用逗号进行分隔； 
+        -b：进行后台的方式运行wget； 
+        -B<连接地址>：设置参考的连接地址的基地地址； 
+        -c：继续执行上次终端的任务； 
+        -C<标志>：设置服务器数据块功能标志on为激活，off为关闭，默认值为on； 
+        -d：调试模式运行指令； -D<域名列表>：设置顺着的域名列表，域名之间用“，”分隔； 
+        -e<指令>：作为文件“.wgetrc”中的一部分执行指定的指令； 
+        -h：显示指令帮助信息； 
+        -i<文件>：从指定文件获取要下载的URL地址；
+         -l<目录列表>：设置顺着的目录列表，多个目录用“，”分隔； 
+         -L：仅顺着关联的连接； 
+         -r：递归下载方式； 
+         -nc：文件存在时，下载文件不覆盖原有文件； 
+         -nv：下载时只显示更新和出错信息，不显示指令的详细执行过程； 
+         -q：不显示指令执行过程； 
+         -nh：不查询主机名称； 
+         -v：显示详细执行过程；
+          -V：显示版本信息；
+           --passive-ftp：使用被动模式PASV连接FTP服务器； 
+           --follow-ftp：从HTML文件中下载FTP连接文件。
+    参数： 
+        url地址 
+    ex:
+        wget http://www.lanejie.com/hello.zip  #指定下载
+        wget --limit-rate=300k http://www.linuxde.net/testfile.zip  #限速下载
+        wget -c http://www.linuxde.net/testfile.zip   #断点下载
+        wget -b http://www.linuxde.net/testfile.zip   #后台下载
+        wget --user-agent="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.204 Safari/534.16"  http://www.linuxde.net/testfile.zip
+                #有些网站能通过根据判断代理名称不是浏览器而拒绝你的下载请求。不过你可以通过--user-agent参数伪装。
+        wget --spider URL  #检查能否下载。url有效吗
+        wget --tries=40 URL  #如果网络有问题或下载一个大文件也有可能失败。wget默认重试20次连接下载文件。如果需要，你可以使用--tries增加重试次数。
+
+        ftp下载：
+            wget ftp-url  #匿名下载 
+            wget --ftp-user=USERNAME --ftp-password=PASSWORD url  #使用用户名和密码下载
+        指定格式下载：
+            wget -r -A.pdf url  #下载pdf
+                可以在以下情况使用该功能： 
+                    下载一个网站的所有图片。 
+                    下载一个网站的所有视频。 
+                    下载一个网站的所有PDF文件。
+
+scp:
+    scp命令用于在Linux下进行远程拷贝文件的命令，和它类似的命令有cp，
+    不过cp只是在本机进行拷贝不能跨服务器，而且scp传输是加密的。
+    可能会稍微影响一下速度。当你服务器硬盘变为只读read only system时，
+    用scp可以帮你把文件移出来。另外，scp还非常不占资源，不会提高多少系统负荷，在这一点上，
+    rsync就远远不及它了。虽然 rsync比scp会快一点，但当小文件众多的情况下，
+    rsync会导致硬盘I/O非常高，而scp基本不影响系统正常使用。
+
+    选项：
+        -1：使用ssh协议版本1； 
+        -2：使用ssh协议版本2； 
+        -4：使用ipv4； 
+        -6：使用ipv6； 
+        -B：以批处理模式运行； 
+        -C：使用压缩； 
+        -F：指定ssh配置文件； 
+        -l：指定宽带限制； 
+        -o：指定使用的ssh选项； 
+        -P：指定远程主机的端口号； 
+        -p：保留文件的最后修改时间，最后访问时间和权限模式； 
+        -q：不显示复制进度； 
+        -r：以递归方式复制。
+    参数： 
+        源文件：指定要复制的源文件。 
+        目标文件：目标文件。格式为user@host：filename（文件名为目标文件的名称）。
+    ex:
+        scp root@10.10.10.10:/opt/soft/nginx-0.5.38.tar.gz  /opt/soft/  #复制文件到本地
+        scp -r root@10.10.10.10:/opt/soft/mongodb /opt/soft/  #复制目录到本地
+        scp /opt/soft/nginx-0.5.38.tar.gz root@10.10.10.10:/opt/soft/scptest  #上传文件 
+        scp -r /opt/soft/mongodb root@10.10.10.10:/opt/soft/scptest  #上传目录
+
+shutdown:
+    shutdown命令用来系统关机命令。shutdown指令可以关闭所有程序，并依用户的需要，进行重新开机或关机的动作。
+    选项：
+        -c：当执行“shutdown -h 11:50”指令时，只要按+键就可以中断关机的指令； 
+        -f：重新启动时不执行fsck； 
+        -F：重新启动时执行fsck； 
+        -h：将系统关机； 
+        -k：只是送出信息给所有用户，但不会实际关机； 
+        -n：不调用init程序进行关机，而由shutdown自己进行； 
+        -r：shutdown之后重新启动； 
+        -t<秒数>：送出警告信息和删除信息之间要延迟多少秒。
+    参数：
+        [时间]：设置多久时间后执行shutdown指令； 
+        [警告信息]：要传送给所有登入用户的信息。
+    ex:
+        shutdown -h now  #现在关机
+        shutdown +5 "System will shutdown after 5 minutes"  #指定5分钟后关机，同时送出警告信息给登入用户
+
+netstat:
+    netstat命令用来打印Linux中网络系统的状态信息，可让你得知整个Linux系统的网络情况
+    选项：
+        -a或--all：显示所有连线中的Socket； 
+        -A<网络类型>或--<网络类型>：列出该网络类型连线中的相关地址； 
+        -c或--continuous：持续列出网络状态； 
+        -C或--cache：显示路由器配置的快取信息； 
+        -e或--extend：显示网络其他相关信息； 
+        -F或--fib：显示FIB； 
+        -g或--groups：显示多重广播功能群组组员名单； 
+        -h或--help：在线帮助； 
+        -i或--interfaces：显示网络界面信息表单； 
+        -l或--listening：显示监控中的服务器的Socket； 
+        -M或--masquerade：显示伪装的网络连线； 
+        -n或--numeric：直接使用ip地址，而不通过域名服务器；
+         -N或--netlink或--symbolic：显示网络硬件外围设备的符号连接名称；
+          -o或--timers：显示计时器； 
+          -p或--programs：显示正在使用Socket的程序识别码和程序名称； 
+          -r或--route：显示Routing Table； 
+          -s或--statistice：显示网络工作信息统计表； 
+          -t或--tcp：显示TCP传输协议的连线状况； 
+          -u或--udp：显示UDP传输协议的连线状况； 
+          -v或--verbose：显示指令执行过程； 
+          -V或--version：显示版本信息； 
+          -w或--raw：显示RAW传输协议的连线状况； 
+          -x或--unix：此参数的效果和指定"-A unix"参数相同； 
+          --ip或--inet：此参数的效果和指定"-A inet"参数相同。
+    ex:
+        列出所有端口 (包括监听和未监听的)
+            netstat -a #列出所有端口 
+            netstat -at #列出所有tcp端口 
+            netstat -au #列出所有udp端口
+        列出所有处于监听状态的 Sockets
+            netstat -l #只显示监听端口 
+            netstat -lt #只列出所有监听 tcp 端口 
+            netstat -lu #只列出所有监听 udp 端口 
+            netstat -lx #只列出所有监听 UNIX 端口
+        显示每个协议的统计信息
+            netstat -s 显示所有端口的统计信息 
+            netstat -st 显示TCP端口的统计信息 
+            netstat -su 显示UDP端口的统计信息
+        在netstat输出中显示 PID 和进程名称
+            netstat -pt
+        
+        netstat -nultp    #列出所有的tcp端口的监听和线程
+
+ps:
+    当前位置：首页 » 系统管理 » ps ps命令进程和作业管理 ps命令用于报告当前系统的进程状态。
+    可以搭配kill指令随时中断、删除不必要的程序。ps命令是最基本同时也是非常强大的进程查看命令，
+    使用该命令可以确定有哪些进程正在运行和运行的状态、进程是否结束、进程有没有僵死、
+    哪些进程占用了过多的资源等等，总之大部分信息都是可以通过执行该命令得到的。
+    选项： 
+        -a：显示所有终端机下执行的程序，除了阶段作业领导者之外。 
+        a：显示现行终端机下的所有程序，包括其他用户的程序。 
+        -A：显示所有程序。 
+        -c：显示CLS和PRI栏位。 
+        c：列出程序时，显示每个程序真正的指令名称，而不包含路径，选项或常驻服务的标示。 
+        -C<指令名称>：指定执行指令的名称，并列出该指令的程序的状况。 
+        -d：显示所有程序，但不包括阶段作业领导者的程序。 
+        -e：此选项的效果和指定"A"选项相同。 
+        e：列出程序时，显示每个程序所使用的环境变量。 
+        -f：显示UID,PPIP,C与STIME栏位。 
+        f：用ASCII字符显示树状结构，表达程序间的相互关系。 
+        -g<群组名称>：此选项的效果和指定"-G"选项相同，当亦能使用阶段作业领导者的名称来指定。
+         g：显示现行终端机下的所有程序，包括群组领导者的程序。 
+         -G<群组识别码>：列出属于该群组的程序的状况，也可使用群组名称来指定。 
+         h：不显示标题列。 -H：显示树状结构，表示程序间的相互关系。 
+         -j或j：采用工作控制的格式显示程序状况。 
+         -l或l：采用详细的格式来显示程序状况。 
+         L：列出栏位的相关信息。 
+         -m或m：显示所有的执行绪。 
+         n：以数字来表示USER和WCHAN栏位。 
+         -N：显示所有的程序，除了执行ps指令终端机下的程序之外。 
+         -p<程序识别码>：指定程序识别码，并列出该程序的状况。 
+         p<程序识别码>：此选项的效果和指定"-p"选项相同，只在列表格式方面稍有差异。
+          r：只列出现行终端机正在执行中的程序。 
+          -s<阶段作业>：指定阶段作业的程序识别码，并列出隶属该阶段作业的程序的状况。 
+          s：采用程序信号的格式显示程序状况。 
+          S：列出程序时，包括已中断的子程序资料。 
+          -t<终端机编号>：指定终端机编号，并列出属于该终端机的程序的状况。 
+          t<终端机编号>：此选项的效果和指定"-t"选项相同，只在列表格式方面稍有差异。 
+          -T：显示现行终端机下的所有程序。 
+          -u<用户识别码>：此选项的效果和指定"-U"选项相同。 
+          u：以用户为主的格式来显示程序状况。 
+          -U<用户识别码>：列出属于该用户的程序的状况，也可使用用户名称来指定。 
+          U<用户名称>：列出属于该用户的程序的状况。 
+          v：采用虚拟内存的格式显示程序状况。 
+          -V或V：显示版本信息。 
+          -w或w：采用宽阔的格式来显示程序状况。　 
+          x：显示所有程序，不以终端机来区分。 
+          X：采用旧式的Linux i386登陆格式显示程序状况。 
+          -y：配合选项"-l"使用时，不显示F(flag)栏位，并以RSS栏位取代ADDR栏位　。 
+          -<程序识别码>：此选项的效果和指定"p"选项相同。 
+          --cols<每列字符数>：设置每列的最大字符数。 
+          --columns<每列字符数>：此选项的效果和指定"--cols"选项相同。 
+          --cumulative：此选项的效果和指定"S"选项相同。 
+          --deselect：此选项的效果和指定"-N"选项相同。 
+          --forest：此选项的效果和指定"f"选项相同。 
+          --headers：重复显示标题列。 
+          --help：在线帮助。 
+          --info：显示排错信息。 
+          --lines<显示列数>：设置显示画面的列数。
+           --no-headers：此选项的效果和指定"h"选项相同，只在列表格式方面稍有差异。 
+           --group<群组名称>：此选项的效果和指定"-G"选项相同。 
+           --Group<群组识别码>：此选项的效果和指定"-G"选项相同。
+            --pid<程序识别码>：此选项的效果和指定"-p"选项相同。
+            --rows<显示列数>：此选项的效果和指定"--lines"选项相同。
+            --sid<阶段作业>：此选项的效果和指定"-s"选项相同。 
+            --tty<终端机编号>：此选项的效果和指定"-t"选项相同。 
+            --user<用户名称>：此选项的效果和指定"-U"选项相同。 
+            --User<用户识别码>：此选项的效果和指定"-U"选项相同。 
+            --version：此选项的效果和指定"-V"选项相同。 
+            --widty<每列字符数>：此选项的效果和指定"-cols"选项相同。
+
+        ex:
+            ps -A   #查看所有程序和进程
+    
+kill:
+    kill命令用来删除执行中的程序或工作
+    选项： 
+        -a：当处理当前进程时，不限制命令名和进程号的对应关系； 
+        -l <信息编号>：若不加<信息编号>选项，则-l参数会列出全部的信息名称； 
+        -p：指定kill 命令只打印相关进程的进程号，而不发送任何信号； 
+        -s <信息名称或编号>：指定要送出的信息； 
+        -u：指定用户。
+
+    ex:
+        kill 线程ID  #结束进程
+nohup:
+    nohup命令可以将程序以忽略挂起信号的方式运行起来，被运行的程序的输出信息将不会显示到终端。
+    选项:
+        --help：在线帮助； 
+        --version：显示版本信息。
+    ex:
+        nohup node index.js > myLog.log 2>&1 &      #后台执行index.js,并且将日志输出到myLog.log
+        使用nohup命令提交作业，如果使用nohup命令提交作业，
+        那么在缺省情况下该作业的所有输出都被重定向到一个名为nohup.out的文件中，除非另外指定了输出文件：
+df:
+    df命令用于显示磁盘分区上的可使用的磁盘空间。默认显示单位为KB。
+    可以利用该命令来获取硬盘被占用了多少空间，目前还剩下多少空间等信息。
+    选项： 
+        -a或--all：包含全部的文件系统； 
+        --block-size=<区块大小>：以指定的区块大小来显示区块数目； 
+        -h或--human-readable：以可读性较高的方式来显示信息； 
+        -H或--si：与-h参数相同，但在计算时是以1000 Bytes为换算单位而非1024 Bytes； 
+        -i或--inodes：显示inode的信息； 
+        -k或--kilobytes：指定区块大小为1024字节； 
+        -l或--local：仅显示本地端的文件系统； 
+        -m或--megabytes：指定区块大小为1048576字节； 
+        --no-sync：在取得磁盘使用信息前，不要执行sync指令，此为预设值； 
+        -P或--portability：使用POSIX的输出格式； 
+        --sync：在取得磁盘使用信息前，先执行sync指令； 
+        -t<文件系统类型>或--type=<文件系统类型>：仅显示指定文件系统类型的磁盘信息； 
+        -T或--print-type：显示文件系统的类型； 
+        -x<文件系统类型>或--exclude-type=<文件系统类型>：不要显示指定文件系统类型的磁盘信息； 
+        --help：显示帮助； 
+        --version：显示版本信息。
+    ex： 
+        df      #查看磁盘设备默认KB显示
+        df  -h   #以G来显示
+        df  -a  #查看所有的文件系统
+free:
+    free命令可以显示当前系统未使用的和已使用的内存数目，还可以显示被内核使用的内存缓冲区。
+    选项：
+        -b：以Byte为单位显示内存使用情况； 
+        -k：以KB为单位显示内存使用情况； 
+        -m：以MB为单位显示内存使用情况； 
+        -o：不显示缓冲区调节列； 
+        -s<间隔秒数>：持续观察内存使用状况； 
+        -t：显示内存总和列； 
+        -V：显示版本信息。
+    ex:
+        free -m   #以M字节来查看内存的使用情况
+        free -k   #以KB字节老查看内存的使用情况
+
+file: 
+    file命令用来探测给定文件的类型。file命令对文件的检查分为文件系统、魔法幻数检查和语言检查3个过程。
+    选项：
+        -b：列出辨识结果时，不显示文件名称； 
+        -c：详细显示指令执行过程，便于排错或分析程序执行的情形； 
+        -f<名称文件>：指定名称文件，其内容有一个或多个文件名称时，让file依序辨识这些文件，格式为每列一个文件名称； 
+        -L：直接显示符号连接所指向的文件类别； 
+        -m<魔法数字文件>：指定魔法数字文件； 
+        -i:显示文件的MIME类型
+        -v：显示版本信息； 
+        -z：尝试去解读压缩文件的内容。
+    ex:
+        file 01.txt   #查看01.txt文件的类型
+
+        [root@www ~]# file 01.html -i     #查看文件的MIME类型
+        01.html: text/plain; charset=us-ascii
+
+
+
 
 
 

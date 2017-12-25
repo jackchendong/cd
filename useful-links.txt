@@ -76,3 +76,7 @@ https://github.com/shadowsocks
 http://vimcdoc.sourceforge.net/doc/usr_03.html#usr_03.txt    //VIM中文文档。
 
 https://www.cnblogs.com/Rainr/archive/2012/01/21/2328046.html   //Windows修改注册表按键映射
+
+http://www.cnblogs.com/shanheyongmu/category/735572.html        //技术大牛博客“山河永慕”
+
+http://www.icoolxue.com/               //爱酷视频网站

@@ -3,3 +3,5 @@
             在cmd里面敲 telnet 127.0.0.1 3306  //查看本地3306端口开了没.ss
     查看IP:
             ipconfig
+     跟踪节点: 
+            tracert www.baidu.com             //会返回所有的节点
