@@ -1,0 +1,177 @@
+/***/小知识点
+	1& {}对象没有length属性
+        2& []和str有length属性
+	3& 如果下载了服务压缩文件的话 C:>npm install 路径+解压后的文件名
+	4& 在终端里面申明一个变量，敲回车后出现了一个undefined，这是因为我们只是赋值，没有任何    输出，所以系统默认打印的信息
+	5& 单双引号是有区别的
+
+/***/nodejs中将json字符串与对象
+	var obj = eval('(' + str + ')');
+	var obj = str.parseJSON(); //由JSON字符串转换为JSON对象
+	var obj = JSON.parse(str); //由JSON字符串转换为JSON对象
+	var last=obj.toJSONString(); //将JSON对象转化为JSON字符
+	var last=JSON.stringify(obj); //将JSON对象转化为JSON字符
+	
+	#注：var='{"name":"xiao","age":"18","sex":"1"}' //!!只有双引号在里面才可以用
+	     eval()可以在浏览器里面使用
+
+http:
+	var server=http.createServer(function(req,res){
+	     req.url   //返回请求的路由 , 没有锚点，其他都有。get的话
+	      	     
+	     res.end([字符串])	//结束请求
+	     res.write();    //写东西 可以在end之前一直写
+		 res.setHead();   //这个与writeHead重复。
+	     res.writeHead(200,{"Content-type":"text/html;charset=UTF-8"})  //设置返回的头部
+	});
+	server.listen(端口，[地址，] 回调函数)
+fs:
+	1: fs.readFile()
+		参数：
+		    1: string  		//文件路径
+		    2：object | string
+		    	 当为string是表示encoding 可以写utf8这样就返回的是字符串
+			3：function
+				参数：	
+			Error    //错误信息
+			data	buffer|string     //读取的文件信息
+	2: fs.readFileSync() 
+	3: fs.mkdir(path[, mode], callback)
+			path <string> | <Buffer> | <URL>
+			mode <integer> Default: 0o777         #权限
+			callback <Function>
+				err <Error>
+			异步的 mkdir(2)。 完成回调只有一个可能的异常参数。 mode 默认为 0o777。
+	4: fs.stat(path, callback)
+		path <string> | <Buffer> | <URL>
+		callback <Function>
+			err <Error>
+			stats <fs.Stats>
+		异步的 stat(2)。 回调有两个参数 (err, stats) 其中 stats 是一个 fs.Stats 对象。
+		不建议在调用 fs.open() 、fs.readFile() 或 fs.writeFile() 之前使用 fs.stat() 检查一个文件是否存在。 作为替代，用户代码应该直接打开/读取/写入文件，当文件无效时再处理错误。
+		如果要检查一个文件是否存在且不操作它，推荐使用 fs.access()。
+	5: fs.Stats
+		stats.isFile()
+		stats.isDirectory()
+		stats.isBlockDevice()
+		stats.isCharacterDevice()
+		stats.isSymbolicLink() (仅对 fs.lstat() 有效)
+		stats.isFIFO()
+		stats.isSocket()
+	6: fs.readdir(path[, options], callback)   //读取文件夹的全部文件,包括文件和文件夹
+
+
+url:
+	┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+	│                                            href                                             │
+	├──────────┬──┬─────────────────────┬─────────────────────┬───────────────────────────┬───────┤
+	│ protocol │  │        auth         │        host         │           path            │ hash  │
+	│          │  │                     ├──────────────┬──────┼──────────┬────────────────┤       │
+	│          │  │                     │   hostname   │ port │ pathname │     search     │       │
+	│          │  │                     │              │      │          ├─┬──────────────┤       │
+	│          │  │                     │              │      │          │ │    query     │       │
+	"  https:   //    user   :   pass   @ sub.host.com : 8080   /p/a/t/h  ?  query=string   #hash "
+	│          │  │          │          │   hostname   │ port │          │                │       │
+	│          │  │          │          ├──────────────┴──────┤          │                │       │
+	│ protocol │  │ username │ password │        host         │          │                │       │
+	├──────────┴──┼──────────┴──────────┼─────────────────────┤          │                │       │
+	│   origin    │                     │       origin        │ pathname │     search     │ hash  │
+	├─────────────┴─────────────────────┴─────────────────────┴──────────┴────────────────┴───────┤
+	│                                            href                                             │
+	└─────────────────────────────────────────────────────────────────────────────────────────────┘
+
+	var obj=url.parse(urlString[, parseQueryString[, slashesDenoteHost]])
+		urlString <string> 要解析的 URL 字符串。
+		parseQueryString <boolean> 如果为 true，则 query 属性总会通过 querystring 模块的 parse() 方法生成一个对象。 如果为 false，则返回的 URL 对象上的 query 属性会是一个未解析、未解码的字符串。 默认为 false。
+		slashesDenoteHost <boolean> 如果为 true，则 // 之后至下一个 / 之前的字符串会被解析作为 host。 例如，//foo/bar 会被解析为 {host: 'foo', pathname: '/bar'} 而不是 {pathname: '//foo/bar'}。 默认为 false。
+
+		ex：
+			var query=url.parse(urlstring,true).query;   //将query部分以obj返回
+
+querystring:
+	查询字符串
+	1:  var str=querystring.escape(str)          //对给定的url进行编码,返回编码后的字符串。
+	2:  var str=querystring.unescape(str)                //对给定的url进行解码。
+			该方法是提供给 querystring.parse() 使用的，通常不直接使用。 它之所以对外开放，是为了在需要时可以通过给 querystring.unescape 赋值一个函数来重写解码的实现。
+            默认使用 JavaScript 内置的 decodeURIComponent() 方法来解码。
+	3:  querystring.parse(str[, sep[, eq[, options]]])
+				str <string> 要解析的 URL 查询字符串。
+				sep <string> 用于界定查询字符串中的键值对的子字符串。默认为 '&'。
+				eq <string> 用于界定查询字符串中的键与值的子字符串。默认为 '='。
+				options <Object>
+					decodeURIComponent <Function> 解码查询字符串的字符时使用的函数。默认为 querystring.unescape()。
+					maxKeys <number> 指定要解析的键的最大数量。默认为 1000。指定为 0 则不限制。
+					该方法会把一个 URL 查询字符串 str 解析成一个键值对的集合。
+
+				例子，查询字符串 'foo=bar&abc=xyz&abc=123' 被解析成：
+
+				{
+				foo: 'bar',
+				abc: ['xyz', '123']
+				}
+				默认情况下，查询字符串中的字符会被视为使用 UTF-8 编码。 如果使用的是其他字符编码，则需要指定 decodeURIComponent 选项，例如：
+					// 假设存在 gbkDecodeURIComponent 函数。
+					querystring.parse('w=%D6%D0%CE%C4&foo=bar', null, null,{ decodeURIComponent: gbkDecodeURIComponent });
+	4:  querystring.stringify(obj[, sep[, eq[, options]]])
+				obj <Object> 要序列化成 URL 查询字符串的对象。
+				sep <string> 用于界定查询字符串中的键值对的子字符串。默认为 '&'。
+				eq <string> 用于界定查询字符串中的键与值的子字符串。默认为 '='。
+				options
+					encodeURIComponent <Function> 把对象中的字符转换成查询字符串时使用的函数。默认为 querystring.escape()。
+				ex:
+					querystring.stringify({ foo: 'bar', baz: ['qux', 'quux'], corge: '' });
+					// 返回 'foo=bar&baz=qux&baz=quux&corge='
+
+					querystring.stringify({ foo: 'bar', baz: 'qux' }, ';', ':');
+					// 返回 'foo:bar;baz:qux'
+
+					默认情况下，使用 UTF-8 进行编码。 如果需要使用其他编码，则需要指定 encodeURIComponent 选项，例如：
+					// 假设存在 gbkEncodeURIComponent 函数。
+						querystring.stringify({ w: '中文', foo: 'bar' }, null, null,{ encodeURIComponent: gbkEncodeURIComponent });
+
+path:
+	1: str = path.extname(path);
+		path.extname() 方法返回 path 的扩展名，即从 path 的最后一部分中的最后一个 .（句号）字符到字符串结束。
+		 如果 path 的最后一部分没有 . 或 path 的文件名（见 path.basename()）的第一个字符是 .，则返回一个空字符串。
+	ex:		
+		path.extname('index.html');
+		// 返回: '.html'
+
+		path.extname('index.coffee.md');
+		// 返回: '.md'
+
+		path.extname('index.');
+		// 返回: '.'
+
+		path.extname('index');
+		// 返回: ''
+
+		path.extname('.index');
+		// 返回: ''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

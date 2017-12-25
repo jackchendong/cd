@@ -1,0 +1,16 @@
+递归，迭代：
+	(function iterator(i){
+			//遍历结束
+			if(i == files.length){
+				console.log(wenjianjia);
+				return;
+			}
+			fs.stat("./album/" + files[i],function(err,stats){
+				//检测成功之后做的事情
+				if(stats.isDirectory()){
+					//如果是文件夹，那么放入数组。不是，什么也不做。
+					wenjianjia.push(files[i]);
+				}
+				iterator(i+1);
+			});
+		})(0);
