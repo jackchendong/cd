@@ -4,6 +4,17 @@
 	3& 如果下载了服务压缩文件的话 C:>npm install 路径+解压后的文件名
 	4& 在终端里面申明一个变量，敲回车后出现了一个undefined，这是因为我们只是赋值，没有任何    输出，所以系统默认打印的信息
 	5& 单双引号是有区别的
+	6& http请求头部里面有304也即是lastmodified，这个apache已经封装好了。
+	   在原生的nodejs里面要用cookie自己写
+	7& 一个JavaScript文件中的变量和函数只在这个文件的内部有效，要暴露就要用exports对象
+		使用者就用require（）引用这个js文件。
+	8& 一个js文件可以exports.msg=msg
+					exports.info=info
+					exports.function=function
+					可以一直下去。
+		但是接受的时候只能用一个，有点像命名空间
+	9&	module.exports=People;   //这个时候暴露的是构造函数。
+   
 
 /***/nodejs中将json字符串与对象
 	var obj = eval('(' + str + ')');
@@ -133,6 +144,8 @@ path:
 	1: str = path.extname(path);
 		path.extname() 方法返回 path 的扩展名，即从 path 的最后一部分中的最后一个 .（句号）字符到字符串结束。
 		 如果 path 的最后一部分没有 . 或 path 的文件名（见 path.basename()）的第一个字符是 .，则返回一个空字符串。
+	2: str=path.normalize(path)
+
 	ex:		
 		path.extname('index.html');
 		// 返回: '.html'
@@ -149,13 +162,28 @@ path:
 		path.extname('.index');
 		// 返回: ''
 
+		path.normalize('/foo/bar//baz/asdf/quux/..');
+		// 返回: '/foo/bar/baz/asdf'
+
+		path.normalize('C:\\temp\\\\foo\\bar\\..\\');
+		// 返回: 'C:\\temp\\foo\\'
 
 
+module:
+	这个是Node.js的模块加载系统,这些只在模块内部。
+	1:  __dirname   //当前模块的路径，文件夹
+	2： __filename  //当前模块的文件路径
+	3：exports       //暴露类 ,这个是快捷方式
+	4：require()     //引入模块
+	5：module        //这个对象不是全局的，是每个模块本地
 
-
-
-
-
+global:
+	这个是nodejs的全局变量。
+	比如定时器，console，process,buffer
+	而module里面的都是模块内部的。
+	ex:
+		console.log(global.process)   //这个打印了了process信息
+		console.log(process)          //因为是globale所以不加global也可以直接打印
 
 
 
