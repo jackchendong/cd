@@ -70,7 +70,16 @@ fs:
 		stats.isFIFO()
 		stats.isSocket()
 	6: fs.readdir(path[, options], callback)   //读取文件夹的全部文件,包括文件和文件夹
-
+	7: fs.rename(oldPath, newPath, callback)   
+		oldPath <string> | <Buffer> | <URL>
+		newPath <string> | <Buffer> | <URL>
+		callback <Function>
+			err <Error>
+		//使用之前要先判断文件是否存在，否则就是替换，还可以换路径。
+	    ex:
+		 fs.rename(files.tupian.path,DIR+"/public/images/cd.jpg",function(err){  
+                        console.log(err);
+                  }) 
 
 url:
 	┌─────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -175,6 +184,13 @@ module:
 	2： __filename  //当前模块的文件路径
 	3：exports       //暴露类 ,这个是快捷方式
 	4：require()     //引入模块
+		require('01.js')   //默认去node_modules去找01.js
+		require('bar')     //去node_modules中找bar文件夹，文件夹中有index.js
+							//或是在pakage.JSON文件中指定入口js
+		require('./02.js')  //去找相对路径的文件
+
+		这个时候node_modules文件可以在父级目录里面，或是在环境变量里面	
+
 	5：module        //这个对象不是全局的，是每个模块本地
 
 global:
@@ -184,22 +200,83 @@ global:
 	ex:
 		console.log(global.process)   //这个打印了了process信息
 		console.log(process)          //因为是globale所以不加global也可以直接打印
+定时器：
+	1：setImmediate(callback[, ...args])
+		callback <Function> 在 Node.js 事件循环的当前回合结束时要调用的函数。
+		...args <any> 当调用 callback 时要传入的可选参数。
+
+		预定立即执行的 callback，它是在 I/O 事件的回调之后被触发。 
+		返回一个用于 clearImmediate() 的 Immediate。
+
+	2: setInterval(callback, delay[, ...args])
+			callback <Function> 当定时器到点时要调用的函数。
+			delay <number> 调用 callback 之前要等待的毫秒数。
+			...args <any> 当调用 callback 时要传入的可选参数。
+		预定每隔 delay 毫秒重复执行的 callback。 返回一个用于 clearInterval() 的 Timeout。
+		当 delay 大于 2147483647 或小于 1 时，delay 会被设为 1。	
+	3:setTimeout(callback, delay[, ...args])
+			callback <Function> 当定时器到点时要调用的函数。
+			delay <number> 调用 callback 之前要等待的毫秒数。
+			...args <any> 当调用 callback 时要传入的可选参数。
+		预定在 delay 毫秒之后执行的单次 callback。 返回一个用于 clearTimeout() 的 Timeout。
+	4:取消
+		clearImmediate(immediate)
+		clearInterval(timeout)
+		clearTimeout(timeout)
 
 
 
+第三方模块：
 
+formidable:  //图片上传用
+    var form = new formidable.IncomingForm();
+        form.uploadDir = DIR+"/public/images/";  //设置文件上传路径
+        form.keepExtensions = true;              //是否保留文件拓展名
+        form.multiples = true;			 //是否支持多个文件
+        form.parse(req, function(err, fields, files) {
+                    //console.log(fields);
+                    //console.log(files);
+                    //files.tupian.name  这个是图片的原名字
+                    //files.tupian.path  这个是上传的默认文件路径
+                    fs.rename(files.tupian.path,DIR+"/public/images/cd.jpg",function(err){  //使用之前要先判断文件是否存在，否则就是替换
+                        console.log(err);
+                    }) 
+        });
 
+        form.on('progress', function(bytesReceived, bytesExpected) {  //这个是文件上传的速度
+            console.log(bytesReceived/bytesExpected);
+        });
+	form.on('end', function() {   //上传完
+	});
 
+ua-parser-js：看浏览器类型，系统类型。。。
 
+	var parser = require('ua-parser-js');
+	var ua = parser(req.headers['user-agent']);
+		//ua是一个对象，里面就有很多
+		 { ua: '', 
+		   browser: {}, 
+		   cpu: {}, 
+		   device: {}, 
+		   engine: {}, 
+		   os: {} 
+		  }
+		
+express:
+    var express=require('express');   
+	var app=express();
+	app.listen(80,function(){
+		console.log("服务启动");
+	});
+	app.use();
+	app.set();
+	app.get('./route',function(req,res,next){
+		//res.end(),与next不能连用。
+        //res.redirect("/login");  //重定向
+	});	
+	app.post('./route',function(req,res,next){
 
-
-
-
-
-
-
-
-
+	});
 
 
 
