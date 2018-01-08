@@ -1,4 +1,4 @@
-1:	
+﻿1:	
 	if(true){
 		var a=10;
 	}
@@ -30,3 +30,6 @@
 	function cd(callback){
 			callback();
 	}
+
+
+

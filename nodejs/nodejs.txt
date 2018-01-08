@@ -277,6 +277,76 @@ express:
 	app.post('./route',function(req,res,next){
 
 	});
+	app.get(/^\/student\/([\d]{10})$/,function(req,res,next){   //这个路由可以是正则，加()是为了后面的params
+			res.end("学生信息为"+req.params[0])
 
+	})
+	app.get("/teacher/:gonghao",function(req,res){   //这个是express自带的。看好gonghao下面要用的
+		res.end("老师的信息"+req.params.gonghao)
+		res.end("老师的信息"+req.params["gonghao"]);
+	})
+	app.get("/:username/:id",function(req,res){   //这个可以这样用。所有路由要分好。
+		var username=req.params["username"];
+		var id=req.params["id"];
 
+	})
+	app.all("/",function(req,res){   //处理路由的所有请求。所有的类型的请求get post delete
 
+	})
+	//express搭建静态服务
+	var express = require("express");
+	var app=express();
+	app.use(express.static("./public"));    //提供静态服务.
+	app.listen(80);
+
+ejs:
+	配合express使用。
+	var express=require("express");
+	var app=express();
+	app.set("view engine","ejs");    //安装之后可以不用require("ejs"),这个express自己会去找
+	app.get("/",function(req,res){
+		res.render("haha.ejs",{                //renders,默认是在views文件夹中
+			"news":["linwei","cd"]
+		})
+	})
+
+pm2:
+	npm install pm2 -g   //全局安装。就可以使用pm2命令了。目录自己找。不是二进制文件，是cmd和js
+	1：启动服务
+		pm2 start app.js   //通过pm2直接启动服务
+		pm2 start app.js --name NAME  //启动服务并取一个名字
+		pm2 start config.json  //通过json配置文件启动，配置文件的改变重启要先删除pm2 delete 之后在启动才能生效。好像是的
+		config.json
+			{
+			  "script"          : "./app.js",
+			  "watch"	    : true, 
+			  "ignore_watch" : ["node_modules", "log","config","upload" ,"public","views"],
+			  "watch_options": {
+			    "followSymlinks": false
+			  },
+			  "error_file"      : "./log/combined.log",   
+			  "out_file"        : "./log/combined.log",
+			  "merge_logs"      : true,
+			  "log_date_format" : "YYYY-MM-DD HH:mm Z"
+			}
+
+		pm2 start config.yml    //通过yml配置文件启动服务
+			apps:
+			  - script   : app.js
+			    instances: 4
+			    exec_mode: cluster
+			  - script : worker.js
+			    watch  : true
+			    env    :
+			      NODE_ENV: development
+			    env_production:
+			      NODE_ENV: production
+	
+	2：
+		pm2 stop app.js --watch 0   //停止服务，并取消监听文件的change事件
+		pm2 delete app.js           //删除服务
+
+	3：
+		pm2 list      //查看所有的应用
+
+	4：	pm2 logs      //查看日志，在控制台。
