@@ -320,6 +320,7 @@ pm2:
 			{
 			  "script"          : "./app.js",
 			  "watch"	    : true, 
+			  "instances"       :  4,    //开启4个实例
 			  "ignore_watch" : ["node_modules", "log","config","upload" ,"public","views"],
 			  "watch_options": {
 			    "followSymlinks": false
@@ -329,7 +330,7 @@ pm2:
 			  "merge_logs"      : true,
 			  "log_date_format" : "YYYY-MM-DD HH:mm Z"
 			}
-
+				
 		pm2 start config.yml    //通过yml配置文件启动服务
 			apps:
 			  - script   : app.js
@@ -350,3 +351,5 @@ pm2:
 		pm2 list      //查看所有的应用
 
 	4：	pm2 logs      //查看日志，在控制台。
+	        pm2 start app.js -i 3   # 开启三个进程
+	        pm2 start app.js -i max   # 根据机器CPU核数，开启对应数目的进程 
