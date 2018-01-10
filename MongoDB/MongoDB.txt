@@ -237,4 +237,27 @@ mongodb的使用:
 		打分查询
 			ex: db.stu.find( "$text" : {$search : "查询关键子 查询关键字 "},{score : {$meta : textScore }  } ) //分值越高越好
 			db.stu.find( "$text" : {$search : "查询关键子 查询关键字 "},{score : {$meta : textScore }  } ).sort({score : {$meta : textScore }  }  )
-
+	6:查看状态
+		 db.stats()      //查看当前数据库的状态 ，显示出的数字的单位是字节，因此如果需要转换单位为KB需要除以1024
+		 db.stats(1024);     //得到的是kb单位的
+		 db.stats(1048576);  //得到的是mb单位的
+		 db.stats(1073741824);  //得到的是gb单位的
+		{
+			"db" : "lj",    //当前数据库 
+			"collections" : 2,  //当前数据库多少表 
+			"views" : 0,
+			"objects" : 13,     //当前数据库所有表多少条数据 
+			"avgObjSize" : 52.38461538461539,   //每条数据的平均大小 
+			"dataSize" : 681,    //所有数据的总大小 
+			"storageSize" : 73728,  //所有数据占的磁盘大小
+			"numExtents" : 0,
+			"indexes" : 2,    //索引数
+			"indexSize" : 73728,   //索引大小 
+			"ok" : 1 
+		}
+		
+		db.emp.stats();    //查看数据库表的状态
+		db.collection.dataSize()  //collection中的数据大小
+		db.collection.storageSize() //为collection分配的空间大小，包括未使用的空间
+		db.collection.totalIndexSize()  //collection中索引数据大小
+		db.collection.totalSize()  //collection中索引+data所占空间
