@@ -50,10 +50,191 @@
 
 mongodb的使用:
         SQL术语/概念	MongoDB术语/概念	解释/说明
-        database	       database	        数据库
-        table	          collection	数据库表/集合
-        row	                document	数据记录行/文档
+        database	   database	        数据库
+        table	          collection	     数据库表/集合
+        row	            document	      数据记录行/文档
         column	             field	     数据字段/域
         index	             index	          索引
         table                joins	 	表连接,MongoDB不支持
         primary key	     primary key	主键,MongoDB自动将_id字段设置为主键
+
+	1：查询   
+		                      db    查询当前所在的数据库
+		show Databases  == show dbs 查询所有的数据库
+	      show collections  == show tables  查询所有的集合 
+		      db.emp.find({})  //查询emp 集合的所有的内容
+		      db.emp.findOne()   //查询第一条数据
+                注意：mongodb对数值的字符串，和数值类型有严格的区分  字符串也可以比较大小
+            基本语法：
+	             db.集合名称.find({查询条件},{显示的字段});  
+			     //后面的显示的字段可以省略 ，默认全部显示，
+			     //显示的字段的格式 {"_id":0/1，"name":0/1} 0 表示不显示 1 表示显示
+                     db.集合名称.find().pretty()  
+		             //格式化显示，就是好看 ，在列多的时候就不再一行显示的就是一个对象一个对象的显示
+
+		
+      条件操作符：
+	(>) 大于 - $gt
+	(<) 小于 - $lt
+	(>=) 大于等于 - $gte
+	(<= ) 小于等于 - $lte
+         =     等于    {k:v}或 $eq
+         ex ： db.student.find(   {   "age":   {  "$gt":19  }    }    );  //查询年龄大于19岁的学生
+               db.student.find(   {   "age":   {  "$gt":19 ,"$lt":21 }    }    );  //查询年龄大于19,小于20岁的学生
+       逻辑运算：
+            与  $and       
+            或  $or
+            非  $nor
+           ex : db.student.find({"$or":[
+                       {"age":{"$gt":19}},
+                        {"score":{"$lt":90}}
+                                           ]})    //查询age大于19  或则  分数 小于90 的学生
+           ex : db.student.find({"$nor":[                          //看清楚了是$nor
+			{"age":{"$gt":19}},
+			{"score":{"$lt":90}}
+                                           ]})    //查询age大于19  或则  分数 小于90 的学生
+        求模运算
+               语法 : {"$mod":[20,1]}  // 模20余1的数字
+                ex : db.student.find(  {"age":{"$mod":[20,1]  }    }   )  //查询模20余1 的学生
+
+        范围查询： $in   $nin
+         ex: db.stu.find({  "name": { $in :[ "张三", "李四"  ,"王五"  ] } })   //查询名字为张三李四王五的人
+             db.stu.find({$or:[
+                     {name:"张三"},
+                     {name:"李四"}
+                    ]})
+
+        数组查询  $all  $size $slice  $elemMatch
+          ex: db.stu.find({   "course": { $all : ["语文","数学"]   } });   //查询学生中课程包含语文和数学的学生  --  course 是数组   
+              db.stu.find(  { "addr" :{ $all : [ "浙江杭州" ] } }  )   //这样也行  //addr 可不是数组
+                     利用index下表从0开始
+	      db.stu.find( { "course.1" :  " 数学 "} )   //查询course数组中第二个是数学的人
+              db.stu.find( { "course" : {  $size : 2 }   }  )    // 查询数组长度为2的人
+              db.stu.find( {"age" : 19}  ,  {  course : { $slice  :  2 }  }  )  //只打印数组前两个的信息  可以是 -2  取后两个的信息
+	      db.stu.find (  {"age" : 19 } , {course : {$slice  : [ 1, 2 ] } } )  //取中间的信息  -- 含头不含尾
+      嵌套集合查询   
+		parents  是数组  数组里面是对象 里面有 Job
+                db.stu.find(    { parents : { $elemMatch : {  job  :  "局长" }  }  }   )  //查询学生父母中有是局长的  
+                         注意 ： 别弄复杂的数据
+      字段的判断： $exists  
+          ex: db.stu.find( { "course" :  { $exists : true } }  )   //查询含有course字段的数据
+              db.stu.find ( { "course" : { $exists : false  } } )   //查询不含有course 字段的数据
+
+
+
+      where条件过滤  -- 不建议用 索引不起作用  但能支持js语法
+             ex: db.stu.find( {$where : "this.age>20 " } )   //查询age 大于20的学生
+                 db.stu.find("this.age>20")   //简化版
+                 db.stu.find($where:function(){
+				return this.age>20
+				})
+                 db.stu.find (function(){
+			return this.age>20;
+			})
+      模糊查询 -- 正则运算
+             基础语法 : {key : 正则标记}
+             完整语法 : {  key : { $regex : 正则标记  , $options : 选项 }   }
+	 options  i:忽略大小写
+		  m : 多行查找
+		  x :  空白字符串除了被转移的或在字符内中以外的完全被忽略
+                  s : 匹配所有的字符（ .）包括换行
+	  注意 如果直接使用则只能使用 i   和M  想用其他的就要用 $regex
+            ex： db.stu.find( {"name" : / 陈 / } )  //查询名字包含陈的 学生
+                 db.stu.find(  {"name" : / a / i } )   //忽略大小写 i 对中文肯定是无效的
+                 db.stu.find( {name : { $regex : / a /i  }  } )
+     数据排序  1升序  -1降序
+	        ex:  db.stu.find().sort( { "score" : -1 } )  //查询分数并降序排列
+     自然排序 -- 先后顺序
+                ex : db.stu.find().sort( {" $natural " : -1} )   //从后往前排
+     数据分页显示
+                 skip ( n )  : 表示跨过多少数据
+                 limit( n ) : 取出的数据个数限制
+	  ex : db.stu.find().skip(0).limit(5) //取出前5个
+               db.stu.find().skip(0).limit(5).sort( { "age" : -1 } )  
+               db.stu.find().skip(5).limit(5).sort( {"age " : -1 } )
+    2 : 
+       数据的更新   -- 比较麻烦 建议 删掉重新插入 $set  -- 更新操作符
+       语法: db.集合.update(更新条件 , 新的对象数据 ， upsert , multi )
+             upsert : 如果更新的数据不存在就增加 ( true  , false) 
+              multi : 是否只更新第一条数据  (true : 全更新, false : 第一条)
+                 ex : db.stu.update (  {age : 19}  ,  {  "$set" : {  "score" :  100  } }   ,false  , true )  //修改器 -- 像$set 一样
+               $inc :主要针对于一个数字字段，增加某个字段段落的数据内容；
+                  语法： { $inc : {  "成员" : 内容  }  }  
+                   ex : db.stu.update (  { "age" : 19 } , { $inc  : {score : -30 ,age : +1}} , false  , true)  //分数-30 age +1岁
+               $set:进行内容的重新设置；
+                 语法： {$set : {"成员" : "新内容" } }
+                   ex: db.stu.update ( {"age":20} , {$set : {score : 89}}  , fasle  ,true)    //修改分数为89 
+               $unset : 删除某个成员的内容；
+                  语法：{ $unset :{"成员" : 1}  }  
+                    ex: db.stu.update({"name":"张三"} , {$unset : { score : 1 ,  age: 1  } }) //删除字段score和age
+               $push: 相当于将内容追加到指定的成员之中 ( 基本上是数组 )  -- 只能增加一个 若是写两个就是数组里面套数组
+                  语法: { $push : { 成员 ： value} }
+                    ex: db.stu.update ( {name : "张三" } , {$push : { "course " : ["体育"]  } } )  //往课程里面加课程如果没有数组就创建，如果有就添加
+               $pushAll :追加多个内容
+                     语法: { $pushAll : { 成员 ： 数组内容} }
+                      ex: db.stu.update ( {name : "张三" } , {$push : { "course " : ["体育" , "美术"]  } } ) // 一次添加多个
+               $addToSet: 向数组里面增加一个新的内容，只有不存在的时候添加  
+                   语法 ： { $addToSet ： { 成员 : 内容}  }  //内容不能是数组  若是数组 就是添加数组了
+                      ex: db.stu.update( { name : "王五" } , {$ addToSet : { course : "体育"  }  } )  //不存在体育则增加，存在则不管
+                  $pop  : 删除数组的内容： 
+                    语法:{  $pop:{成员 : 内容 } }    内容-1 删除第一个    1 删除最后一个
+                      ex: db.stu.update( {name:"王五"} , { $pop : { course : -1  } } )
+               $pull : 从数组内删除一个指定内容的数据
+                   语法: { $pull : { 成员 ： 内容 }  }  //有就删除 没有就算了
+                     ex: db.stu.update({name : "王五"} , { course : "音乐" }  )  
+               $pullAll : 一次删除多个内容
+                     语法: { $ pullAll : {成员 ： [ "数学" ，"语文" ] } }
+                       ex: db.stu.update( {name : " 王五"}  ,{ $pullAll : { course : ["数学" ，"语文"] }  } )
+                $rename : 为成员名称重命名
+                     语法： { "$rename" : { 旧的成员名称 : 新的成员名称 }  }
+                       ex: db.stu.update( { "name " : "张三" } ， {  $rename : { "name" : "姓名" }  } )
+	3：删除数据
+		db.stu.remove( { 条件} , 是否只删一个 )   // true/false 1/0 
+		ex:   db.stu.remove( {} )//删除全部
+		db.stu.remove ( {"name" : "王五"} , true )  //只删除一个
+		db.stu.drop() //删除集合
+
+	4：游标
+		 游标就是指的数据可以一行一行的进行操作，只需用find()函数就可以返回游标
+		 hasNext()  //判断是否有下一条数据
+	         next();//读取一条数据
+		  ex : var cursor=db.stu.find()
+			cursor.hasNext();
+			cursor.next();
+			while(cursor.hasNext()){
+				var doc=cursor.next();
+				print(doc.name);    //控制台输出。。不是console
+				printjson(doc);//用Json输出
+			}
+
+	5.索引
+		查询默认情况下的索引
+		     db.stu.getIndexes();
+		自定义索引
+			语法：db.集合名称.ensureIndex(  {列 : 1  }  )  //升序 -1 为降序
+			  ex: db.stu.ensureIndex (   {age : -1}  )
+		删除检索
+		       db.news.dropIndexes();
+		设置唯一索引
+		    ex: db.stu.ensurIndex(  { "name" : 1 } , { "unqiue"  :  true} )  //name 字段上的内容不许重复  name：1 表示建立索引
+
+		设置过期索引
+			对于文档应有time --存时间的字段
+			db.phones.insert( {"tel":110,code:110,time : new Date() }  )
+			ex:db.phones.ensureIndex( {time:1 } ,{  expireAfterSeconds : 10 } ) //设置文档10s后过期，但是时间不准，可以进行临时数据保存
+
+		全文检索
+		    设置全文检索
+		     db.news.ensureIndex( {"title" : "text" , " content" : "text " } )   //text 就是设置字段的全文检索
+		使用全文检索 “$text”  查询 "$search"
+			 |--查询指定关键字  {$search : " 查询关键字"}
+			 |--或的关系   { $search : "查询关键字 查询关键字 。。。" }
+			 |--与的关系  { $search : " \"查询关键字\"  \"查询关键字\" ..."   }
+			 |--排除某一个 {$search : " 查询关键字 查询关键字。。。 - 排除关键字"}
+			ex: db.stu.find( "$text" : {$search : "查询关键子 查询关键字 "})
+		一次设置所有为全文检索
+		        db.news.ensureIndex( {"$**": "text" } )
+		打分查询
+			ex: db.stu.find( "$text" : {$search : "查询关键子 查询关键字 "},{score : {$meta : textScore }  } ) //分值越高越好
+			db.stu.find( "$text" : {$search : "查询关键子 查询关键字 "},{score : {$meta : textScore }  } ).sort({score : {$meta : textScore }  }  )
+
