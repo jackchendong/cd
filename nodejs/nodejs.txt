@@ -132,7 +132,7 @@ querystring:
 				默认情况下，查询字符串中的字符会被视为使用 UTF-8 编码。 如果使用的是其他字符编码，则需要指定 decodeURIComponent 选项，例如：
 					// 假设存在 gbkDecodeURIComponent 函数。
 					querystring.parse('w=%D6%D0%CE%C4&foo=bar', null, null,{ decodeURIComponent: gbkDecodeURIComponent });
-	4:  querystring.stringify(obj[, sep[, eq[, options]]])
+	4:  querystring.stringify(obj[, sep[, eq[, options]]])     //如果obj的属性值不是string、boolean和number中的一种，它就不能序列化,默认为空
 				obj <Object> 要序列化成 URL 查询字符串的对象。
 				sep <string> 用于界定查询字符串中的键值对的子字符串。默认为 '&'。
 				eq <string> 用于界定查询字符串中的键与值的子字符串。默认为 '='。
