@@ -58,6 +58,15 @@ mongodb的使用:
         table                joins	 	表连接,MongoDB不支持
         primary key	     primary key	主键,MongoDB自动将_id字段设置为主键
 
+	0：增
+	    use database_name  //使用数据库,没有则创建，但是不是真正意义上的创建，里面有数据才显示
+	    db.createCollection("emp")  //创建集合也就是表
+	    db.createCollection("emp",{capped:true,size:10000}) //创建指定大小的集合表  capped -- 能添加新对象
+	    db.emp.insert({....})  //没有emp集合就创建并 插入新的数据  -- 一般这样用
+	    db.emp.insert( [{...},{...}] )  //一次性插入多条数据用数组
+	    db.emp.save({"...."})  //不指定_id  就是插入 指定_id 就是改
+
+
 	1：查询   
 		                      db    查询当前所在的数据库
 		show Databases  == show dbs 查询所有的数据库
