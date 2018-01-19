@@ -1,0 +1,37 @@
+var声明的变量会泄露到其他的代码块，和声明提前，初始化没有提前。
+    ex: 
+        0:
+            var x= 'outer'
+            function test(inner){
+                var x;
+                if(inner){
+                    x = 'inner';
+                    return x;
+                }
+                return x;
+            }
+            console.log(test(false))    //undefined
+            console.log(test(true));     //inner
+
+        1:	
+            if(true){
+                var a=10;
+            }
+            console.log(a);  //10
+
+        2：
+            if(true){
+                let a=10;
+            }
+            console.log(a);  //undefined
+        3:很多大公司之前的用法:   //es5
+            (function(){
+                    var a= 10;
+
+            })()
+            console.log(a);  //undefined
+let:
+   1: let会将变量提升到块顶部，（var 是提升到函数的顶部）
+   2: let是块作用域的，不可以在声明前使用。(没有声明提前);
+const:
+    与let类似

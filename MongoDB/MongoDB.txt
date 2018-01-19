@@ -226,7 +226,7 @@ mongodb的使用:
 		       db.news.dropIndexes();
 		设置唯一索引
 		    ex: db.stu.ensurIndex(  { "name" : 1 } , { "unqiue"  :  true} )  //name 字段上的内容不许重复  name：1 表示建立索引
-
+			db.test.ensureIndex({"userid":1},{"unique":true,"dropDups":true})   //创建唯一索引，并消除重复数据。创建索引但是里面的数据就不能重复。
 		设置过期索引
 			对于文档应有time --存时间的字段
 			db.phones.insert( {"tel":110,code:110,time : new Date() }  )

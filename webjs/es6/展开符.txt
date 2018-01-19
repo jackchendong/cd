@@ -1,0 +1,22 @@
+ex:
+    Math.max(2,100,1,6,43);  //100
+    Math.max([2,100,1,6,43]);  //NaN
+    Math.max.apply(Math,[2,100,1,6,43])   //100
+   // apply() 可以将数组转化为一系列参数。例如 Math.max() 接收一系列参数，但如果想应用于数组的话可以用 apply 帮助实现。
+
+es5:
+    Math.max.apply(Math, [2,100,1,6,43]) // 100
+
+es6:
+    Math.max(...[2,100,1,6,43]) // 100
+
+es5:之前用 concat 合并数组，现在也可以用展开操作符：
+    var array1 = [2,100,1,6,43];
+    var array2 = ['a', 'b', 'c', 'd'];
+    var array3 = [false, true, null, undefined];
+    console.log(array1.concat(array2, array3));
+es6:
+    const array1 = [2,100,1,6,43];
+    const array2 = ['a', 'b', 'c', 'd'];
+    const array3 = [false, true, null, undefined];
+    console.log([...array1, ...array2, ...array3]);

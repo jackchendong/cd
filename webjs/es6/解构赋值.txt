@@ -1,0 +1,60 @@
+获取数组元素：
+    es5:
+        var array=[1,2,3,4];
+        var first = array[0];
+        var third= array[2];
+        console.log(first,third);
+    es6:
+        const array=[1,2,3,4];
+        const [first, third] = array;
+        console.log(first,third);
+换值:
+    es5:
+        var a=1;
+        var b=2;
+         var tem=a;
+         a=b;
+         b=tem;
+         console.log(a,b);   //2  1
+    es6:
+        let a=1;
+        let b= 2;
+        [a,b] = [b,a];
+        console.log(a,b);   //2 1
+
+返回多个值的解构:
+    es5:
+        function margin() {
+            var left=1, right=2, top=3, bottom=4;
+            return { left: left, right: right, top: top, bottom: bottom };
+        }
+        var data = margin();
+        var left = data.left;
+        var bottom = data.bottom;
+        console.log(left, bottom); // 1 4
+
+    es6:
+        function margin() {
+            const left=1, right=2, top=3, bottom=4;
+            return { left, right, top, bottom };      //ES6新功能,可以将 { left: left } 简化为 { left }  
+        }
+        const { left, bottom } = margin();  //这里war let 都行
+        console.log(left, bottom); // 1 4
+深度匹配(对象解构)：
+        使用数组解构获取元素或调换变量，这样就不用创建临时引用了。
+        对于多返回值的情况，不要用数组解构，用对象解构。
+    es5:
+        function settings() {
+            return { display: { color: 'red' }, keyboard: { layout: 'querty'} };
+        }
+        var tmp = settings();
+        var displayColor = tmp.display.color;
+        var keyboardLayout = tmp.keyboard.layout;
+        console.log(displayColor, keyboardLayout); // red querty
+    es6:
+        function settings() {
+            return { display: { color: 'red' }, keyboard: { layout: 'querty'} };
+        }
+        const { display: { color: displayColor }, keyboard: { layout: keyboardLayout }} = settings();
+        console.log(displayColor, keyboardLayout); // red querty
+

@@ -1,0 +1,15 @@
+es5:
+    function printf(format) {            //这里的format是第一个传进来的参数。
+        console.log(arguments)   //这里是重载,所有的参数用对象保存全部都要。
+        var params = [].slice.call(arguments, 1);   //这里将arguments 格式化为数组,并将第1个参数省去。注意
+        console.log('params: ', params);
+        console.log('format: ', format);
+    }
+    printf('%s %d %.2f', 'adrian', 321, Math.PI);
+
+es6:
+    function printf(format, ...params) {     //这里就是展开符的应用。使重载很方便。
+        console.log('params: ', params);    
+        console.log('format: ', format);
+    }
+    printf('%s %d %.2f', 'adrian', 321, Math.PI);

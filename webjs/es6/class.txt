@@ -1,0 +1,58 @@
+类:
+    es5:
+        var Animal = (function () {                     //大公司的做法; 做了一个类
+            function MyConstructor(name) {
+                this.name = name;
+            }
+            MyConstructor.prototype.speak = function speak() {
+                console.log(this.name + ' makes a noise.');
+            };
+            return MyConstructor;   //返回了构造函数;
+        })();
+        var animal = new Animal('animal');
+        animal.speak(); // animal makes a noise.
+    es6：
+        class Animal {
+            constructor(name) {
+                this.name = name;
+            }
+            speak() {
+                console.log(this.name + ' makes a noise.');
+            }
+        }
+        const animal = new Animal('animal');
+        animal.speak(); // animal makes a noise.
+
+继承:
+    es6：
+        class Point {  
+        constructor(x, y) {  
+            this.x = x;  
+            this.y = y;  
+        }  
+        
+        toString() {  
+            return '(' + this.x + ', ' + this.y + ')';  
+        }  
+        }  
+        
+        class colorPoint extends Point  
+        {  
+            constructor(x, y, color) {  
+                super(x, y); // 调用父类的constructor(x, y)  
+        
+                        //另一个需要注意的地方是，在子类的构造函数中，只有调用super之后，  
+                        //才可以使用this关键字，否则会报错。这是因为子类实例的构建，  
+                        //是基于对父类实例加工，只有super方法才能返回父类实例。  
+                        //ES6 要求，子类的构造函数必须执行一次super函数。  
+                this.color = color;  
+            }  
+        
+            toString() {  
+            return this.color + ' ' + super.toString(); // 调用父类的toString()  
+        }  
+        }  
+        
+        
+        var a = new colorPoint(10,11,255);  
+        console.log(a.toString())  
