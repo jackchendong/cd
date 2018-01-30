@@ -228,7 +228,7 @@ global:
 
 第三方模块：
 
-formidable:  //图片上传用
+formidable:  //图片上传用   这个能支持很多。
     var form = new formidable.IncomingForm();
         form.uploadDir = DIR+"/public/images/";  //设置文件上传路径
         form.keepExtensions = true;              //是否保留文件拓展名
@@ -268,10 +268,21 @@ express:
 	app.listen(80,function(){
 		console.log("服务启动");
 	});
-	app.use();
+	app.use([path,] function [, function...]);   //能匹配子路由，所有的子路由都能匹配到
+		ex：
+			app.use('/admin', function(req, res, next) {
+				// GET 'http://www.example.com/admin/new'
+				console.log(req.originalUrl); // '/admin/new'
+				console.log(req.baseUrl); // '/admin'
+				console.log(req.path); // '/new'
+				next();
+			});
+
 	app.set();
 	app.get('./route',function(req,res,next){
-		//res.end(),与next不能连用。
+		//req.query  //得到参数。。。。  post请求没有
+		//res.end(),与next不能连用。只能用一次
+		//res.send();   //也只能用一次
         //res.redirect("/login");  //重定向
 	});	
 	app.post('./route',function(req,res,next){
