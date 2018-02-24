@@ -353,7 +353,9 @@ pm2:
 			      NODE_ENV: development
 			    env_production:
 			      NODE_ENV: production
-	
+
+		pm2 resurrect       //恢复先前保存的进程    
+
 	2：
 		pm2 stop app.js --watch 0   //停止服务，并取消监听文件的change事件
 		pm2 delete app.js           //删除服务
