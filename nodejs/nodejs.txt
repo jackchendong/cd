@@ -354,7 +354,8 @@ pm2:
 			    env_production:
 			      NODE_ENV: production
 
-		pm2 resurrect       //恢复先前保存的进程    
+		pm2 resurrect       //恢复先前保存的进程   
+		pm2 flush           //清洗所有的数据[注：我没有试出来效果]
 
 	2：
 		pm2 stop app.js --watch 0   //停止服务，并取消监听文件的change事件
