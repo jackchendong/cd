@@ -37,7 +37,13 @@ package.json
             "author": "陈冬",
             "license": "ISC",
 	    "repository":{},
-            "dependencies": {
+	    "scripts": {              //这里就是启动脚本了  可以用 npm run start  或者 npm run dev  等等
+		    "start": "node bin/dice-api",
+		    "dev": "./node_modules/.bin/nodemon bin/dice-api",
+		    "prd": "pm2 start bin/dice-api",
+		    "test": "echo \"Error: no test specified\" && exit 1"
+		  },
+	 "dependencies": {
                 "mysql": "^2.15.0"    //^这个表示固定。可以这样 ^2.^15.^0  固定版本
             }
         }
