@@ -1,4 +1,4 @@
-promise:解决回调地狱
+﻿promise:解决回调地狱
    es5:
         function printAfterTimeout(string, timeout, done){
             setTimeout(function(){
@@ -25,3 +25,20 @@ promise:解决回调地狱
     }).then((result) => {
         console.log(result);
     });
+
+//例子: catch
+	catch()方法和then()方法一样，都会返回一个新的Promise对象，它主要用于捕获异步操作时出现的异常。
+       因此，我们通常省略then()方法的第二个参数，把错误处理控制权转交给其后面的catch()函数，如下：
+	var promise3 = new Promise(function(resolve, reject) {
+	  setTimeout(function() {
+	    reject('reject');
+	  }, 2000);
+	});
+
+	promise3.then(function(data) {
+	  console.log('这里是fulfilled状态'); // 这里不会触发
+	  // ...
+	}).catch(function(err) {
+	  // 最后的catch()方法可以捕获在这一条Promise链上的异常
+	  console.log('出错：' + err); // 出错：reject
+	});
