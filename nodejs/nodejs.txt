@@ -367,3 +367,40 @@ pm2:
 	4：	pm2 logs      //查看日志，在控制台。
 	        pm2 start app.js -i 3   # 开启三个进程
 	        pm2 start app.js -i max   # 根据机器CPU核数，开启对应数目的进程 
+
+Sequelize:
+	1:模型创建，对数据的操作都建立在模型的基础上
+	const Sequelize = require('sequelize');
+	const sequelize  = new Sequelize(database,username,password,{
+	    host:host,
+	    dialect:'mysql',
+	});
+
+	const User = sequelize.define('userinfo',{
+		id: {
+		   type: Sequelize.STRING(50),
+		    primaryKey: true//主键
+		},
+	    username: Sequelize.STRING,//用户名
+	    password: Sequelize.STRING,//密码 字符串
+	    role: Sequelize.INTEGER,//权限 整数
+	},{freezeTableName: true,timestamps: false});//timestamp字段表示数据库中是否会自动更新createdAt和updatedAt字段，false表示不会增加这个字段。
+						  //freezeTableName为false表示该模型对应的表明就为userinfo表，默认时为true，对应表名为userinfos
+	2:增加数据
+	User.create({username, password, role})//username role password对应相应的字段名
+              .then(ok => res.json({status: 'ok'}))
+              .catch(e => res.json({status: 'error', message: e}));//异常捕获
+	3:删除数据
+	User.destroy({where: {username}})//where是指定查询条件
+        .then(ok =>console.log('ok'))//删除成功的回调
+        .catch(e => res.json({status: 'error', message: e}));
+	
+	4:数据查询
+	User .findOne({//还有find、findAll等方法 
+	where: { 
+	username: username//查询条件 
+	} 
+	}).then(result=>{ 
+	console.log(result)//空时为null 
+	}) 
+
