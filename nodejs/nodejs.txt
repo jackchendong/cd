@@ -404,3 +404,11 @@ Sequelize:
 	console.log(result)//空时为null 
 	}) 
 
+	User.findAll({
+	  attributes: [[sequelize.fn('DISTINCT', sequelize.col('username')), 'aaa']],  //SELECT DISTINCT(`username`) AS `username` FROM `users` AS `user`
+	  
+
+	}).then(result=>{
+	  console.log(result)
+	  
+	})
