@@ -406,8 +406,19 @@ Sequelize:
 
 	User.findAll({
 	  attributes: [[sequelize.fn('DISTINCT', sequelize.col('username')), 'aaa']],  //SELECT DISTINCT(`username`) AS `username` FROM `users` AS `user`
-	  
+	}).then(result=>{
+	  console.log(result) 
+	})
+       
+	User.findAll({ 
+	     order:[['birthday','DESC']]    //降序  ASC升序
+	}).then(result=>{
+	     console.log(result)
+	}
 
+	User.findAll({
+	     offset:10,   //分页
+	      limit:3
 	}).then(result=>{
 	  console.log(result)
 	  
