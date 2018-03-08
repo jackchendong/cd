@@ -409,17 +409,31 @@ Sequelize:
 	}).then(result=>{
 	  console.log(result) 
 	})
-       
+       //升序，降序
 	User.findAll({ 
 	     order:[['birthday','DESC']]    //降序  ASC升序
 	}).then(result=>{
 	     console.log(result)
 	}
-
+	//分页
 	User.findAll({
 	     offset:10,   //分页
 	      limit:3
 	}).then(result=>{
 	  console.log(result)
 	  
+	})
+
+	//alias别名的使用
+	UserMode.findAll({
+		attributes:['id',['created_at','createdAt']]   //查询后的别名
+	})
+
+
+	//include的使用
+	UserModel,
+	CoinMode,
+	User.belongsTo(CoinMode,{foreignKey:"coin_id"})   //关联这样在用user查询的时候就会带上coin信息
+	UserModel.findAll({
+		include:[{model:CoinMode,attributes:['coinId','created_at']}]   //查询之后带上的消息
 	})
