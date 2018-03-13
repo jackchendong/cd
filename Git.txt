@@ -1,0 +1,175 @@
+windows 
+
+1. 安装git  https://pan.baidu.com/s/1kU5OCOB#list/path=%2Fpub%2Fgit
+
+2. 设置config
+
+	$git config --global user.name"Your Name"
+
+	$git config --global user.email"email@example.com"
+
+git status 中文文件会出现中文乱码的情况：
+    通过将Git配置变量 core.quotepath 设置为false，就可以解决中文文件名称在这些Git命令输出中的显示问题
+    $ git config --global core.quotepath false
+
+版本库的创建
+
+   1.选择合适的地方创建目录
+
+	$ mkdir learngit
+
+	$ cd learngit
+
+	$ pwd
+
+	$ rm -rf .git //删除本地仓库
+
+  2.将目录变成git可以管理的仓库
+
+	 $ git init //此时learngit目录下多了.git目录 用 $ ls -a 可以查看
+
+         $ git status 显示文件状态
+
+	 $ git diff file_name 查看文件的修改
+
+	 $ git diff HEAD -- file_name //查看工作区和版本库里最新版本的区别
+
+   3.将文件提交到暂存区
+
+	$ git add file_name
+
+	$ git add --all  //提交所有文件
+
+	$ git add -u   //提交跟踪的文件
+        
+	ex： 
+		$git add file1.txt
+
+		$ git add file2.txt file3.txt
+
+		$ git commit -m "        "
+
+		$ cat file_name   //将文件内容打印到控制台
+
+   4.将文件提交到版本库
+
+        $ git  commit -m " write some message"
+
+   5.查看日志
+
+	$ git log  //查看提交历史
+
+	$ git log --pretty=oneline // 减少信息的查看
+
+	$ git reflog  //查看命令历史
+
+   6.退回版本
+
+	$ git reset --hard HEAD^ //退回到上一个版本
+
+	$ git reset --hard HEAD^^  //退回到上上个版本......
+
+	$git reset --hard HEAD~100  //退回到100个版本以前
+
+	$ git reset --hard commitID   //退回到指定版本
+
+
+   7.丢弃工作区的修改
+
+        $ git checkout -- file_name   //  1：文件自修改后还没有被放到暂存区，丢弃修改后就和版本库的一模一样
+                                       //2: 文件添加到暂存区后又做了修改，这个时候撤销 就会和暂存区的一模一样
+
+        $ git reset HEAD file_name // 把暂存区的修改撤销重新放回到工作区
+
+
+
+   8.删除文件
+
+	 $ rm file_name
+
+	    1: 确实删除改文件  $git rm   
+
+	                       $ git commit
+
+	   2:误删想恢复
+
+	     $ git checkout -- file_name
+
+
+
+远程仓库
+
+	1:创建ssh key
+
+	    $ ssh-keygen -t rsa -C “youremail@example.com”
+
+	2:将.ssh目录下的id_rsa.pub公钥复制到github上
+
+	3:在github上面创建 repository 
+
+	4:关联远程仓库
+
+	$git remote add origin git@github.com:jackchendong/learngit.git
+
+	$ git remote remove origin  //删除远程仓库
+
+	5:把本地仓库的内容推送到远程仓库
+
+	$ git push -u origin master  //第一次推送就这样
+
+	$ git push origin master   //以后就这样
+
+从远程仓库克隆到本地仓库
+
+  $ git clone git@github.com:jackchendong/learngit.git
+
+
+
+分支的管理
+
+	$ git checkout -b dev  == $git branch dev
+
+	$git checkout dev
+
+	$ git branch //查看所有分支当前分支前面会有*号
+
+	      $ git checkout master // 切换分支
+
+	$ git merge dev   //合并分支
+
+	    $ git branch -d dev  //删除分支
+
+
+
+查看远程库的信息
+
+	$git remote
+
+	$git remote -v
+
+
+
+标签的管理
+
+	$ git tag v1.0 //创建标签
+
+	$ git tag   // 查看所有的标签
+
+	$ git tag v1.0 commitId  //给对应的版本号写标签
+
+	$ git tag -a v1.0 -m "message"  commitId  //给对应的版本写标签并写了 message说明
+
+	$ git show tag_name  // 查看说明message
+
+	$ git tag -d v1.0  //删除标签
+
+	$ git push origin :refs/tags/v1.0    //远程删除标签
+
+	$ git push origin v1.0  //推送标签
+
+	$ git push origin -- tags  //推送所有的标签
+
+强制抓取远程版本在设置为最新代码
+
+	git fetch --all    //强制抓取云上的
+	git reset --hard origin/master  //设置为最新的代码
