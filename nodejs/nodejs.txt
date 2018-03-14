@@ -437,3 +437,13 @@ Sequelize:
 	UserModel.findAll({
 		include:[{model:CoinMode,attributes:['coinId','created_at']}]   //查询之后带上的消息
 	})
+
+bcrypt：加密比MD5安全
+	const bcrypt = require('bcrypt')
+	const saltRounds = 10;
+	const myPlaintextPassword ="admin";
+	var salt = bcrypt.genSaltSync(saltRounds);
+	var hash = bcrypt.hashSync(myPlaintextPassword, salt);
+	console.log(hash)
+	var a = bcrypt.compareSync("admin", "$2a$10$LT8EU3/YDsko7mGJFygVdOwh8.wOCVOL0ySXRcYktXalQ1Giy0fnq");
+	console.log(a)
