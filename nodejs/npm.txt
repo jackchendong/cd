@@ -39,13 +39,21 @@ package.json
 	    "repository":{},
 	    "scripts": {              //这里就是启动脚本了  可以用 npm run start  或者 npm run dev  等等
 		    "start": "node bin/dice-api",
+		     'start': "set NODE_ENV=aaaaa && node app.js",  //启动的同时并设置环境
 		    "dev": "./node_modules/.bin/nodemon bin/dice-api",
 		    "prd": "pm2 start bin/dice-api",
 		    "test": "echo \"Error: no test specified\" && exit 1"
 		  },
+	"apidoc": {                            //apidoc配置
+		    "title": "Hyper Play MANAGER API",
+		    "url": ""
+		  },
 	 "dependencies": {
                 "mysql": "^2.15.0"    //^这个表示固定。可以这样 ^2.^15.^0  固定版本
-            }
+            },
+	    "devDependencies": {
+
+		 }
         }
 npm发布：
     0：发布之前确定其他人没有发布相同的包名，就是package name不能有一样的。
