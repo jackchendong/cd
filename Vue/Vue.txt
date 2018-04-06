@@ -1,0 +1,191 @@
+0：安装
+	直接引入:   
+		有生产版本
+		开发版本之分
+		 指定版本引入: <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+		 不指定版本:
+			<!-- 开发环境版本，包含了用帮助的命令行警告 -->
+			<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+			<!-- 生产环境版本，优化了尺寸和速度 -->
+			<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+
+1：实例
+	<div id = "app"></div>
+	<script>
+		var app = new Vue({
+			el:"#app",       //元素
+			data:{            //vue里面的数据
+				uid:100,
+				message:"hello world",
+				url:"http://www.baidu.com"
+			},
+			created:function(){        //在创建实例的时候触发，this指向 vue实例也就是app
+				console.log(this)
+
+			 },
+			methods:{		//注册事件
+				a:()=>{
+					alert("哈哈")
+				},
+				b:()=>{
+					alert("嘿嘿")
+				}
+			},
+			watch:{                      //监听某个值的变化
+				uid:{
+					deep:true,
+					handler:(val,oldVal)=>{
+						console.log("新值"+val)
+						console.log("老值"+oldVal)
+					}
+				}	
+			
+			}
+
+			
+		})	
+	</script>
+
+
+	实例的对象的属性和方法:
+		app.$data   实例创建之后，可以通过 app.$data 访问原始数据对象
+		app.$watch  监听数据
+
+2: 指令
+	v-bind
+		语法：<标签 v-bind:属性 = "vue实例里面的data值">
+		简写: <标签 :属性 = "vue实例里面的data值">
+		ex：
+			<a v-bind:href="url">hhhhhhh</a>   //其中url为http://www.baidu.com
+							   //如果其中的url不是http开头就是相对路径
+
+			
+	v-on
+		语法：<标签 v-on:事件 = "vue实例里面的method值">
+		简写: <标签 @事件 = "vue实例里面的method值">
+		ex:
+			<div v-on:click="a">cvvvvv</div>   //执行method里面的a方法
+		vue里面自定义的特殊事件：
+			.stop - 调用 event.stopPropagation()。
+			.prevent - 调用 event.preventDefault()。
+			.capture - 添加事件侦听器时使用 capture 模式。
+			.self - 只当事件是从侦听器绑定的元素本身触发时才触发回调。
+			.{keyCode | keyAlias} - 只当事件是从特定键触发时才触发回调。
+			.native - 监听组件根元素的原生事件。
+			.once - 只触发一次回调。
+			.left - (2.2.0) 只当点击鼠标左键时触发。
+			.right - (2.2.0) 只当点击鼠标右键时触发。
+			.middle - (2.2.0) 只当点击鼠标中键时触发。
+			.passive - (2.3.0) 以 { passive: true } 模式添加侦听器
+
+			<!-- 方法处理器 -->
+			<button v-on:click="doThis"></button>
+			<!-- 内联语句 -->
+			<button v-on:click="doThat('hello', $event)"></button>
+			<!-- 缩写 -->
+			<button @click="doThis"></button>
+			<!-- 停止冒泡 -->
+			<button @click.stop="doThis"></button>
+			<!-- 阻止默认行为 -->
+			<button @click.prevent="doThis"></button>
+			<!-- 阻止默认行为，没有表达式 -->
+			<form @submit.prevent></form>
+			<!--  串联修饰符 -->
+			<button @click.stop.prevent="doThis"></button>
+			<!-- 键修饰符，键别名 -->
+			<input @keyup.enter="onEnter">
+			<!-- 键修饰符，键代码 -->
+			<input @keyup.13="onEnter">
+			<!-- 点击回调只会触发一次 -->
+			<button v-on:click.once="doThis"></button>
+			<!-- 对象语法 (2.4.0+) -->
+			<button v-on="{ mousedown: doThis, mouseup: doThat }"></button>
+
+	v-html
+		<div v-html="html"></div>   //就是插入html不做处理
+
+	v-for
+		<div v-for="item in items">  //items为data里面的items数组
+		  {{ item.text }}
+		</div>
+
+		<div v-for="(item, index) in items"></div>   //还可以拿到index
+		<div v-for="(val, key) in object"></div>     //循环对象
+		<div v-for="(val, key, index) in object"></div>
+
+
+	v-show
+		注意：v-show 不支持 <template> 元素，也不支持 v-else。
+
+		<h1 v-show="ok">Hello!</h1>   //ok的值为true的话就看的见，只是简单的切换display属性
+
+	v-if	插入/移除
+		是“真正”的条件渲染，因为它会确保在切换过程中条件块内的
+		事件监听器和子组件适当地被销毁和重建。
+		<p v-if="seen">现在你看到我了</p>   //seen的值为true的话就看的见
+
+	v-else
+		<h1 v-if="ok">Yes</h1>   //如果ok的值为true那么yes出来，否则no出来
+		<h1 v-else>No</h1>
+		
+	v-else-if
+		<div v-if="type === 'A'">
+		  A
+		</div>
+		<div v-else-if="type === 'B'">
+		  B
+		</div>
+		<div v-else-if="type === 'C'">
+		  C
+		</div>
+		<div v-else>
+		  Not A/B/C
+		</div>
+
+
+	v-model
+		限制：
+			<input>
+			<select>
+			<textarea>
+			components
+		修饰符：
+			.lazy - 取代 input 监听 change 事件
+			.number - 输入字符串转为数字
+			.trim - 输入首尾空格过滤
+
+		ex:
+			<input type="text" v-model="message">   //绑定data里面的message
+			<input type="text" v-model.number="mobile">   //绑定data里面的mobile并指定数据为number类型
+
+
+		
+	v-once：
+		只渲染元素和组件一次。随后的重新渲染，
+		元素/组件及其所有的子节点将被视为静态内容并跳过。
+		这可以用于优化更新性能。
+
+		ex:	<span v-once>这个将不会改变: {{ msg }}</span>
+			
+			<!-- 单个元素 -->
+			<span v-once>This will never change: {{msg}}</span>
+
+			<!-- 有子元素 -->
+			<div v-once>
+			  <h1>comment</h1>
+			  <p>{{msg}}</p>
+			</div>
+
+			<!-- 组件 -->
+			<my-component v-once :comment="msg"></my-component>
+
+			<!-- `v-for` 指令-->
+			<ul>
+			  <li v-for="i in list" v-once>{{i}}</li>
+			</ul>
+
+
+	
+	
