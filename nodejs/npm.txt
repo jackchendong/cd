@@ -12,6 +12,9 @@
     npm install npm -g                     //升级npm
     npm list mongodb          //查看mongodb的版本号
     npm -l                 //查看所有的npm命令和选项
+    npm run start == npm start
+    npm -S  == npm --save
+    npm -D  == npm --save-dev
 
 package.json
     Node.js在调用某个包时，会首先检查包中package.json文件的main字段，将其作为包的接口模块，如果package.json活main字段不存在，会尝试寻找index.js或index.node作为包的接口。 
