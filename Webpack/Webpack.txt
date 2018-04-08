@@ -1,0 +1,86 @@
+介绍:
+	webpack是以一个前端资源加载/打包工具，将根据模块的依赖关系进行静态分析，
+	并依据规则生成对应的静态资源
+	本质上，webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。
+	当 webpack 处理应用程序时，它会递归地构建一个依赖关系图(dependency graph)，
+	其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。
+
+0：安装
+	
+	1：安装环境nodejs
+	2: npm install webpack -g
+	
+	在项目中安装（项目的名字不能是webpack）:     //安装不成功可以试着用 管理员的CMD
+		npm install -D webpack
+		npm install -D webpack-cli           //我安装的时候没有加-D  这样是全局的性质，但是
+						    // 查看版本等命令还是 npx webpack -v
+		这样安装完成后命令就是 
+			npx webpack -v   //查看版本
+			npx webpack      //构建，后面就用npx  ，npm是不行的,npx是npm的执行器
+	3：样式的打包
+		通过loader加载器，可以将静态样式文件一同打包到文件中。
+		npm install css-loader style-loader    //依赖这两个包
+			ex:	require("!style-loader!css-loader!./style.css")   //这种写法,没有配置文件的写法
+			ex:
+				require("!style-loader!css-loader!./style.css")
+				document.write="<div>aaaaa</div>";
+1:配置文件
+	webpack.config.js
+		module.exports={
+		    entry:'./src/js/show.js',     //入口文件
+		    output:{                      //输出文件
+			path:__dirname+"/dist",   //路径
+			filename:"bundle.js"      //输出的文件名
+		    },
+		    module:{                  //模块加载
+			rules:[{              //rules是webpack4 之前是loaders
+			    test:/\.css$/,    //以.css的文件   也就是.css文件就用style-loader 和 css-loader加载
+			    // loader:"style-loader!css-loader"
+			    use:{
+				loader:"style-loader!css-loader",
+				options:{}
+			    }
+			}]
+		    }
+
+		}
+		2：种写法
+		const HtmlWebpackPlugin = require('html-webpack-plugin'); // 通过 npm 安装
+		const webpack = require('webpack'); // 用于访问内置插件
+		const path = require('path');
+		const config = {
+		  entry: './path/to/my/entry/file.js',
+		  output: {
+		    path: path.resolve(__dirname, 'dist'),
+		    filename: 'my-first-webpack.bundle.js'
+		  },
+		  module: {
+		    rules: [
+		      { test: /\.txt$/, use: 'raw-loader' }
+		    ]
+		  },
+		  plugins: [
+		    new webpack.optimize.UglifyJsPlugin(),
+		    new HtmlWebpackPlugin({template: './src/index.html'})
+		  ]
+		};
+		module.exports = config;
+
+		
+
+
+		package.json       //构建启动项
+			{
+				scripts:{
+					build:"webpack --watch",   //构建并监测，监测代码的修改
+					start:"webpack-dev-server --entry ./src/js/show.js --output-filename ./dist/bundle.js"  //搭建服务
+				}
+			}
+2:使用第三方库
+	npm install jquery
+
+	var $=require("jquery")
+	$("div").html("ok")
+
+3:服务端安装环境
+	npm install webpack-dev-server
