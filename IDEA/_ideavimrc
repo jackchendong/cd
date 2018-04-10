@@ -1,0 +1,55 @@
+set number
+set hlsearch "表示高亮搜索单词
+set incsearch "表示边输入便匹配
+"大小写忽略
+set ignorecase
+set smartcase
+set encoding=utf-8
+set fileformat=unix
+set showmode
+let mapleader=" "
+
+
+set nowrap "设置不自动折行
+set title
+set wildmenu "自身命令模式下补全
+
+set laststatus=2
+set cursorline
+set tabstop=4
+set shiftwidth=4 "自动缩进插入的空格数
+set softtabstop=4 "使用或自动插入或删除相应的空格数
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <leader>w :w<enter>
+vnoremap <leader>w :w<enter>
+nnoremap <leader>q <esc>:q!<enter>
+nnoremap 0 _
+nnoremap a A
+nnoremap <leader><space> :noh<cr>
+nnoremap <A--> gT
+map <A-=> gt
+
+syntax on
+filetype indent on "根据文件类型进行自动缩进
+filetype on "开启文件类型侦测 filetype plugin on 
+
+
+nnoremap <leader>r :action RunClass<cr>  
+nnoremap <leader>gg :action GotoDeclaration<CR> "查找定义
+nnoremap <leader>gb :action Back<CR> "返回
+nnoremap <leader>go :action QuickDocumentation<CR>
+nnoremap <leader>ge :action GoToErrorGroup<CR>
+nnoremap <leader>gt :action GotoTypeDeclaration<CR>
+nnoremap <leader>gc :action GotoClass<CR>
+nnoremap <leader>ff :action GotoFile<CR> "查找文件全局的
+nnoremap <leader>gs :action GotoSuperMethod<CR>
+nnoremap <leader>ga :action GotoAction<CR>
+nnoremap <leader>ne :action NewElement<CR> "新建文件目录等
+nnoremap <leader>nn :action NewFile<CR> "新建文件
+nnoremap <leader>np :action NewDirectoryProject<CR> "新建工程
+nnoremap <leader>nd :action NewDir<CR>新建目录
+
