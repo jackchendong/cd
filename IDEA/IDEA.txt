@@ -1,8 +1,13 @@
+IDEA：
+	1：记得配置文件的默认编码格式。
+	   File->Settings->Editor->File Encodings 
+
 IDEA安装VIM：
 	由于天朝的原因：不能直接在IDE里面下载安装，要去官网下载后离线安装。
 	1：下载地址：http://plugins.jetbrains.com/plugin/164
 	2：下载后不用解压，在plugs里面点击：(install plugin from disk)按钮
 	3：安装后重启就行了。
         4: 要将VIM配置，放在 C:\Users\CD\_ideavimrc   就能生效
-	5：安装完成后要将上下键改为 CTRL+p  和  CTRL+n 
+	5：安装完成后要将上下键改为 CTRL+p  和  CTRL+n，字改之前建议将ctrl + n或p都删除IDEA的。
+	
          
