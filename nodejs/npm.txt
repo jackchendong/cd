@@ -44,7 +44,7 @@ package.json
 		    "start": "node bin/dice-api",
 		     'start': "set NODE_ENV=aaaaa && node app.js",  //启动的同时并设置环境
 		    "dev": "./node_modules/.bin/nodemon bin/dice-api",
-		    "prd": "pm2 start bin/dice-api",
+		    "prd": "pm2 start bin/dice-api --name ",    //配置name
 		    "test": "echo \"Error: no test specified\" && exit 1"
 		  },
 	"apidoc": {                            //apidoc配置
