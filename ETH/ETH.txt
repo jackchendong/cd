@@ -3,6 +3,17 @@
 
 	 https://github.com/ethereum/mist/releases    //ETH  wallet 可视化界面
 					              //搭建私有链之后连接的就是本地的私有的。不然就是公链
+         https://github.com/ethereum/wiki/wiki/JavaScript-API      //nodeAPI开发文档
+
+	https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options    //ETH命令详解
+
+用法:
+	geth [options] command [command options] [arguments...]
+
+BAT启动：
+         geth --identity "TestNode" --datadir "D:\install\ETH\privatechain\data0" --networkid 12480 --port "30303" --rpc --rpcport "8545" --bootnodes "enode://91922b12115c067005c574844c6bbdb114eb262f90b6355cec89e13b483c3e4669c6d63ec66b6e3ca7a3a462d28edb3c659e9fa05ed4c7234524e582a8816743@120.27.164.92:13333" console
+		   //做一个标识              	       //设置数据文件目录             //设置链的ID     //设置端口哦                        //连上远程的node节点
+
 
 搭建私有链：
 	一、创建创世配置文件genesis.json放在制定目录，例如：C:\Develop\privatechain内
@@ -38,6 +49,7 @@
 		）
 	二、初始化区块链：配置文件写入创世区块	
 	     geth --datadir "C:\Develop\privatechain\data0" init "C:\Develop\privatechain\genesis.json"
+
         三、启动私有链节点，进入交互式控制台
 		geth --identity "TestNode" --datadir "C:\Develop\privatechain\data0" --networkid 12480 --port "30303" --rpc --rpcport "8545" --rpcapi personal,db,eth,net,web3  console
 		geth --identity "TestNode" --datadir "C:\Develop\privatechain\data0" --networkid 12480 --port "30303" --rpc --rpcport "8545"   console

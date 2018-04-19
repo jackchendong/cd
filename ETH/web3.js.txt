@@ -1,0 +1,65 @@
+API文档:
+	https://github.com/ethereum/wiki/wiki/JavaScript-API
+
+是否连上:
+	web3.isConnected()  // true or false
+单位:
+	web3.fromWei(numberStringOrBigNumber, "ether")
+	web3.toWei(numberStringOrBigNumber, "ether")
+转16进制:
+	web3.toHex(stringOrNumber)
+
+获取区块高度:
+	web3.eth.blockNumber
+
+获取网络id  （正式网络为1）
+	web3.version.network
+获取余额:
+	web3.eth.getTransactionCount(address)    获取地址一共转账多少
+	web3.eth.getBalance(address)  获取余额 余额为 BIGNUMBER类型
+	web3.eth.getBalance("0x58ccc2ac300d267f9da55c6546c803cb03094f9d").toString(10)  转10进制
+	web3.fromWei(web3.eth.getBalance(address).toString(),'ether')    //获得 ether单位
+获取汽油价格:
+	web3.eth.gasPrice
+
+创建账户:
+	var crypto = require('crypto');
+	var secp256k1 = require('secp256k1');
+	var keccak = require('keccak');
+
+	//获得随机的32个字节作为私钥，在使用中，请注意随机数来源的安全
+	var privateKey = crypto.randomBytes(32);
+	//获得公钥
+	var publicKey = secp256k1.publicKeyCreate(privateKey, false).slice(1);
+	//获得地址
+	var address = keccak('keccak256').update(publicKey).digest().slice(-20);
+
+	console.log('public key', publicKey.toString('hex'));
+	console.log('private key', privateKey.toString('hex'));
+	console.log('address', '0x' + address.toString('hex'));
+
+转账:
+	var Tx = require('ethereumjs-tx');
+	var privateKey = new Buffer('e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109', 'hex')
+
+	var rawTx = {
+	  nonce: '0x00',
+	  gasPrice: '0x09184e72a000', 
+	  gasLimit: '0x2710',
+	  to: '0x0000000000000000000000000000000000000000', 
+	  value: '0x00', 
+	  data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
+	}
+
+	var tx = new Tx(rawTx);
+	tx.sign(privateKey);
+
+	var serializedTx = tx.serialize();
+
+	//console.log(serializedTx.toString('hex'));
+	//f889808609184e72a00082271094000000000000000000000000000000000000000080a47f74657374320000000000000000000000000000000000000000000000000000006000571ca08a8bbf888cfa37bbf0bb965423625641fc956967b81d12e23709cead01446075a01ce999b56a8a88504be365442ea61239198e23d1fce7d00fcfc5cd3b44b7215f
+
+	web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, hash) {
+	  if (!err)
+	    console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
+	});
