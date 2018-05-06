@@ -6,10 +6,273 @@
 	   </div>
 	2& 手机上点一个电话号码就弹出来打电话
             例子：<a href="tel:13588427405">13588427405</a>
-    3& 修改select的样式
-       原理是将浏览器默认的下拉框样式清除，然后应用上自己的，再附一张向右对齐小箭头的图片即可。
+        3& 修改select的样式
+           原理是将浏览器默认的下拉框样式清除，然后应用上自己的，再附一张向右对齐小箭头的图片即可。
        	   appearance:none;
 		  -moz-appearance:none;
 		  -webkit-appearance:none;
 	4& 限制上传的文件是图片用accept属性
 	     <input type="file" name="" accept="image/*"/>
+
+
+
+语法:
+		双标记：封闭类型的标记，有开始和结束标记
+			<u></u>  <h1></h1>
+		单标记：非封闭类型的标记，只有开始，没有结束标记
+			<br />
+		标记可以嵌套，形成复杂的语法
+
+		属性（特征）：标记可以拥有属性，描述相关的特征
+			定义在开始标记里，用空格隔开
+			属性名="属性值" 
+			属性名='属性值'
+			可以有多个属性，彼此之间用空格隔开
+使用：
+		<img width="200" height="100" />---HTML的标签属性
+		<img style="width:200;height:100;"/>---使用CSS
+
+		内联样式表：把css代码写在某个标签的 style 属性里---仅限于当前标签用，不能重复使用
+				<span style="color:red;font-size:19px">aaa</span>
+		内部样式表：把css 代码写在head里的style里---由当前页面上的所有标签重用
+
+		外部样式表：把css代码写在单独的.css文件里，在html页面的head里使用link调用它
+		---可以供很多页面使用，优先建议使用
+
+继承：子元素可以继承父元素的某些样式
+			---如果多种样式定义，彼此之间没有冲突的时候，均起作用；如果发生冲突，按照优先级
+
+优先级：
+		就近优先（作用的范围越小，优先级越高）
+		优先级别一样的时候，以后定义的为准
+
+注释：
+	<!--  sfsfs  -->
+
+转义：
+			&lt;   <   less than
+			&gt;   >   greater than
+			&copy;  版权所有的符号
+	 
+标签以及属性：http://www.w3school.com.cn/tags/index.asp
+	html:
+		<html lang="en"> ：设置文档语言
+	head:
+
+	title:
+		<title>xxx</title>：为文档定义标题,这个在head标签里面
+	body:
+		属性:
+			bgcolor:背景颜色
+				值：可以是颜色单词或者是#fff之类的
+
+	mate:
+		<meta />：元数据，定义网页的一些基本信息，比如字符编码集、刷新频率、搜索关键字等
+		<meta name="keywords" content="css3,HTML5" />--提高网页被搜索引擎搜索到的概率
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">  设置视口
+		<meta name="description"content="Thispageisaboutthemeaningofscience,education,culture."> 网站内容描述
+
+		<meta name="robots"content="none">
+			robots用来告诉搜索机器人哪些页面需要索引，哪些页面不需要索引。 
+			content的参数有all,none,index,noindex,follow,nofollow。默认是all。 
+			信息参数为all：文件将被检索，且页面上的链接可以被查询； 
+			信息参数为none：文件将不被检索，且页面上的链接不可以被查询； 
+			信息参数为index：文件将被检索； 
+			信息参数为follow：页面上的链接可以被查询； 
+			信息参数为noindex：文件将不被检索，但页面上的链接可以被查询； 
+			信息参数为nofollow：文件将被检索，但页面上的链接不可以被查询；
+
+		<meta http-equiv="参数"content="参数变量值">
+			Expires：可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输。
+				 必须使用GMT的时间格式。 
+				<meta http-equiv="expires"content="Fri,12Jan200118:18:18GMT"> 
+			Pragma(cache模式) ：禁止浏览器从本地计算机的缓存中访问页面内容。 
+					这样设定，访问者将无法脱机浏览。 
+					<meta http-equiv="Pragma"content="no-cache"> 
+			Refresh(刷新) :自动刷新并指向新页面。 
+				<meta http-equiv="Refresh"content="2;URL=http://www.jb51.net">  其中的2是指停留2秒钟后自动刷新到URL网址。 
+			Set-Cookie(cookie设定) :如果网页过期，那么存盘的cookie将被删除。必须使用GMT的时间格式。
+				<meta http-equiv="Set-Cookie"content="cookievalue=xxx;expires=Friday,12-Jan-200118:18:18GMT；path=/"> 
+			Window-target(显示窗口的设定) :制页面在当前窗口以独立页面显示。
+						       用来防止别人在框架里调用自己的页面。
+				<meta http-equiv="Window-target"content="_top">
+			content-Type(显示字符集的设定):设定页面使用的字符集
+				<meta http-equiv="content-Type"content="text/html;charset=gb2312">
+				meta标签的charset的信息参数如GB2312时，代表说明网站是采用的编码是简体中文； 
+					meta标签的charset的信息参数如BIG5时，代表说明网站是采用的编码是繁体中文； 
+					meta标签的charset的信息参数如iso-2022-jp时，代表说明网站是采用的编码是日文； 
+					meta标签的charset的信息参数如ks_c_5601时，代表说明网站是采用的编码是韩文； 
+					meta标签的charset的信息参数如ISO-8859-1时，代表说明网站是采用的编码是英文； 
+					meta标签的charset的信息参数如UTF-8时，代表世界通用的语言编码； 
+			content-Language（显示语言的设定）:
+				<meta http-equiv="Content-Language" content="zh-cn"/> 
+
+		
+		<meta charset="utf-8" />---字符编码集
+
+		<meta name="author"content="root,root@xxxx.com">   标注网页的作者 
+		
+	div:
+
+	p:
+	
+	a: 超级链接
+		属性：
+			href：
+				<a href="index.html">点击的内容</a>
+				<a href="http://www.jd.com" target="_blank">去往京东</a>
+			targrt:
+				值：
+					_blank: 打开新的页面
+
+	h1--h6:
+
+	dl--dd:
+
+	ul--li:    无序列表  unorder.. ---列表项的前面的标识符，没有顺序
+		   列表项    list item 
+
+	ol--li:   有序列表  ordered list---会在列表项的前面加上一些顺序标识
+	           列表项    list item 
+	
+	hr:
+		<hr> - 水平线
+	br:
+		<br> - 换行
+	img:
+		<img> - 图像
+		属性: src
+			<img src="http://www.jd.com/product/images/1.jpg"/>  绝对
+			<img src="1.jpg" />	相对
+		      width:
+		      height:
+	u:
+		<u></u>  下划线  underline
+	i:
+		<i></i>   倾斜   italic
+	b:
+		<b></b>   加粗   bold
+	span:
+		
+属性:
+	全局属性:
+		属性	        描述
+		//accesskey	规定激活元素的快捷键。
+		class	        规定元素的一个或多个类名（引用样式表中的类）。
+		//contenteditable	规定元素内容是否可编辑。
+		//contextmenu	规定元素的上下文菜单。上下文菜单在用户点击元素时显示。
+		data-*	        用于存储页面或应用程序的私有定制数据。
+		//dir	        规定元素中内容的文本方向。
+		draggable	规定元素是否可拖动。
+		dropzone	规定在拖动被拖动数据时是否进行复制、移动或链接。
+		hidden	        规定元素仍未或不再相关。
+			<p hidden="hidden">这是一段隐藏的段落。</p>
+			<p hidden>这是一段隐藏的段落。</p>
+		id	        规定元素的唯一 id。
+		lang	        规定元素内容的语言。
+		spellcheck	规定是否对元素进行拼写和语法检查。
+		style	        规定元素的行内 CSS 样式。
+		tabindex	规定元素的 tab 键次序。
+		title	        规定有关元素的额外信息。
+		translate	规定是否应该翻译元素内容。
+	border:边框
+		border:5px  solid  red;--简写，四个边相同
+		等同于
+		border-width:5px;
+		border-style:solid;
+		border-color:red;
+
+		border-top:1px solid black;
+		border-left/right/bottom:;
+
+	border-radius：边框倒圆角
+		border-radius:5px;
+	width:宽
+
+	height:高
+
+	margin：外边距：自己和周围元素（邻居、父元素）之间的距离
+		margin:10px; ---外边距，四个边
+			等同于 
+				margin-top/left/right/bottom:;
+		margin:10px 20px 30px 40px;--分别定义四个方向的边距
+			上  右   下    左 ---顺时针
+		margin:10px 20px;--进一步简化，上下、左右
+		margin:xx  auto;--自动，由浏览器计算左右外边距，而且相等---》实现元素在当前行(页面或者父元素里)居中显示
+
+	padding:内边距：自己（边框）和内容（文本或者子元素）之间的距离
+		padding:10px;
+		padding:10px 20px 30px 40px;
+		padding:10px 20px;
+		----会导致边框被撑开：width和height定义的是内容区域的大小，用于显示内容，如果设置了内边距，将边框撑开---》内边距是边框和内容之间的距离
+		----某些时候用于实现设置行内元素的大小（不能精确的设置大小）
+
+选择器:
+	1、元素选择器：以html标签的名称作为选择器
+		h1 {}
+		p {}
+		div {}
+		---特点：简单，范围广
+		    不足：不能做细分，不能跨元素种类
+			适用于为某种标签定义统一的样式
+
+	2、ID 选择器：以元素的 id 属性的值作为选择器
+		html文件中
+			<标签 id="v1" />
+		CSS 文件中
+			#v1 {}
+		---特点：限于某一个元素使用
+			适用于为页面上的某个特殊的元素定义它特有的样式，常用于页面的大块构成块
+		
+
+	3、class（类）选择器：以元素的 class 属性的值作为选择器
+		html 文件中
+			<标签 class="s1" />
+		css 文件中
+			.s1 {}
+		---特点：划分一定的范围来定义样式
+
+	4、后代选择器：以元素的层次包含关系作为选择器--只要被包含，无论是子级或者其他层级
+		html 文件中	
+			<div>aa<b>bb</b>cc</div>
+			<b>ddd</b>
+
+		css 文件中：div中的b，红色
+			div b {color:red;}
+
+	5、子代选择器：只选择元素的子级元素
+		html 文件中	
+			<div>aa<b>bb</b>cc</div>
+			<b>ddd</b>
+
+		css 文件中：div中的那些作为子元素存在的b，红色
+			div>b {color:red;}
+
+	   多种变化(组合用法)：
+		div ul li a {}
+		#d1 a {}
+		.cur>div>a {}
+
+
+	6、状态伪类选择器：选择元素的某种状态，为其定义样式
+		:hover {color:red;}  悬停悬浮--鼠标移入，适用于所有的元素
+		:link {}	--未访问过的链接--a
+		:active {}	--激活的状态，单击
+		:visited {}	--访问过的链接--a
+		:focus {}	--获得焦点的状态，获得焦点开始录入
+
+	   经常和其他选择器结合使用:限制选择的范围
+		h3:hover {}
+		#d1:hover {}
+		.s1:hover {}
+		div a:hover {}
+
+尺寸:
+		绝对单位
+			pt：磅  cm  mm  in
+
+		相对单位
+			px：像素  %  em rem
+		是否所有的元素都可以设置尺寸和边框
+			块级元素：都可以
+			行内元素：边框有效，尺寸无效
