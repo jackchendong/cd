@@ -12,7 +12,10 @@
     npm install npm -g                     //升级npm
     npm list mongodb          //查看mongodb的版本号
     npm -l                 //查看所有的npm命令和选项
-
+    npm run start == npm start
+    npm -S  == npm --save
+    npm -D  == npm --save-dev
+    npm i   == npm install 
 package.json
     Node.js在调用某个包时，会首先检查包中package.json文件的main字段，将其作为包的接口模块，如果package.json活main字段不存在，会尝试寻找index.js或index.node作为包的接口。 
     package.json是CommonJS规定的用来描述包的文件，完全符合规范的package.json文件应该含有以下字段。
@@ -41,7 +44,7 @@ package.json
 		    "start": "node bin/dice-api",
 		     'start': "set NODE_ENV=aaaaa && node app.js",  //启动的同时并设置环境
 		    "dev": "./node_modules/.bin/nodemon bin/dice-api",
-		    "prd": "pm2 start bin/dice-api",
+		    "prd": "pm2 start bin/dice-api --name ",    //配置name
 		    "test": "echo \"Error: no test specified\" && exit 1"
 		  },
 	"apidoc": {                            //apidoc配置

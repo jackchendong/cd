@@ -1,0 +1,144 @@
+安装客户端:
+	 https://geth.ethereum.org/downloads/       //ETH客户端下载地址
+
+	 https://github.com/ethereum/mist/releases    //ETH  wallet 可视化界面
+					              //搭建私有链之后连接的就是本地的私有的。不然就是公链
+         https://github.com/ethereum/wiki/wiki/JavaScript-API      //nodeAPI开发文档
+
+	https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options    //ETH命令详解
+
+用法:
+	geth [options] command [command options] [arguments...]
+
+BAT启动：
+         geth --identity "TestNode" --datadir "D:\install\ETH\privatechain\data0" --networkid 12480 --port "30303" --rpc --rpcport "8545" --bootnodes "enode://91922b12115c067005c574844c6bbdb114eb262f90b6355cec89e13b483c3e4669c6d63ec66b6e3ca7a3a462d28edb3c659e9fa05ed4c7234524e582a8816743@120.27.164.92:13333" console
+		   //做一个标识              	       //设置数据文件目录             //设置链的ID     //设置端口哦                        //连上远程的node节点
+
+
+搭建私有链：
+	一、创建创世配置文件genesis.json放在制定目录，例如：C:\Develop\privatechain内
+		 {
+		    "config": {
+			"chainId": 12480,
+			"homesteadBlock": 0,
+			"eip155Block": 0,
+			"eip158Block": 0
+		    },
+		    "coinbase" : "0x0000000000000000000000000000000000000000",
+		    "difficulty" : "0x40000",
+		    "extraData" : "",
+		    "gasLimit" : "0xffffffff",
+		    "nonce" : "0x0000000000000042",
+		    "mixhash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
+		    "parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
+		    "timestamp" : "0x00",
+		    "alloc": { }
+		}
+
+	参数说明：
+		（
+		mixhash	 与nonce配合用于挖矿，由上一个区块的一部分生成的hash。注意他和nonce的设置需要满足以太坊的Yellow paper, 4.3.4. Block Header Validity, (44)章节所描述的条件。
+		nonce	nonce就是一个64位随机数，用于挖矿，注意他和mixhash的设置需要满足以太坊的Yellow paper, 4.3.4. Block Header Validity, (44)章节所描述的条件。
+		difficulty	设置当前区块的难度，如果难度过大，cpu挖矿就很难，这里设置较小难度
+		alloc	用来预置账号以及账号的以太币数量，因为私有链挖矿比较容易，所以我们不需要预置有币的账号，需要的时候自己创建即可以。
+		coinbase	矿工的账号，随便填
+		timestamp	设置创世块的时间戳
+		parentHash	上一个区块的hash值，因为是创世块，所以这个值是0
+		extraData	附加信息，随便填，可以填你的个性信息
+		gasLimit	该值设置对GAS的消耗总量限制，用来限制区块能包含的交易信息总和，因为我们是私有链，所以填最大。
+		）
+	二、初始化区块链：配置文件写入创世区块	
+	     geth --datadir "C:\Develop\privatechain\data0" init "C:\Develop\privatechain\genesis.json"
+
+        三、启动私有链节点，进入交互式控制台
+		geth --identity "TestNode" --datadir "C:\Develop\privatechain\data0" --networkid 12480 --port "30303" --rpc --rpcport "8545" --rpcapi personal,db,eth,net,web3  console
+		geth --identity "TestNode" --datadir "C:\Develop\privatechain\data0" --networkid 12480 --port "30303" --rpc --rpcport "8545"   console
+		切换root用户：sudo su -
+		测试环境
+		   geth attach /data/ethbase/chain/geth.ipc
+		正式环境
+		     geth attach /data/publicbase/geth.ipc
+			========gen基本命令==========
+			初始化：
+				--datadir	""	使用 datadir 来存储相关数据
+				--init		""	指定创世块文件的位置，并创建初始块
+			启动：
+				--datadir	""	使用 datadir 来存储相关数据
+				--networkid		设置当前区块链的网络ID，用于区分不同的网络，是一个数字
+				--port "30303" 	指定和其他节点连接所用的端口号（默认为 30303）
+				
+				--rpc 			启动HTTP-RPC服务（基于HTTP的）
+				--rpcapi		设置允许连接的rpc的客户端，一般为db,eth,net,web3
+				--rpcport "8545"指定 HTTP-RPC 服务监听端口号（默认为 8545）
+				--identity	""	指定节点名称
+				--nodiscover	禁用同伴发现
+				--ipcdisable    禁掉IPC-RPC服务
+			=============================
+
+	四、集群，连接到其他节点
+	       在本地网络运行多个以太坊节点的实例
+			1. 每个实例都有独立的数据目录(--datadir)
+			2. 每个实例运行都有独立的端口.(eth和rpc两者都是)(--port 和 --rpcprot)
+			3. 实例之间使用相同的networkid（chainID）
+			4. 唯一的ipc通信端点,或者禁用ipc.（--ipcdisable）
+		1、获取第一个链的节点：
+			admin.nodeInfo.enode
+		2、初始化第二个链
+			geth --datadir "C:\Develop\privatechain\data2" init "E:\privatechain\genesis2.json"
+		3、连接第二个链，替换enode后面的数据和ip端口
+			方法1：
+				geth --identity "TestNode2" --datadir "E:\privatechain\data2" --networkid 124800--ipcdisable --port "30304" --rpc --rpcport "8546" --bootnodes "enode://a8cf1615db84e479939946899c98564612c86225ea101c2cb6e10e6060ae69ba08633bc4dfd8bb5bfbed6754ba9134f213a84c0b2fffc8419a4a65498134693c@127.0.0.1:30303" console
+			方法2：
+				geth --identity "TestNode2" --datadir "E:\privatechain\data2" --networkid 1008 --ipcdisable --port "30304" --rpc --rpcport "8546" console
+				admin.addPeer("enode://dac3a12967c2d29c7eadc5a9b148a75fca87cae42b2a8c74e711ae433f6b331a30d651ad60aec907aecb3e1602c2dd3dc5888b9d245e7d7160a9282581a56f99@192.168.1.248:30303")
+
+		4、查看结果
+			1、查看第二个链的id
+				admin.nodeInfo.enode
+			2、查看第一个连接到其他节点信息
+				admin.peers
+			3、查看已连接到的节点数量：net.peerCount 
+		
+		
+
+
+
+console命令:
+	eth：包含一些跟操作区块链相关的方法；
+	net：包含一些查看p2p网络状态的方法；
+	admin：包含一些与管理节点相关的方法；
+	miner：包含启动&停止挖矿的一些方法；
+	personal：主要包含一些管理账户的方法；
+	txpool：包含一些查看交易内存池的方法；
+	web3：包含了以上对象，还包含一些单位换算的方法。
+
+	一、帐号：
+		1、创建：personal.newAccount()
+		2、查看账户：eth.accounts
+			     eth.accounts[0]
+		3、查看余额：eth.getBalance(eth.accounts[0])
+			     web3.fromWei(eth.getBalance(eth.accounts[0]),'ether')
+		             web3.fromWei(eth.getBalance('0x559373d3a529d971e667e073dbe2a8d069a973d3'),'ether')
+
+					 
+					 1个以太币ETH=10的18次方个wei
+	二、交易：
+		1、解锁：personal.unlockAccount(eth.accounts[0])
+		2、金额：amount = web3.toWei(5,'ether')
+		3、转账：eth.sendTransaction({from:eth.accounts[0],to:eth.accounts[1],value:amount})
+		4、查看交易池：txpool.status  
+		5、查看当前待确认交易：eth.getBlock("pending", true).transactions
+		6、查看帐号的所有交易：eth.getTransaction("0xe7c3c2d6ff44635bd57352197cc011a4700abd6a")
+		eth.getTransaction("0xaf7f22a2cc1af670e365ed58e93e58cfcabff1a9e2b7eaf1208dcc73f8d8f8e3")
+		cost = gasPrice（1.8*10的10次方）* gasUsed（交易的计算量）	
+		
+	三、挖矿：
+		1、开始：miner.start(1)
+		2、停止： miner.stop()
+		3、挖出一个区块就停止：miner.start(1);admin.sleepBlocks(5);miner.stop();
+		4、查看区块总数：eth.blockNumber
+		5、查看区块信息：eth.getBlock(4)
+		      查看区块总框：eth.syncing
+		 6、连接到其他节点：admin.addPeer()
+		 7、查看第一个连接到其他节点信息：admin.peers
+		 3、查看已连接到的节点数量：net.peerCount 
