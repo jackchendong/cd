@@ -374,6 +374,7 @@ Sequelize:
 	const sequelize  = new Sequelize(database,username,password,{
 	    host:host,
 	    dialect:'mysql',
+	    port:"",
 	});
 
 	const User = sequelize.define('userinfo',{

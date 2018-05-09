@@ -18,7 +18,7 @@
 
  数组去重：
 	function unique(arr){   
-	       let res =[];
+	      let res =[];
 	      let json = {};
 	  　　for(let i=0;i<arr.length;i++){
 	  　　　　if(!json[arr[i]]){

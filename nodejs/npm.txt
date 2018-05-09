@@ -42,7 +42,7 @@ package.json
 	    "repository":{},
 	    "scripts": {              //这里就是启动脚本了  可以用 npm run start  或者 npm run dev  等等
 		    "start": "node bin/dice-api",
-		     'start': "set NODE_ENV=aaaaa && node app.js",  //启动的同时并设置环境
+		     'start': "[set] NODE_ENV=aaaaa && node app.js",  //启动的同时并设置环境不用写set直接写后面的 NODE_ENV=development
 		    "dev": "./node_modules/.bin/nodemon bin/dice-api",
 		    "prd": "pm2 start bin/dice-api --name ",    //配置name
 		    "test": "echo \"Error: no test specified\" && exit 1"
