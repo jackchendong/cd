@@ -5,3 +5,5 @@
             ipconfig
      跟踪节点: 
             tracert www.baidu.com             //会返回所有的节点
+     查看wifi密码
+           netsh wlan show profile name="ZhongFan02" key=clear
