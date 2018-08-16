@@ -1,0 +1,49 @@
+安装客户端:
+	1、比特币钱包（Bitcoin Core）官网下载地址：https://bitcoin.org/en/download
+	  客户端说明如下：
+		bitcoin-qt：比特币钱包,图形化界面
+		bitcoind：是比特币运行的核心程序俗称bitcoin core
+		bitcoin-cli：是Bitcoind的一个功能完备的RPC客户端，包括查询区块，交易信息等等
+		bitcoin-tx：比特币交易处理模块，支持交易的查询和创建。
+		test_bitcoin：运行各个模块的测试代码。
+	2、比特币钱包使用说明：https://blog.csdn.net/hiliqi/article/details/79447061
+
+	3、免费获取测试链的BTC：https://testnet.manu.backend.hamburg/faucet
+
+	4、开源说明
+		https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_calls_list  //英文版
+		https://zh-cn.bitcoin.it/wiki/%E9%A6%96%E9%A1%B5    //中文版--少东西
+
+	5、 D:\install\BTC\Bitcoin\daemon 里面有两个文件bitcoin-cli.exe，bitcoind.exe
+		bitcoin-cli.exe  -- 功能完备
+		bitcoind.exe     -- 简洁命令行
+	6、CSDN学习
+		https://blog.csdn.net/yhtoo/article/details/46501829  比特币学习，参数学习
+	7、  开发文档
+		https://en.bitcoin.it/wiki/API_reference_(JSON-RPC)
+	8、 node
+		https://github.com/freewil/node-bitcoin
+	9、java
+		https://github.com/johannbarbie/BitcoindClient4J
+
+简单参数:
+	-conf=<文件名>     指定配置文件（默认：bitcoin.conf）
+		
+bitcoin.conf:  #开头为注释
+	server=1
+	txindex=1	
+	rpcuser=user
+	rpcpassword=pwd
+	rpctimeout=30
+	rpcport=8332
+	rpcallowip=192.168.1.73
+	rpcallowip=192.168.1.72
+	rpcallowip=192.168.1.71
+	rpcallowip=192.168.1.74
+	rpcallowip=192.168.1.75
+	rpcallowip=192.168.1.76   #远程调用rpcallowip必须配置，默认只有客户端本地可调用
+start.bat:
+	bitcoin-qt.exe  -testnet  -datadir="C:\Develop\privatenChain\btc\data0"
+
+	#默认情况下，Bitcoin（或 bitcoind）会在比特币数据文件夹下查找一个名为“bitcoin.conf”的文件
+	#默认读取C:\Develop\privatenChain\btc\data0\bitcoin.conf文件,或者用 -conf=<文件名>选项

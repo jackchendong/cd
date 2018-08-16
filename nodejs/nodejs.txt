@@ -368,12 +368,32 @@ pm2:
 	        pm2 start app.js -i 3   # 开启三个进程
 	        pm2 start app.js -i max   # 根据机器CPU核数，开启对应数目的进程 
 
+	5:      配置文件启动   pm2 start ./test.json
+	       test.json
+		{
+		  "name"      : "jingtum",
+		  "script"    : "./app.js",
+		  "instances" : 0,
+		   exec_mode : "cluster",
+		  "merge_logs": true,
+		  "log_date_format": "YYYY-MM-DD HH:mm Z",
+		  "out_file": "./logs/out.log",
+		  "error_file": "./logs/err.log",
+		  //"watch":true
+		  //"env": {
+		  //  "COMMON_VARIABLE" : "true"
+		  //},
+		  //"env_production" : {
+		  //  "NODE_ENV": "production"
+		  //}
+		}
 Sequelize:
 	1:模型创建，对数据的操作都建立在模型的基础上
 	const Sequelize = require('sequelize');
 	const sequelize  = new Sequelize(database,username,password,{
 	    host:host,
 	    dialect:'mysql',
+	    port:"",
 	});
 
 	const User = sequelize.define('userinfo',{
