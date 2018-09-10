@@ -1,0 +1,6 @@
+Integer:
+	Integer.toBinaryString(n)   //十进制转二进制
+	Integer.MIN_VALUE    //最小值
+	Integer.MAX_VALUE    //最大值
+	Integer.SIZE         // 内存中的大小
+	
