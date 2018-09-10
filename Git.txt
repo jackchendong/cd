@@ -1,4 +1,4 @@
-windows 
+﻿windows 
 
 1. 安装git  https://pan.baidu.com/s/1kU5OCOB#list/path=%2Fpub%2Fgit
 
@@ -173,3 +173,21 @@ git status 中文文件会出现中文乱码的情况：
 
 	git fetch --all    //强制抓取云上的
 	git reset --hard origin/master  //设置为最新的代码
+
+
+备份的三种方法   https://www.oschina.net/question/82993_133520 //gitee 介绍
+	1: git clone --bare  https://github.com/bartaz/impress.js.git   // 知道远程仓库的情况
+	   cd impress.js.git
+	   git push --mirror git@git.oschina.net:username/impress-js.git
+	   执行完上面3步就可以了，但是新仓库要是新的哟
+ 
+	2: git remote add git-osc git@git.oschina.net:username/translate4j.git   // 本地有仓库的情况 git-osc 好像是远程分支的意思  就是添加远程分支
+	   git push git-osc --all
+	   git push git-osc --tags
+	   执行完上面3步就可以了，新仓库要是新的.都已经commit
+	3: git svn clone http://translate4j.googlecode.com/svn/trunk/ translate4j
+           git remote add git-osc git@git.oschina.net:username/impress.js.git
+           git push git-osc --all
+	   git push git-osc --tags
+	   这个是svn仓库备份到git里面，但是使用git-svn工具clone svn仓库，git-svn 已经是Git的默认组建，如果你安装的是较新版本的Git客户端的话，则不需要再单独下载这个组件
+       
