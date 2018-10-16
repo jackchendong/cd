@@ -161,6 +161,90 @@ mongodb的使用:
 	  ex : db.stu.find().skip(0).limit(5) //取出前5个
                db.stu.find().skip(0).limit(5).sort( { "age" : -1 } )  
                db.stu.find().skip(5).limit(5).sort( {"age " : -1 } )
+    聚合查询:
+        db.emp.aggregate([{$group:{_id:"$name" , numtotal :{$sum: 1}}}])  // 查询之后 算总数
+            { "_id" : "王金鹏", "numtotal" : 1 }
+            { "_id" : null, "numtotal" : 3 }
+            { "_id" : "王金亮", "numtotal" : 1 }
+            { "_id" : "陈冬", "numtotal" : 1 }
+        类似sql:
+            select name, count(*) from mycol group by name
+    管道查询： 
+
+        $project：修改输入文档的结构。可以用来重命名、增加或删除域，也可以用于创建计算结果以及嵌套文档。挑选字段
+        $match：用于过滤数据，只输出符合条件的文档。$match使用MongoDB的标准查询操作。
+        $limit：用来限制MongoDB聚合管道返回的文档数。
+        $skip：在聚合管道中跳过指定数量的文档，并返回余下的文档。
+        $unwind：将文档中的某一个数组类型字段拆分成多条，每条包含数组中的一个值。
+        $group：将集合中的文档分组，可用于统计结果。
+        $sort：将输入文档排序后输出。
+        $geoNear：输出接近某一地理位置的有序文档。
+
+         db.emp.aggregate([{$group:{_id:"$name" , numtotal :{$sum: 1}}},{$match:{numtotal:{"$gt":1}}}])   // 查询之后 算总数 再 算聚合之后大于 1 的数据
+                { "_id" : null, "numtotal" : 3 }
+            类似sql:
+                select name, count(*) from mycol group by name having count > 1
+
+
+         db.emp.aggregate([{$group:{_id:"$name" , numtotal :{$sum: 1}}},{$match:{numtotal:{"$gt":1}}},{"$project":{"_id":0}}])   // 查询之后 算总数 再 算聚合之后大于 1 的数据 在判断显示哪个数据
+            { "numtotal" : 3 }
+            类似sql:
+                select  count(*) from mycol group by name having count > 1
+
+        $type 操作符:
+            类型	数字	备注
+            Double	1	 
+            String	2	 
+            Object	3	 
+            Array	4	 
+            Binary data	5	 
+            Undefined	6	已废弃。
+            Object id	7	 
+            Boolean	8	 
+            Date	9	 
+            Null	10	 
+            Regular Expression	11	 
+            JavaScript	13	 
+            Symbol	14	 
+            JavaScript (with scope)	15	 
+            32-bit integer	16	 
+            Timestamp	17	 
+            64-bit integer	18	 
+            Min key	255	Query with -1.
+            Max key	127	 
+
+            db.emp.find({"age":{$type:2}}) 或
+            db.emp.find({"age":{$type:"string"}})  //查询age是字符串的数据
+                { "_id" : ObjectId("5bc5428843be0299a62e6481"), "name" : "王金亮", "age" : "18" }
+            db.emp.find({"age":{$type:"number"}})  // 查询age是number的数据
+               { "_id" : ObjectId("5bc543e743be0299a62e6482"), "age" : 19 }
+
+        联表查询:
+            $lookup
+                from：需要关联的表 stu
+                localField: emp 表需要关联的键。
+                foreignField：stu 中的键
+                as : 取别名
+            最后得到的别名数据是数组,这个时候可以在聚合
+            db.emp.aggregate([ {$lookup:{from:"stu","localField":"name", foreignField:"name",as:"aa"}} ])
+                { "_id" : ObjectId("5bc5423e43be0299a62e6480"), "name" : "陈冬", "aa" : [ ] }
+                { "_id" : ObjectId("5bc5428843be0299a62e6481"), "name" : "王金亮", "age" : "18", "aa" : [ { "_id" : ObjectId("5bc55be743be0299a62e6487"), "name" : "王金亮", "addr" : "浙江杭州" } ] }
+                { "_id" : ObjectId("5bc543e743be0299a62e6482"), "age" : 19, "aa" : [ ] }
+                { "_id" : ObjectId("5bc5471d43be0299a62e6483"), "name" : "王金鹏", "course" : [ "语文", "数学" ], "aa" : [ ] }
+                { "_id" : ObjectId("5bc5482043be0299a62e6484"), "parents" : [ { "name" : "父亲", "job" : "局长" } ], "aa" : [ ] }
+                { "_id" : ObjectId("5bc548b943be0299a62e6485"), "parents" : [ { "name" : "母亲", "job" : "医生" } ], "aa" : [ ] }
+
+        ObjectId: 对象
+            ObjectId 是一个12字节 BSON 类型数据，有以下格式：
+            前4个字节表示时间戳
+            接下来的3个字节是机器标识码
+            紧接的两个字节由进程id组成（PID）
+            最后三个字节是随机数。
+            
+              ObjectId("5349b4ddd2781d08c09890f4").getTimestamp()  //获得时间对象
+                ISODate("2014-04-12T21:49:17Z")
+            ObjectId("5349b4ddd2781d08c09890f4").str  // huode GUID格式字符
+                5349b4ddd2781d08c09890f4
     2 : 
        数据的更新   -- 比较麻烦 建议 删掉重新插入 $set  -- 更新操作符
        语法: db.集合.update(更新条件 , 新的对象数据 ， upsert , multi )
