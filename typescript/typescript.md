@@ -32,6 +32,7 @@
   * --pretty标记可以让错误信息更易阅读和管理。 我们对这个功能进行了两个主要的改进。 首先， --pretty对文件名，诊段代码和行数添加了颜色（感谢Joshua Goldberg）。 其次，格式化了文件名和位置，以变于在常用的终端里使用Ctrl+Click，Cmd+Click，Alt+Click等来跳转到编译器里的相应位置。
   * --strictNullChecks  null和undefined只能赋值给void和它们各自。
   * --target 目标语法   Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. 
+  * tsc -p tsconfig.json  以配置文件编译
 # tsconfig.json
     这个是tslint和tsc的配置，在编译的时候 tsc 默认就是用这个配置取编译，
     但是你是 tsc 01.ts 这个就不会去找 tsconfig.json
