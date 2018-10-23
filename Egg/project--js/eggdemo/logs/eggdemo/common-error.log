@@ -1,0 +1,127 @@
+2018-10-23 11:23:31,660 ERROR 3196 nodejs.AssertionError [ERR_ASSERTION]: Can't find news from D:\project\note\cd\Egg\project--js\eggdemo\app\view
+    at Map.resolve (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view@2.1.0@egg-view\lib\view_manager.js:74:5)
+generatedMessage: false
+name: "AssertionError [ERR_ASSERTION]"
+code: "ERR_ASSERTION"
+actual: undefined
+expected: true
+operator: "=="
+pid: 3196
+hostname: DESKTOP-M925K8L
+
+2018-10-23 11:24:11,910 ERROR 6692 [-/127.0.0.1/-/5ms GET /news] nodejs.AssertionError [ERR_ASSERTION]: Can't find news from D:\project\note\cd\Egg\project--js\eggdemo\app\view
+    at Map.resolve (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view@2.1.0@egg-view\lib\view_manager.js:74:5)
+generatedMessage: false
+name: "AssertionError [ERR_ASSERTION]"
+code: "ERR_ASSERTION"
+actual: undefined
+expected: true
+operator: "=="
+pid: 6692
+hostname: DESKTOP-M925K8L
+
+2018-10-23 11:47:36,763 ERROR 4960 [-/127.0.0.1/-/8ms GET /news/service] nodejs.TypeError: this.service.getList is not a function
+    at NewsController.newsService (D:\project\note\cd\Egg\project--js\eggdemo\app\controller\news.js:28:36)
+    at Object.callFn (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-core@4.11.0@egg-core\lib\utils\index.js:36:21)
+    at Object.classControllerMiddleware (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-core@4.11.0@egg-core\lib\loader\mixin\controller.js:87:20)
+    at Object.callFn (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-core@4.11.0@egg-core\lib\utils\index.js:36:21)
+    at wrappedController (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-core@4.11.0@egg-core\lib\utils\router.js:322:18)
+    at dispatch (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_koa-compose@3.2.1@koa-compose\index.js:44:32)
+    at next (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_koa-compose@3.2.1@koa-compose\index.js:45:18)
+    at D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_koa-router@7.4.0@koa-router\lib\router.js:346:16
+    at dispatch (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_koa-compose@3.2.1@koa-compose\index.js:44:32)
+    at D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_koa-compose@3.2.1@koa-compose\index.js:36:12
+
+pid: 4960
+hostname: DESKTOP-M925K8L
+
+2018-10-23 14:09:45,507 ERROR 15228 [-/127.0.0.1/-/11ms GET /news] nodejs.TypeError: D:\project\note\cd\Egg\project--js\eggdemo\app\view\news.html:16
+    14|         <%}%>
+    15|     </ul>
+ >> 16|     <h2><%=helper()%></h2>
+    17|     <!-- 这里用绝对路径方便  ip /public/01.jpg -->
+    18|     <img src="/public/01.jpg" alt="">
+    19| </body>
+
+helper is not a function
+    14|         <%}%>
+    15|     </ul>
+ >> 16|     <h2><%=helper()%></h2>
+    17|     <!-- 这里用绝对路径方便  ip /public/01.jpg -->
+    18|     <img src="/public/01.jpg" alt="">
+    19| </body>
+
+helper is not a function
+    at eval (eval at compile (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:618:12), <anonymous>:23:25)
+    at returnedFn (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:653:17)
+    at tryHandleCache (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:251:36)
+    at Object.exports.renderFile (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:482:10)
+    at Promise (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view-ejs@2.0.0@egg-view-ejs\lib\view.js:16:11)
+    at new Promise (<anonymous>)
+    at EjsView.[EjsView#_render] (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view-ejs@2.0.0@egg-view-ejs\lib\view.js:15:12)
+    at EjsView.render (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view-ejs@2.0.0@egg-view-ejs\lib\view.js:28:36)
+    at ContextView.[contextView#render] (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view@2.1.0@egg-view\lib\context_view.js:70:23)
+path: "D:\\project\\note\\cd\\Egg\\project--js\\eggdemo\\app\\view\\news.html"
+pid: 15228
+hostname: DESKTOP-M925K8L
+
+2018-10-23 14:13:43,845 ERROR 220 [-/127.0.0.1/-/8ms GET /news] nodejs.ReferenceError: D:\project\note\cd\Egg\project--js\eggdemo\app\view\news.html:17
+    15|     </ul>
+    16|     <h2><%=helper.helper()%></h2>
+ >> 17|     <h2><%=app.main()%></h2>
+    18|     <!-- 这里用绝对路径方便  ip /public/01.jpg -->
+    19|     <img src="/public/01.jpg" alt="">
+    20| </body>
+
+app is not defined
+    15|     </ul>
+    16|     <h2><%=helper.helper()%></h2>
+ >> 17|     <h2><%=app.main()%></h2>
+    18|     <!-- 这里用绝对路径方便  ip /public/01.jpg -->
+    19|     <img src="/public/01.jpg" alt="">
+    20| </body>
+
+app is not defined
+    at eval (eval at compile (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:618:12), <anonymous>:26:25)
+    at returnedFn (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:653:17)
+    at tryHandleCache (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:251:36)
+    at Object.exports.renderFile (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:482:10)
+    at Promise (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view-ejs@2.0.0@egg-view-ejs\lib\view.js:16:11)
+    at new Promise (<anonymous>)
+    at EjsView.[EjsView#_render] (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view-ejs@2.0.0@egg-view-ejs\lib\view.js:15:12)
+    at EjsView.render (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view-ejs@2.0.0@egg-view-ejs\lib\view.js:28:36)
+    at ContextView.[contextView#render] (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view@2.1.0@egg-view\lib\context_view.js:70:23)
+path: "D:\\project\\note\\cd\\Egg\\project--js\\eggdemo\\app\\view\\news.html"
+pid: 220
+hostname: DESKTOP-M925K8L
+
+2018-10-23 14:13:54,547 ERROR 220 [-/127.0.0.1/-/11ms GET /news] nodejs.ReferenceError: D:\project\note\cd\Egg\project--js\eggdemo\app\view\news.html:17
+    15|     </ul>
+    16|     <h2><%=helper.helper()%></h2>
+ >> 17|     <h2><%=application.main()%></h2>
+    18|     <!-- 这里用绝对路径方便  ip /public/01.jpg -->
+    19|     <img src="/public/01.jpg" alt="">
+    20| </body>
+
+application is not defined
+    15|     </ul>
+    16|     <h2><%=helper.helper()%></h2>
+ >> 17|     <h2><%=application.main()%></h2>
+    18|     <!-- 这里用绝对路径方便  ip /public/01.jpg -->
+    19|     <img src="/public/01.jpg" alt="">
+    20| </body>
+
+application is not defined
+    at eval (eval at compile (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:618:12), <anonymous>:26:25)
+    at returnedFn (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:653:17)
+    at tryHandleCache (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:251:36)
+    at Object.exports.renderFile (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_ejs@2.6.1@ejs\lib\ejs.js:482:10)
+    at Promise (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view-ejs@2.0.0@egg-view-ejs\lib\view.js:16:11)
+    at new Promise (<anonymous>)
+    at EjsView.[EjsView#_render] (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view-ejs@2.0.0@egg-view-ejs\lib\view.js:15:12)
+    at EjsView.render (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view-ejs@2.0.0@egg-view-ejs\lib\view.js:28:36)
+    at ContextView.[contextView#render] (D:\project\note\cd\Egg\project--js\eggdemo\node_modules\_egg-view@2.1.0@egg-view\lib\context_view.js:70:23)
+path: "D:\\project\\note\\cd\\Egg\\project--js\\eggdemo\\app\\view\\news.html"
+pid: 220
+hostname: DESKTOP-M925K8L
+

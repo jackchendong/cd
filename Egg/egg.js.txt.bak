@@ -1,0 +1,197 @@
+1: 介绍
+    约定优于配置
+    控制器可以调用多个服务，服务可以互相调用，
+    但是：控制器不能互相调用，服务不能调用控制器
+
+    JSON.parse(buffer) // 可以将buffer转成json
+2: 安装
+    nodejs大于8.0，并且是LTS版本
+
+    $ npm i egg-init -g  / cnpm i egg-init -g    //安装脚手架
+    $ egg-init egg-example --type=simple         //创建项目  type 可以不选
+    $ cd egg-example                             
+    $ npm i                                      // 安装依赖
+    
+    eslint 会报错
+    就把报错关掉 .eslintrc
+        {
+	  "extends": "eslint-config-egg",
+	  "rules": {
+	    "linebreak-style": "off"  //关闭[eslint] Expected linebreaks to be 'LF' but found 'CRLF'
+	  }
+	}
+    vscode设置保存自动格式化代码
+	settings.json
+    // tslint
+    "tslint.autoFixOnSave": true,
+    // eslint 配置
+    "eslint.autoFixOnSave": true, // 保存时候自动格式化,默认只支持javascript.js文件
+   
+   插件安装提示生成基本的service controller config plugin
+   	用的插件是 eggjs
+	
+   检测 html 中的 js 代码需要安装 html 插件，eslint-plugin-html
+
+3: 目录结构
+    egg-project
+    ├── package.json 
+    ├── app.js (可选)
+    ├── agent.js (可选)
+    ├── app
+    |   ├── router.js
+    │   ├── controller
+    │   |   └── home.js
+    │   ├── service (可选)
+    │   |   └── user.js
+    │   ├── middleware (可选)
+    │   |   └── response_time.js
+    │   ├── schedule (可选)
+    │   |   └── my_task.js
+    │   ├── public (可选)
+    │   |   └── reset.css
+    │   ├── view (可选)
+    │   |   └── home.tpl
+    │   └── extend (可选)
+    │       ├── helper.js (可选)
+    │       ├── request.js (可选)
+    │       ├── response.js (可选)
+    │       ├── context.js (可选)
+    │       ├── application.js (可选)
+    │       └── agent.js (可选)
+    ├── config
+    |   ├── plugin.js
+    |   ├── config.default.js
+    │   ├── config.prod.js
+    |   ├── config.test.js (可选)
+    |   ├── config.local.js (可选)
+    |   └── config.unittest.js (可选)
+    └── test
+        ├── middleware
+        |   └── response_time.test.js
+        └── controller
+            └── home.test.js
+
+	
+4:配置
+    配置在config配置文件夹
+
+    config.default.js 
+        module.exports = appInfo => {
+        const config = exports = {};
+
+        // use for cookie sign key, should change to your own and keep security
+        config.keys = appInfo.name + '_1539915960065_6455';
+
+        // add your config here
+        config.middleware = ['printdate'];  //增加中间件 填中间件的文件名字
+
+        config.printdate = {   //给printdate中间件传值
+            name : 'cd'
+        }
+        
+        config.view = {   //配置模板引擎 可以取github看怎么使用
+            mapping: {
+            '.ejs': 'ejs',
+            },
+        };
+
+        // 统一配置session  和cookie的配置差不多
+        config.session= {
+            key:''  //默认的key
+            maxAge: ,
+            renew: true  //每次刷新页面的时候 session就会延期
+        }
+
+        config.api = 'aaaaaaaaaaaa';  // 往配置文件写属性 其他地方可以用
+
+        return config;
+        };
+        //-----------------------------
+        exports.view = {   // 也可以这样写
+                        mapping: {
+            '.ejs': 'ejs',
+            },
+        }
+
+
+    plugin.js      下面的例子 配置模板引擎
+        exports.ejs = {
+            enable: true,
+            package: 'egg-view-ejs',
+        };
+
+5: 框架扩展
+    目录  /app/extend
+    application.js 
+        module.exports = {
+            foo () {
+                // 这个就是app 对象的扩展方法
+            },
+            too() {
+                //
+                //this === app
+            }
+        }
+
+    helper.js  // 在模板里面可以直接调用 helper.formatDate()
+
+6:中间件
+    匹配路由前、匹配路由完成做的一系列的操作。 Egg 是基于 Koa 实现的，所以 Egg 的中间件形式和 Koa 的中间件形式是一样的，都是基于洋葱圈模型
+    app/middleware
+
+        options: 中间件的配置项，框架会将 app.config[${middlewareName}] 传递进来。
+        app: 当前应用 Application 的实例。
+
+        printdate.js 
+            module.exports = (options,app) => {
+                return async  function printdate (ctx,next){
+                    console.log(new Date())
+                    ctx.status = 403
+                   //  ctx.message = "您ip不对"  这个message 对汉字不支持
+                   ctx.body = "您的ip不对"
+                    await next()
+
+                    console.log(之后)
+                }
+            }
+
+7: Controller
+    egg.Controller会有几个属性挂载在this上.
+
+  this.ctx: 当前请求的上下文 Context 对象的实例，通过它我们可以拿到框架封装好的处理当前请求的各种便捷属性和方法。
+    ctx.curl   封装的http
+    ctx.request
+        ctx.request.body // post请求的数据
+        ctx.csrf  // 生成一个密钥
+        ctx.state.csrf // 模板的全局变量
+    ctx.body
+    ctx.response
+    ctx.helper
+    ctx.cookies.get('',{
+        // encrypt : true //解密
+    }) //获取cookie
+    ctx.cookies.set(key,value,{  // 默认没法设置中文 设置为null 就是清除
+        // 过期时间
+        // 加密
+        。。。
+        signed: true // 防止用户修改
+        encrypt: true // 加密  加密了 那么获取的时候要解密
+                      // 加密了就可以 设置中文
+    })
+
+    ctx.session.userinfo = {  //设置和获取 设置之后模板是全局的
+
+    }  
+    ctx.session.maxAge =  设置过期时间  等等
+
+    
+  this.app: 当前应用 Application 对象的实例，通过它我们可以拿到框架提供的全局对象和方法。
+  this.service：应用定义的 Service，通过它我们可以访问到抽象出的业务层，等价于 this.ctx.service 。
+  this.config：应用运行时的配置项。
+  this.logger：logger 对象，上面有四个方法（debug，info，warn，error），分别代表打印四个不同级别的日志，使用方法和效果与 context logger 中介绍的一样，但是通过这个 logger 对象记录的日志，在日志前面会加上打印该日志的文件路径，以便快速定位日志打印位置。
+
+8: service
+	服务文件命名规则:
+		app/service/biz/user.js => ctx.service.biz.user
+		app/service/sync_user.js => ctx.service.syncUser
+		app/service/HackerNews.js => ctx.service.hackerNews
