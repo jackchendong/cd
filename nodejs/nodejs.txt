@@ -26,18 +26,42 @@
 	#注：var='{"name":"xiao","age":"18","sex":"1"}' //!!只有双引号在里面才可以用
 	     eval()可以在浏览器里面使用
 
+1: nodejs介绍:
+	在 Java、PHP 或者.net 等服务器端语言
+	中，会为每一个客户端连接创建一个新的线程。而每个线程需要耗费大约 2MB 内存。也就是说，理论上，
+	一个 8GB 内存的服务器可以同时连接的最大用户数为 4000 个左右。
+
+	Node.js 不为每个客户连接创建一个新的线程，而仅仅使用一个线程。当有用户连接了，就触发一个
+	内部事件，通过非阻塞 I/O、事件驱动机制，让 Node.js 程序宏观上也是并行的。使用 Node.js，一个 8GB
+	内存的服务器，可以同时处理超过 4 万用户的连接。
+
+2: commonjs
+	这个是模块化的标准,node是模块化的实现
+	nodejs 内置模块:
+		  http
+		  url 
+		  fs
+    自定义模块（第三方模块）:
+		1.我们可以把公共的功能抽离成为一个单独的 js 文件作为一个模块，默认情况下面这
+			个模块里面的方法或者属性，外面是没法访问的。如果要让外部可以访问模块里面的方法或
+			者属性，就必须在模块里面通过 exports 或者 module.exports 暴露属性或者方法。
+		2. 在需要使用这些模块的文件中，通过 require 的方式引入这个模块。这个时候就可以
+			使用模块里面暴露的属性和方法。
+		3: 在require的时候不写路径就会一级一级向上着 node_modules 找 相应的js 或者 package.json 中的 main: '入口文件自定义'
+		
+
 http:
 	var server=http.createServer(function(req,res){
 	     req.url   //返回请求的路由 , 没有锚点，其他都有。get的话
 	      	     
-	     res.end([字符串])	//结束请求
+	     res.end([字符串])	//结束请求 不然一直转圈圈
 	     res.write();    //写东西 可以在end之前一直写
 		 res.setHead();   //这个与writeHead重复。
 	     res.writeHead(200,{"Content-type":"text/html;charset=UTF-8"})  //设置返回的头部
 	});
 	server.listen(端口，[地址，] 回调函数)
 fs:
-	1: fs.readFile()
+	1: fs.readFile()  // 读取小文件可以
 		参数：
 		    1: string  		//文件路径
 		    2：object | string
@@ -46,14 +70,14 @@ fs:
 				参数：	
 			Error    //错误信息
 			data	buffer|string     //读取的文件信息
-	2: fs.readFileSync() 
+	2: fs.readFileSync()  // 同步
 	3: fs.mkdir(path[, mode], callback)
 			path <string> | <Buffer> | <URL>
 			mode <integer> Default: 0o777         #权限
 			callback <Function>
 				err <Error>
 			异步的 mkdir(2)。 完成回调只有一个可能的异常参数。 mode 默认为 0o777。
-	4: fs.stat(path, callback)
+	4: fs.stat(path, callback)  检测文件还是目录
 		path <string> | <Buffer> | <URL>
 		callback <Function>
 			err <Error>
@@ -61,7 +85,7 @@ fs:
 		异步的 stat(2)。 回调有两个参数 (err, stats) 其中 stats 是一个 fs.Stats 对象。
 		不建议在调用 fs.open() 、fs.readFile() 或 fs.writeFile() 之前使用 fs.stat() 检查一个文件是否存在。 作为替代，用户代码应该直接打开/读取/写入文件，当文件无效时再处理错误。
 		如果要检查一个文件是否存在且不操作它，推荐使用 fs.access()。
-	5: fs.Stats
+	5: fs.Stats 
 		stats.isFile()
 		stats.isDirectory()
 		stats.isBlockDevice()
@@ -80,7 +104,36 @@ fs:
 		 fs.rename(files.tupian.path,DIR+"/public/images/cd.jpg",function(err){  
                         console.log(err);
                   }) 
-
+	8: 流来读取文件 不会卡死 是一点一点读取的
+		var readStream = fs.createReadStream('i.txt')
+		var str = ''
+		var count = 0
+		readStream.on('data',(chunk)=>{
+			str += chunk
+			count++ 
+		})
+		readStream.on('end',() => {
+				console.log(str)
+				console.log(count)
+		})
+		readStream.on('error',(err) => {
+			console.log(err)
+		})
+	9: 流写入文件
+		var writerStream = fs.createWriteStream('o.txt')
+		writeStream.write(data,'utf8')
+		writeStream.end() // 关闭流
+		writerStream.on('finish',()=>{
+			console.log('写入完成')
+		})
+		writeStream.on('error',(err)=>{
+			console.log(err)
+		})
+	10: 管道流
+		var readStream = fs.createReadStream('i.txt')
+		var writerStream = fs.createWriteStream('o.txt')
+		readStream.pipe(writerStream)
+		console.log('执行完成')
 url:
 	┌─────────────────────────────────────────────────────────────────────────────────────────────┐
 	│                                            href                                             │
@@ -100,6 +153,13 @@ url:
 	│                                            href                                             │
 	└─────────────────────────────────────────────────────────────────────────────────────────────┘
 
+	方法和属性:
+		url.parse(url , true/false )
+		url.format(urlobj)  // 是 url.parse()的逆向操作
+		url.resolve(from,to) // 添加或者替换地址
+			ex: url.resolve('http://www.baidu.com', 'news') // http://www.baidu.com/news
+				url.resolve('http://www.baidu.com/one', 'news')  // http://www.baidu.com/news
+
 	var obj=url.parse(urlString[, parseQueryString[, slashesDenoteHost]])
 		urlString <string> 要解析的 URL 字符串。
 		parseQueryString <boolean> 如果为 true，则 query 属性总会通过 querystring 模块的 parse() 方法生成一个对象。 如果为 false，则返回的 URL 对象上的 query 属性会是一个未解析、未解码的字符串。 默认为 false。
@@ -107,6 +167,7 @@ url:
 
 		ex：
 			var query=url.parse(urlstring,true).query;   //将query部分以obj返回
+		
 
 querystring:
 	查询字符串

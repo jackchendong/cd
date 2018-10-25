@@ -11,6 +11,9 @@
     npm install <package_name> --save-dev  //要添加一个条目到你package.json的devDependencies：
     npm install npm -g                     //升级npm
     npm list mongodb          //查看mongodb的版本号
+    npm list // 查看有哪些包
+    npm info 包  // 查看那些版本
+    npm  i jquery@1.8.2  // 指定版本下载
     npm -l                 //查看所有的npm命令和选项
     npm run start == npm start
     npm -S  == npm --save
@@ -31,6 +34,7 @@ package.json
     repositories：仓库托管地址数组，每个元素要包含type（仓库的类型，如git）、url（仓库的地址）和path（相对于仓库的路径，可选）字段。
     dependencies：包的依赖，一个关联数组，由包名称和版本号组成。这些软件包是您的应用程序在生产中所需要的。
     "devDependencies"：这些软件包仅用于开发和测试。
+
 
     我的例子：
         {
@@ -53,6 +57,9 @@ package.json
 		  },
 	 "dependencies": {
                 "mysql": "^2.15.0"    //^这个表示固定。可以这样 ^2.^15.^0  固定版本
+                                      //  ^表示第一位版本号不变，后面两位取最新的
+                                      //  ~表示前两位不变，最后一个取最新
+                                       // *表示全部取最新
             },
 	    "devDependencies": {
 
