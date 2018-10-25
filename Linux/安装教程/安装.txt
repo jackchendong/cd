@@ -1,0 +1,98 @@
+1： 下载
+    去网易云镜像下载
+2：版本说明
+    CentOS-7.0-x86_64-DVD-1503-01.iso : 标准安装版，一般下载这个就可以了（推荐）
+    CentOS-7.0-x86_64-NetInstall-1503-01.iso : 网络安装镜像（从网络安装或者救援系统）
+    CentOS-7.0-x86_64-Everything-1503-01.iso: 对完整版安装盘的软件进行补充，集成所有软件。（包含centos7的一套完整的软件包，可以用来安装系统或者填充本地镜像）
+    CentOS-7.0-x86_64-GnomeLive-1503-01.iso: GNOME桌面版
+    CentOS-7.0-x86_64-KdeLive-1503-01.iso: KDE桌面版
+    CentOS-7.0-x86_64-livecd-1503-01.iso : 光盘上运行的系统，类拟于winpe
+    CentOS-7.0-x86_64-minimal-1503-01.iso : 精简版，自带的软件最少
+3:
+    安装的时候选择时间 和 安装到哪个盘就行了，选择盘的时候不要选择两个，选择一个 然后在挂载上去
+    但是磁盘的格式要是对的
+    ntfs好像有点问题
+
+4: 一些命令
+    df -h 查看磁盘使用情况 还可以知道系统在哪个磁盘
+
+    lsblk  可以查看各个磁盘的分区及大小
+        sda
+            sda1
+        sdb
+            sdb1
+            sdb2
+            sdb3
+
+    mkfs.xfs /dev/sdb  格式化分区
+
+    fdisk -l  查看磁盘和分区
+    fdisk /dev/sda   这个可以新建分区 删除分区等等 这个可以百度
+                      挂载磁盘可以格式化后直接挂载不用分区
+
+    ip  addr  // 查看ip
+
+5： 永久挂载分区 
+    挂载分区的时候可以不用给盘分区直接挂载
+
+    mount /dev/sda /data  临时挂载  
+
+    blkid /dev/sda   获得分区的uuid 再用uuid 挂载
+
+     写入文件
+         vim /etc/fstab 添加一行
+
+            /dev/sdb1       /data         xfs     defaults  0 0
+            挂载的分区       挂载到的目录   文件格式
+
+            UUID = 1212-213-123-123  /data  xfs defaults 0 0 
+
+6： 配置网络
+       vi /etc/sysconfig/network-scripts/ifcfg-eth0  
+
+        手动ip
+            DEVICE="eth0"        //设备名字
+            BOOTPROTO="static"   //这里设置ip网络类型
+            ONBOOT="yes"        // 启用禁用
+            TYPE="Ethernet"      // 网络类型 以太网
+            IPADDR=192.168.200.239  // 自己设定的ip
+            NETMASK=255.255.255.0   // 子网掩码
+            GATEWAY=192.168.200.96  // 网关
+            DNS1=202.101.172.35      // DNS1 手动的一定要填
+ 
+        自动ip
+            DEVICE="eth0"
+            BOOTPROTO="dhcp"
+            ONBOOT="yes"
+            TYPE="Ethernet"
+
+    配置好之后 重启网络
+        service network restart
+
+7: 查看设备状态
+        nmcli dev  查看设备状态
+            device  type      state       connection
+            eth0    ethernet  connecting   eth0 
+
+
+8: 开启shh服务
+   service sshd status  // 查看shh服务的状态
+
+
+9: 关闭防火墙
+    systemctl disable firewalld.service
+
+10: 安装node
+    1：下载Linuxnode
+    
+    2： 解压 tar xf node-v5.10.1-linux-x64.tar.gz   //解压到本地
+            tar xf node-v5.10.1-linux-x64.tar.gz -C /usr/local/
+    3： 移动到自己想去的位置
+            mv node-v5.10.1-linux-x64 /data/install/node  
+    4: 建软连接
+        ln -s /data/install/node/bin/node /usr/local/bin
+        ln -s /data/install/node/bin/npm /usr/local/bin
+    
+11: 安装gitlab
+        https://www.cnblogs.com/heyonggang/p/7778203.html  教程
+        https://blog.csdn.net/abysscarry/article/details/79402695
