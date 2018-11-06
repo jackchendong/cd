@@ -159,6 +159,8 @@ mongodb的使用:
                  skip ( n )  : 表示跨过多少数据
                  limit( n ) : 取出的数据个数限制
 	  ex : db.stu.find().skip(0).limit(5) //取出前5个
+	       db.stu.find().skip(0).limit(5).count() // 返回没有分页的数据个数
+	       db.stu.find().skip(0).limit(5).count(true)  // 返回分页之后的数据也就是 当前的数据个数
                db.stu.find().skip(0).limit(5).sort( { "age" : -1 } )  
                db.stu.find().skip(5).limit(5).sort( {"age " : -1 } )
     聚合查询:

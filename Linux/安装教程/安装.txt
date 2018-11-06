@@ -96,3 +96,26 @@
 11: 安装gitlab
         https://www.cnblogs.com/heyonggang/p/7778203.html  教程
         https://blog.csdn.net/abysscarry/article/details/79402695
+
+        注意：要给日志目录权限
+
+12： 安装vsftp
+      1: 检测软件
+        rpm -qa |grep vsftpd可以检测出是否安装了vsftpd软件
+      2：没有就安装
+         yum install vsftpd -y
+      3: 
+        启动ftp命令#service vsftpd start
+        停止ftp命令#service vsftpd stop
+        重启ftp命令#service vsftpd restart
+      4: 配置文件
+         ftp的配置文件主要有三个，位于/etc/vsftpd/目录下，分别是：
+            ftpusers    该文件用来指定那些用户不能访问ftp服务器。
+            user_list   该文件用来指示的默认账户在(默认情况)下也不能访问ftp 需要改配置
+            vsftpd.conf   vsftpd的主配置文件
+      5: 关闭selinux 
+            setenforce 0
+      6: 注意
+         错误: vsftpd: refusing to run with writable root inside chroot ()
+         这个是配置的根目录不能有写权限.
+         起到保护的作用
