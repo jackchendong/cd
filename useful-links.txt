@@ -92,3 +92,5 @@ http://ws.douqq.com/                  //ws在线测试工具
 https://www.feixiaohao.com/exchange/   //虚拟货币交易平台排行
 
 https://www.awesomes.cn/rank             //前端top100
+
+https://www.cnblogs.com/wangchuanyang/p/6219505.html  //服务器加速
