@@ -1,0 +1,5 @@
+var moment = require('moment')
+console.log(moment().format("YYYY-MM-DD HH:mm:ss"))
+console.log(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"))
+console.log(moment(12123332).format("YYYY-MM-DD HH:mm:ss"))
+console.log(moment("2017-11-11 12:12:13").format('x'))

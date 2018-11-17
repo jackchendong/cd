@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "tenpay": "^2.1.10"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@alicloud/sms-sdk": "^1.1.6"
+  }
+}
