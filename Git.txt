@@ -191,3 +191,45 @@ git status 中文文件会出现中文乱码的情况：
 	   git push git-osc --tags
 	   这个是svn仓库备份到git里面，但是使用git-svn工具clone svn仓库，git-svn 已经是Git的默认组建，如果你安装的是较新版本的Git客户端的话，则不需要再单独下载这个组件
        
+
+.gitignore
+	1: 注释 
+		# 
+	2: 规则
+		“/”表示目录； 
+				1: 再首行就是根目录
+				2: 再后面就是对应的目录
+		“*”通配多个字符；
+			    1: 不能跨目录
+		“?”通配单个字符
+		“[]”包含单个字符的匹配列表，参见正则表达式；
+		“!”表示不忽略匹配到的文件或目录；
+		"\"： 转义
+		"**": 表示任何目录
+		     ex:
+			 	abc/**  # 递归匹配abc下面的文件和目录
+				a/**/b  # 跨目录去匹配b 中间可能经过了几层
+
+	doc:
+		logs/      #logs目录都忽略 不管在哪里
+		npm-debug.log    # 忽略npm-debug.log 文件
+		node_modules/
+		coverage/
+		.idea/
+		run/
+		logs/
+		.DS_Store
+		.vscode
+		*.swp
+		*.lock
+		*.js      #忽略所有的js文件
+		!.autod.conf.js
+		app/public/  # 忽略app/public目录
+		app/**/*.js
+		test/**/*.js
+		config/**/*.js
+		app/**/*.map
+		test/**/*.map
+		config/**/*.map
+		tmp/
+		build/
