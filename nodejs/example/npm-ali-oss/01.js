@@ -2,8 +2,8 @@ const OSS = require('ali-oss');
 const fs = require('fs')
 const client = new OSS({
   region: 'oss-cn-hangzhou',
-  accessKeyId: 'LTAIjlhqNMgP6KuM',
-  accessKeySecret: '1FI3Rf5ufBeOufQrq8yhjqnBWrP7re',
+  accessKeyId: 'LTAIjlhqNaAMgP6KuM',
+  accessKeySecret: '1FI3Rf5usdfBeOufQrq8yhjqnBWrP7re',
   bucket: 'xinlianxin'
 });
 // 正常上传
