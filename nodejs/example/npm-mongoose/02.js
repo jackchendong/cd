@@ -36,15 +36,15 @@ var stu = mongoose.model('stu', stuSchema, 'stu')
 // })
 
 
-// stu.find({}).populate({
-//     path: 'id', // 关联的字段
-//     // math: {name: "陈冬1asdasd"}
-//     match: { job: 'nods'},
-//     // select: 'name -_id',
-//     // options: { limit: 5 }
-// }).exec((err,result)=>{
-//     console.log(err,result[0].id,11111,result)
-// })
+stu.find({}).populate({
+    path: 'id', // 关联的字段
+    // math: {name: "asdasdasdasd"}
+    match: { job: 'nodejsasddsa'},
+    // select: 'name -_id',
+    // options: { limit: 5 }
+}).exec((err,result)=>{
+    console.log(err,result[0].id,11111,result)
+})
 
 // stu.find({}).populate('id').exec((err,result)=>{
 //     console.log(err,result[0].id, result)  // 得到了 连表查询

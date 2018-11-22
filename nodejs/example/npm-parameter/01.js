@@ -10,20 +10,24 @@ var parameter = new Parameter({
 });
 
 var data = {
-  name: 1212,
+  name: 'asdsasad',
   age: 18,
   gender: 'male'
 };
 
 var rule = {
   name: {
-      type:'string',
+      type:'number',
       required: true,
       allowEmpty: false,
+      widelyUndefined: true, // 可以为空
       convertType: (a,obj) => {  // 重载
-          //console.log(a)
+          // if(a === ''){
+          //   console.log(obj)
+          // }
+          // console.log(a)
 		 // console.log(obj)
-          return  "789" // 这里返回就没有问题
+          return a  // 这里返回就没有问题
       }
   },
   age: {
