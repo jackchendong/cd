@@ -1,2 +1,3 @@
 # 忽略node_modules目录
 node_modules/
+out/
