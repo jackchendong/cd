@@ -1,3 +1,6 @@
+// https://www.jianshu.com/p/ca5859da2891 参考1
+//  http://www.01happy.com/nodejs-aes-128-cbc/ 参考2
+
 const crypto = require('crypto');
 // 加密
 function genSign(src, key, iv) {

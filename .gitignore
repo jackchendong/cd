@@ -1,3 +1,4 @@
 # 忽略node_modules目录 和 out 目录
 node_modules/
 out/
+doc/
