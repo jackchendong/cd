@@ -12,7 +12,8 @@ var parameter = new Parameter({
 var data = {
   name: 'asdsasad',
   age: 18,
-  gender: 'male'
+  gender: 'male',
+  bir: 'asjdas'  // 日期
 };
 
 var rule = {
@@ -36,7 +37,10 @@ var rule = {
       min: 12,
       max: 20
   },
-  gender: ['male', 'female', 'unknown']
+  gender: ['male', 'female', 'unknown'],
+  bir: {
+    type: 'date'
+  }
 };
 
 var errors = parameter.validate(rule, data);

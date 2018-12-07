@@ -1,8 +1,9 @@
 {
    "name": "example",
   "version": "0.1.0",
-  "description": "apiDoc basic example",
-  "output":"bbbb/",
-  "title": "Custom apiDoc browser title",
+  "input":"./02.js",
+  "description": "xlx",
+  "output":"./build/",
+  "title": "aaaa",
   "url" : "https://api.github.com/v1"
 }

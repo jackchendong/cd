@@ -94,3 +94,8 @@ https://www.feixiaohao.com/exchange/   //虚拟货币交易平台排行
 https://www.awesomes.cn/rank             //前端top100
 
 https://www.cnblogs.com/wangchuanyang/p/6219505.html  //服务器加速
+
+
+https://blog.liyuans.com/categories.html   //大佬的博客有ssr和资源
+
+https://lighti.me/3314.html  // ssr搭建

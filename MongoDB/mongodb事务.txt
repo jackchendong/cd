@@ -1,0 +1,39 @@
+session= db.getMongo().startSession({ readPreference: { mode: "primary" } } )
+session.startTransaction( { readConcern: { level: "snapshot" }, writeConcern: { w: "majority" } } );
+col = session.getDatabase(‘xlx’).events;
+col.insert({x: 1, y: 1},s)
+col.insert({x: 1, y: 2},s)
+session.abortTransaction()
+session.endSession()
+
+
+
+var s = db.getSession()
+var testSession = s.getDatabase('xlx').test
+s.startTransaction()
+testSession.insert({name:"asd"})
+s.commitTransaction()
+s.abortTransaction()
+
+
+
+
+const mongoose = this.app.mongoose;
+const session = await mongoose.startSession() // 获得session
+// const session = await this.ctx.model.User.db.startSession()
+session.startTransaction()  // 开始事务
+// 操作一
+try{
+    let user = await this.ctx.model.User.findByIdAndUpdate(Mongo.toObjectId('5c03df9fe696851bd47293de'), { gender: true }, { session })
+    // 操作二
+    await this.ctx.model.user.findByIdAndUpdate(Mongo.toObjectId('5c03df9fe696851bd47293de'), { name: 'asd0' }, { session })
+    // 提交session
+    await session.commitTransaction()
+} catch(err){
+    // 放弃session
+    //await session.abortTransaction() 
+}
+//获得session 还再不
+// session.inTransaction() // 返回true 和false 
+// 结束session
+await session.endSession()
