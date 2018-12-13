@@ -99,3 +99,5 @@ https://www.cnblogs.com/wangchuanyang/p/6219505.html  //服务器加速
 https://blog.liyuans.com/categories.html   //大佬的博客有ssr和资源
 
 https://lighti.me/3314.html  // ssr搭建
+
+https://free-ss.site/   // 免费的ss
