@@ -261,6 +261,9 @@ global:
 	ex:
 		console.log(global.process)   //这个打印了了process信息
 		console.log(process)          //因为是globale所以不加global也可以直接打印
+		console.log(process.env.ENABLE_NODE_LOG)   // 直接打印自己设置的   ENABLE_NODE_LOG=YES node 01.js
+                console.log(process.env.JAVA_HOME)
+
 定时器：
 	1：setImmediate(callback[, ...args])
 		callback <Function> 在 Node.js 事件循环的当前回合结束时要调用的函数。
