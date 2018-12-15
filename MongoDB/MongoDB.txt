@@ -318,6 +318,13 @@ mongodb的使用:
 			db.phones.insert( {"tel":110,code:110,time : new Date() }  )
 			ex:db.phones.ensureIndex( {time:1 } ,{  expireAfterSeconds : 10 } ) //设置文档10s后过期，但是时间不准，可以进行临时数据保存
 
+        2d索引:
+            创建： db.stu.ensureIndex (   {location : "2d"}  )
+            坐标 经纬度  [-180,180],[-90,90]
+            使用:
+                $near: 
+                    db.ball.find({location:{$near:[1,1],$maxDistance:10,$minDistance:3}}) // 附近的点 最远 最近
+
 		全文检索
 		    设置全文检索
 		     db.news.ensureIndex( {"title" : "text" , " content" : "text " } )   //text 就是设置字段的全文检索
