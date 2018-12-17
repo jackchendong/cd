@@ -249,7 +249,11 @@ mongodb的使用:
                 5349b4ddd2781d08c09890f4
     2 : 
        数据的更新   -- 比较麻烦 建议 删掉重新插入 $set  -- 更新操作符
-       语法: db.集合.update(更新条件 , 新的对象数据 ， upsert , multi )
+       语法: db.集合.update(更新条件 , 新的对象数据 ，{
+           upsert:false,
+           multi: true
+       } )
+            db.集合.update(更新条件 , 新的对象数据 ， upsert , multi )
              upsert : 如果更新的数据不存在就增加 ( true  , false) 
               multi : 是否只更新第一条数据  (true : 全更新, false : 第一条)
                  ex : db.stu.update (  {age : 19}  ,  {  "$set" : {  "score" :  100  } }   ,false  , true )  //修改器 -- 像$set 一样
