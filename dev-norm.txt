@@ -1,0 +1,20 @@
+命名规范：
+	1: 数据库设计规范
+		1: 字段规范 用下划线_ 
+			ex: 
+				order_no 订单号
+		2：数字用num结尾
+			ex: 
+				complete_num  完成数量
+		3: 状态用 status 或 state
+		        auth_status 审核状态
+		4：时间都用_time结尾
+			inster_time
+			update_time
+		5: 省市区
+			provience
+			city
+			district
+		6: 记录用 _record 结尾
+			share_record
+			
