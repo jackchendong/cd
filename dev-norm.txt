@@ -17,4 +17,8 @@
 			district
 		6: 记录用 _record 结尾
 			share_record
+
+		7: 审核用 check 动词
+	
+		8: 认证用 auth 名词
 			
