@@ -12,7 +12,7 @@
 			inster_time
 			update_time
 		5: 省市区
-			provience
+			province
 			city
 			district
 		6: 记录用 _record 结尾
