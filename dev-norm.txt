@@ -8,6 +8,9 @@
 				complete_num  完成数量
 		3: 状态用 status 或 state
 		        auth_status 审核状态
+			0 无状态
+			1 成功
+			4 失败
 		4：时间都用_time结尾
 			inster_time
 			update_time
@@ -21,4 +24,5 @@
 		7: 审核用 check 动词
 	
 		8: 认证用 auth 名词
+
 			
