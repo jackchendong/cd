@@ -235,7 +235,11 @@ mongodb的使用:
                 { "_id" : ObjectId("5bc5471d43be0299a62e6483"), "name" : "王金鹏", "course" : [ "语文", "数学" ], "aa" : [ ] }
                 { "_id" : ObjectId("5bc5482043be0299a62e6484"), "parents" : [ { "name" : "父亲", "job" : "局长" } ], "aa" : [ ] }
                 { "_id" : ObjectId("5bc548b943be0299a62e6485"), "parents" : [ { "name" : "母亲", "job" : "医生" } ], "aa" : [ ] }
-
+	分组求和
+	    db.getCollection('user').aggregate([
+		{$match:{balance:{$gt:0}}},
+		{$group:{_id:null,num_total:{$sum:"$balance"}}}
+		])
         ObjectId: 对象
             ObjectId 是一个12字节 BSON 类型数据，有以下格式：
             前4个字节表示时间戳
