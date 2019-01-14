@@ -1,12 +1,14 @@
 var moment = require('moment')
-console.log(moment().format("YYYY-MM-DD HH:mm:ss"))
-console.log(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"))
-console.log(moment(12123332).format("YYYY-MM-DD HH:mm:ss"))
+// console.log(moment().format("YYYY-MM-DD HH:mm:ss"))
+// console.log(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"))
+// console.log(moment(12123332).format("YYYY-MM-DD HH:mm:ss"))
 console.log(moment("2017-11-11 12:12:13").format('x'))
 
-// 2018-12-07T16:17:48.673Z
-let a = moment('2018-12-08T00:55:48.673') - moment()//subtract(moment.duration(1,'h'))
+console.log(moment().toDate())
 
+// 2018-12-07T16:17:48.673Z
+let a = moment("2019-01-11T11:00:00.000Z") - moment()//subtract(moment.duration(1,'h'))
+console.log(a)
 h = parseInt(a / 3600000)
 m = parseInt(a / 60000)
 s = parseInt(a / 1000)
