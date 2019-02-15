@@ -4,6 +4,8 @@
     open in browser
     Vim
     vscode-icons
+    Path Intellisense
+    Chinese (Simplified) Language Pack for Visual Studio Code
 2:用户设置
   {
     //CTRL + , 打开用户设置
