@@ -4,9 +4,51 @@
     docker pull (镜像名字) 获取镜像
     docker images 查看本机的所有镜像
     docker run -it -d --name test 
-    docker run -d IMAGE_ID sleep infinity 启动镜像
+    docker run -d IMAGE_ID sleep infinity 启动镜像 后台运行-d
     docker ps 查看容器状态
     docker exec -it 容器ID /bin/bash 
     docker stop ID 停止
     docker commit 98 ubuntu_test1:1.0 制作docker镜像
+    docker commit -m '增加ssh' //先增镜像 如果镜像里面加了什么东西就提交镜像，这样就可以run 这个镜像了
     docker save -o ubuntu_test1.tar ubuntu_test1:1.0  打包镜像并查看
+    docker stop CONTAIN_ID 停止容器
+    docker ps -a     查找到该CONTAINER ID对应编号 历史记录也有
+    docker logs CONTAIN_ID 查看日志
+
+    docker run -ti ubuntu bash  运行ubuntu并进入bash
+    正确退出系统方式： 这种方式启动就要这样退出,绝对不能使用exit或者ctrl+d来退出，这样整个系统就退出了
+    先按，ctrl+p
+    再按，ctrl+q
+
+
+    docker attach CONTAIN_ID  进入系统（此时没反应，ctrl+c就进入到ubuntu系统中去了）
+    docker run ubuntu /bin/echo 'Hello world'  ---Hello world
+    sudo docker run -t -i ubuntu /bin/bash  交互式 -t 选项让Docker分配一个伪终端（pseudo-tty）并绑定到容器的标准输入上， -i 则让容器的标准输入保持打开
+
+    docker inspect CONTAIN_ID  //查看镜像的参数
+    
+    docker image prune  // 清理image
+    docker container prune // 清理容器
+
+
+
+docker 命令:
+    commit：
+        docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+        -a :提交的镜像作者；
+        -c :使用Dockerfile指令来创建镜像；
+        -m :提交时的说明文字；
+        -p :在commit时，将容器暂停。    
+
+        ex:
+             docker commit -a "runoob.com" -m "my apache" a404c6c174a2  mymysql:v1   //这里mymusql是仓库 v1是tag标签
+             docker images mymysql:v1
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+            mymysql             v1                  37af1236adef        15 seconds ago      329 MB
+
+
+ubuntu 
+    apt update  // ubuntu包管理器更新
+    apt install ssh // 安装ssh
+    service sshd status // 查看服务状态
+    service ssh start  // 服务启动
