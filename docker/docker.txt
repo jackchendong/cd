@@ -1,0 +1,12 @@
+命令: 
+    docker -v 查看版本
+    docker login 登录
+    docker pull (镜像名字) 获取镜像
+    docker images 查看本机的所有镜像
+    docker run -it -d --name test 
+    docker run -d IMAGE_ID sleep infinity 启动镜像
+    docker ps 查看容器状态
+    docker exec -it 容器ID /bin/bash 
+    docker stop ID 停止
+    docker commit 98 ubuntu_test1:1.0 制作docker镜像
+    docker save -o ubuntu_test1.tar ubuntu_test1:1.0  打包镜像并查看
