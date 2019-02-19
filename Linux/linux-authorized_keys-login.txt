@@ -1,0 +1,8 @@
+客户端:
+    ssh-keygen -t rsa -C "myname@my.local" // 与github 生成一样
+服务端:
+    /root/.ssh/authorized_keys  //这个文件放置客户端的publickey就行
+
+客户端登陆 
+    1: ssh -p 23565 root@192.168.0.137  回车输入密码
+    2: xshell 导入私钥文件 用文件登陆就行
