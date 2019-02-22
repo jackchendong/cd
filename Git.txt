@@ -169,6 +169,8 @@ git status 中文文件会出现中文乱码的情况：
 
 	$ git push origin -- tags  //推送所有的标签
 
+	git fetch origin tag V1.2  // 抓取指定标签的代码
+
 强制抓取远程版本在设置为最新代码
 
 	git fetch --all    //强制抓取云上的
