@@ -37,6 +37,18 @@
     docker inspect CONTAIN_ID  //查看镜像的参数
 
 docker 命令:
+    login:
+        $HOME/.docker/config.json  // 配置文件所在的位置
+
+          docker login [OPTIONS] [SERVER]
+          -p, --password string   Password
+          --password-stdin    Take the password from stdin
+          -u, --username string   Username
+
+    logout:
+        docker logout [SERVER]
+        ex: docker logout localhost:8080
+
     commit：
         docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
         -a :提交的镜像作者；
@@ -49,15 +61,152 @@ docker 命令:
              docker images mymysql:v1
              REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
              mymysql             v1                  37af1236adef        15 seconds ago      329 MB
+
+    start:
+        docker start [OPTIONS] CONTAINER [CONTAINER...]
+        Options:
+            -a, --attach               Attach STDOUT/STDERR and forward signals
+                --detach-keys string   Override the key sequence for detaching
+                                        a container
+            -i, --interactive          Attach container's STDIN
+        
+    stop:
+        docker stop [OPTIONS] CONTAINER [CONTAINER...]
+        Options:
+            -t, --time int   Seconds to wait for stop before killing it
+                            (default 10)
+
+
+    run:
+        ex: 
+            docker run -ti -p 3000:3000 -p 22:22 -e ENV=PRO --name test fiskzeroun.faceunity.com:5000/p2a-mq:v1.9.1 bash
     kill:
         docker kill [OPTIONS] CONTAINER [CONTAINER...]
         -s :向容器发送一个信号
         ex:
                 docker kill CONTAIN_ID  //杀掉容器
                 docker kill -s KILL mynginx // 杀掉容器里面的mynginx
+    
+    stop:
+        docker stop $(docker ps -a -q) // 停止所有的container
+    
+    rm:
+        docker rm $(docker ps -a -q) // 删除所有的container
+        docker rm container -f  // 强制删除
+
+    rmi:
+        docker rmi <image id>  //通过image的id来指定删除谁
+        docker rmi $(docker images -q) // 删除所有的images
+        docker rmi $(docker images | grep "^<none>" | awk "{print $3}")  // 想要删除untagged images，也就是那些id为<None>的image的话可以用
+    
+    container: 
+        docker container COMMAND
+        Commands:
+            attach      Attach local standard input, output, and error streams to a running container
+            commit      Create a new image from a container's changes
+            cp          Copy files/folders between a container and the local filesystem
+            create      Create a new container
+            diff        Inspect changes to files or directories on a container's filesystem
+            exec        Run a command in a running container
+            export      Export a container's filesystem as a tar archive
+            inspect     Display detailed information on one or more containers
+            kill        Kill one or more running containers
+            logs        Fetch the logs of a container
+            ls          List containers
+            pause       Pause all processes within one or more containers
+            port        List port mappings or a specific mapping for the container
+            prune       Remove all stopped containers
+            rename      Rename a container
+            restart     Restart one or more containers
+            rm          Remove one or more containers
+            run         Run a command in a new container
+            start       Start one or more stopped containers
+            stats       Display a live stream of container(s) resource usage statistics
+            stop        Stop one or more running containers
+            top         Display the running processes of a container
+            unpause     Unpause all processes within one or more containers
+            update      Update configuration of one or more containers
+            wait        Block until one or more containers stop, then print their exit codes
+
+    images:
+        docker images [OPTIONS] [REPOSITORY[:TAG]]
+        Options:
+            -a, --all             Show all images (default hides intermediate
+                                    images)
+                --digests         Show digests
+            -f, --filter filter   Filter output based on conditions provided
+                --format string   Pretty-print images using a Go template
+                --no-trunc        Don't truncate output
+            -q, --quiet           Only show numeric IDs
+
+    pull:
+        docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+        docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]
+        Options:
+        -a, --all-tags                Download all tagged images in the
+                                        repository
+        --disable-content-trust   Skip image verification (default true)
+        ex:
+            docker pull hello-world // 默认拉取最新的
+
+    push:
+        docker push [OPTIONS] NAME[:TAG]
+        Options:
+            --disable-content-trust   Skip image signing (default true)
+
+        ex: docker push registry-host:5000/myadmin/rhel-httpd
+    
+    top:
+        docker top CONTAINER [ps OPTIONS]
+        ex:
+           docker top f34asd445
+
+    save:  
+        docker save [OPTIONS] IMAGE [IMAGE...]
+        ex: docker save ubuntu:latest | gzip > ubuntu18.04.tar.gz
+    
+    load: 重新导入
+        docker load [OPTIONS]
+        ex: 
+            Options:
+                -i, --input string   Read from tar archive file, instead of STDIN
+                -q, --quiet          Suppress the load output
+        ex: 
+            docker load -i ubuntu18.04.tar.gz
+        
+
+    logs:
+        docker logs [OPTIONS] CONTAINER
+        Options:
+                --details        Show extra details provided to logs
+            -f, --follow         Follow log output
+                --since string   Show logs since timestamp (e.g.
+                                2013-01-02T13:23:37) or relative (e.g. 42m
+                                for 42 minutes)
+                --tail string    Number of lines to show from the end of the
+                                logs (default "all")
+            -t, --timestamps     Show timestamps
+                --until string   Show logs before a timestamp (e.g.
+                                2013-01-02T13:23:37) or relative (e.g. 42m
+                                for 42 minutes)
+            ex:
+                docker logs -f CONTAIN_ID --tail=200 |grep p2a
+
+推送本地镜像到远程:
+   1: docker tag local-image:tagname new-repo:tagname  // 把本地镜像的名字换掉，生成一个新的
+   2: docker push new-repo:tagname // push到远程仓库
 
 ubuntu 
     apt update  // ubuntu包管理器更新
     apt install ssh // 安装ssh
     service sshd status // 查看服务状态
     service ssh start  // 服务启动
+
+配置文件:
+    /etc/docker/daemon.json
+    {
+        "registry-mirrors": [
+            "https://registry.docker-cn.com"
+        ],
+        "insecure-registries" : ["192.168.0.35:5000","47.98.223.238:5000","fiskzeroun.faceunity.com:5000", "fiskzeroun.faceunity.com:4000"]
+    }
