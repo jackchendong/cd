@@ -37,14 +37,14 @@
     docker inspect CONTAIN_ID  //查看镜像的参数
 
 docker 命令:
-    login:
+    login: 可以登录多个仓库
         $HOME/.docker/config.json  // 配置文件所在的位置
 
           docker login [OPTIONS] [SERVER]
           -p, --password string   Password
           --password-stdin    Take the password from stdin
           -u, --username string   Username
-
+	docker login -u root [仓库地址]
     logout:
         docker logout [SERVER]
         ex: docker logout localhost:8080
@@ -205,10 +205,43 @@ ubuntu
     service ssh start  // 服务启动
 
 配置文件:
-    /etc/docker/daemon.json
+    /etc/docker/daemon.json  // 信任 镜像地址
     {
         "registry-mirrors": [
             "https://registry.docker-cn.com"
         ],
         "insecure-registries" : ["192.168.0.35:5000","47.98.223.238:5000","fiskzeroun.faceunity.com:5000", "fiskzeroun.faceunity.com:4000"]
     }
+
+
+    /root/.docker/config.json  // 登录的仓库
+    {
+        "auths": {
+                "fiskzeroun.faceunity.com:5000": {
+                        "auth": "ZmFjZXVuaXR5OmFIRFFiNlh5aio="
+                },
+                "https://index.docker.io/v1/": {
+                        "auth": "ZG9uZ3dpbnRlcm1lbG9uOjIwMDYxMDAxMDM="
+                }
+        },
+        "HttpHeaders": {
+                "User-Agent": "Docker-Client/18.09.3 (linux)"
+        }
+}
+
+
+
+docker 登录别人登录别人搭建的远程
+1: 配置安全仓库	
+	   /etc/docker/daemon.json
+	   	{ "insecure-registries" : ["122.224.254.235:5000","fiskzeroun.faceunity.com:5000"] }
+2: service docker restart 生效
+
+3: 服务器信任 系统添加跟证书信任 // ubuntu系统上如何添加新的根证书
+	/usr/local/share/ca-certificates 目录 将crt文件放在这个目录下面
+4: $sudo update-ca-certificates  
+	update-ca-certificates命令将PEM格式的根证书内容附加到/etc/ssl/certs/ca-certificates.crt ，而/etc/ssl/certs/ca-certificates.crt 包含了系统自带的各种可信根证书.
+删除证书：
+$sudo rm -f /usr/local/share/ca-certificates/证书名称.crt
+$sudo update-ca-certificates
+	
