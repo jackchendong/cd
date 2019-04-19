@@ -48,7 +48,9 @@
 		2. 在需要使用这些模块的文件中，通过 require 的方式引入这个模块。这个时候就可以
 			使用模块里面暴露的属性和方法。
 		3: 在require的时候不写路径就会一级一级向上着 node_modules 找 相应的js 或者 package.json 中的 main: '入口文件自定义'
-		
+		4: exports.msg 导出的是命名空间的 msg属性
+		5: module.exports 导出的是 class 是构造函数可以new的
+		6: NODE_PATH 环境变量被设为一个以冒号分割的绝对路径列表，则当在其他地方找不到模块时 Node.js 会搜索这些路径 node_modules路径
 
 http:
 	var server=http.createServer(function(req,res){
