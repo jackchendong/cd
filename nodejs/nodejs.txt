@@ -62,6 +62,22 @@ http:
 	     res.writeHead(200,{"Content-type":"text/html;charset=UTF-8"})  //设置返回的头部
 	});
 	server.listen(端口，[地址，] 回调函数)
+	
+https:
+	https.createServer({
+		key: readFileSync(resolve(__dirname, '../ssl/server.key')),
+		cert: readFileSync(resolve(__dirname, '../ssl/server.crt')),
+		ca: [
+			readFileSync(resolve(__dirname, '../ssl/ca.crt')),
+			readFileSync(resolve(__dirname, '../ssl/server.crt')),
+		],
+		requestCert: true,
+		rejectUnauthorized: true,
+	}, app.callback()).listen(config.port);
+
+	// koa 获得 证书信息
+	ctx.request.socket.getPeerCertificate();
+	
 fs:
 	1: fs.readFile()  // 读取小文件可以
 		参数：

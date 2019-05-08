@@ -82,6 +82,8 @@ docker 命令:
             docker run -ti -p 3000:3000 -p 22:22 -e ENV=PRO --name test fiskzeroun.faceunity.com:5000/p2a-mq:v1.9.1 bash
 
 	    docker run --restart unless-stopped --log-driver json-file --log-opt max-size=10m --log-opt max-file=3 -e ENV=PRO -d -p 8081:8081 --name user-center fiskzeroun.faceunity.com:5000/user-center:v1.0.0
+
+            docker run -it -p 22432:22 -d --name wggan 192.168.0.86:5000/wggan:0.4 bash
     kill:
         docker kill [OPTIONS] CONTAINER [CONTAINER...]
         -s :向容器发送一个信号
