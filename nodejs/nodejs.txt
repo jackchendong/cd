@@ -77,6 +77,8 @@ https:
 
 	// koa 获得 证书信息
 	ctx.request.socket.getPeerCertificate();
+	postman中要添加:
+		server.crt和server.key
 	
 fs:
 	1: fs.readFile()  // 读取小文件可以
