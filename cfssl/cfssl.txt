@@ -1,0 +1,97 @@
+cfssl：证书签发
+cfssljson：将 cfssl 生成的证书（json 格式）变为文件承载式证书
+cfssl-certinfo：验证查看证书的信息
+
+二进制安装软件:
+wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 -O /usr/local/bin/cfssl
+wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 -O /usr/local/bin/cfssljson
+wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64 -O /usr/local/bin/cfssl-certinfo
+chmod +x /usr/local/bin/cfssl /usr/local/bin/cfssljson /usr/local/bin/cfssl-certinfo
+ls /usr/local/bin/
+
+
+1: 根证书
+
+cat > ca-config.json <<EOF
+{
+    "signing": {
+        "default": {
+            "expiry": "175200h"
+        },
+        "profiles": {
+            "server": {
+                "expiry": "175200h",
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    #"server auth",
+                    "client auth"
+                ]
+            },
+            "client": {
+                "expiry": "175200h",
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "client auth"
+                ]
+            },
+            "peer": {				
+                "expiry": "175200h",
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "server auth",
+                    "client auth"
+                ]
+            }
+        }
+    }
+}
+EOF
+
+signing：表示该证书可用于签名其它证书，生成的 ca.pem 证书中 CA=TRUE
+server auth：表示 client 可以用该该证书对 server 提供的证书进行验证
+client auth：表示 server 可以用该该证书对 client 提供的证书进行验证
+
+cfssl gencert -initca ca-csr.json | cfssl-json -bare ca
+
+ca.csr
+ca-csr.json
+ca-key.pem	# 根证书的私钥
+ca.pem		# 根证书
+
+2: 签发证书
+cat > server-csr.json <<EOF
+{
+    "CN": "zun", # 机构名称，浏览器使用该字段验证网站是否合法，一般写的是域名，非常重要，浏览器使用该字段验证网站是否合法
+    "hosts": [
+    "172.16.1.83",
+    "172.16.1.85",
+    "172.16.1.86"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CN",		# C，国家
+            "ST": "beijing",	# ST 州，省
+            "L": "beijing",	# L 地区 城市
+            "O": "od",		# O 组织名称，公司名称
+            "OU": "ops"		# OU 组织单位名称，公司部门
+        }
+    ],
+    "ca": {
+        "expiry": "175200h"	# expiry 过期时间，任何证书都有过期时间.20年
+    }
+}
+EOF
+
+可信任主机：
+172.16.1.83
+172.16.1.85
+172.16.1.86
+    
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=www server-csr.json | cfssljson -bare server
