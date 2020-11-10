@@ -95,3 +95,101 @@ EOF
 172.16.1.86
     
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=www server-csr.json | cfssljson -bare server
+
+
+
+
+
+
+
+
+
+
+
+/************************************************************************************************************************************************************/
+
+1: 配置ca证书config
+{
+  "signing": {
+    "default": {
+      "expiry": "87600h" // 即1年
+    },
+    "profiles": {
+      "kubernetes": {
+        "usages": [
+            "signing",
+            "key encipherment",
+            "server auth",
+            "client auth"
+        ],
+        "expiry": "87600h"
+      }
+    }
+  }
+}
+
+ca-config.json：可以定义多个 profiles(指定了不同角色的配置信息)，分别指定不同的过期时间、使用场景等参数；后续在签名证书时使用某个 profile；此实例只有一个kubernetes模板。
+signing：表示该证书可用于签名其它证书；生成的 ca.pem 证书中 CA=TRUE；
+server auth：表示client可以用该 CA 对server提供的证书进行验证；
+client auth：表示server可以用该CA对client提供的证书进行验证；
+
+2： 证书签名请求文件
+{
+  "CN": "kubernetes", // Common Name
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+   "hosts": [  //hosts可以指定多个（泛）域名以及多个IP地址
+        "example.net",
+        "www.example.net"
+    ],
+  "names": [
+    {
+      "C": "CN", // Country
+      "ST": "BeiJing", // 州，省
+      "L": "BeiJing", // Locality，地区，城市
+      "O": "k8s",  // Organization
+      "OU": "4Paradigm" // Organization Unit Name，组织单位名称，公司部门
+    }
+  ],
+  "ca": {
+    "expiry": "876000h"
+ }
+}
+
+
+3：生成 CA 证书和私钥
+    cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+    ca 就是文件名
+会生成ca-key.pem（私钥）  ca.pem（公钥）ca.csr(证书请求)
+
+
+
+4: 然后使用刚才生成的CA来给服务器签署证书，运行如下命令来生成服务端证书：不需要设置过期时间，过期时间已经在profiles里面被设置
+
+{
+  "CN": "server", 
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+   "hosts": [  //hosts可以指定多个（泛）域名以及多个IP地址
+        "example.net",
+        "www.example.net"
+    ],
+  "names": [
+    {
+      "C": "CN",
+      "ST": "BeiJing",
+      "L": "BeiJing",
+      "O": "k8s",
+      "OU": "4Paradigm"
+    }
+  ]
+}
+
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=json/ca-config.json -profile=server json/server.json | cfssljson -bare server
+
+-profile指定了使用ca-config.json中的profile
+-将得到如下三个文件：server.csr、server-key.pem和server.pem
