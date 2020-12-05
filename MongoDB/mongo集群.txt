@@ -1,0 +1,74 @@
+1: mongo集群的主节点和其他节点之间是通过证书认证的，并且副本集中的所有成员使用的keyfile必须一样。
+   创建证书: openssl rand -base64 741 > mongo-keyfile
+
+2: 启动服务:
+docker run -d --name mongo1 -p 30001:27017 --hostname mongo1 \
+-v /root/keyfile:/data/keyfile \
+harbor.faceunity.com/library/mongo:latest bash -c "chmod 400 /data/keyfile/mongo-keyfile && mongod --bind_ip 0.0.0.0 --replSet rs1name --keyFile /data/keyfile/mongo-keyfile"
+
+docker run -d --name mongo2 -p 30002:27017 --hostname mongo2 \
+-v /root/keyfile:/data/keyfile \
+harbor.faceunity.com/library/mongo:latest bash -c "chmod 400 /data/keyfile/mongo-keyfile && mongod --bind_ip 0.0.0.0 --replSet rs1name --keyFile /data/keyfile/mongo-keyfile"
+
+docker run -d --name mongo3 -p 30003:27017 --hostname mongo3 \
+-v /root/keyfile:/data/keyfile \
+harbor.faceunity.com/library/mongo:latest bash -c "chmod 400 /data/keyfile/mongo-keyfile && mongod --bind_ip 0.0.0.0 --replSet rs1name --keyFile /data/keyfile/mongo-keyfile"
+
+
+3: 添加集群
+
+docker exec -it mongo1 mongo;
+
+cfg = {"_id" : "rs1name","members" : 
+    [{"_id" : 0,"host" : "47.96.226.176:30001"},{"_id" : 1,"host" : "47.96.226.176:30002"},{"_id" : 2,"host" : "47.96.226.176:30003"}]
+}
+
+rs.initiate(cfg)
+
+查看副本集状态,暂停其中的一个节点在看状态
+rs.status()
+
+添加节点
+rs.add("node3:27018")
+
+
+添加仲裁节点-因仲裁节点实际上并不存储任何数据，所以无法通过连接仲裁节点查看刚刚插入的文档
+rs.addArb("node3:27019")
+
+
+4: 创建用户
+use admin;
+db.createUser(
+  {
+   user: "dba",
+    pwd: "dba",
+     roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+ )
+
+db.createUser( 
+	{
+	 user: "root",
+	 pwd: "root",
+	 roles: [{role:"root",db:"admin"}]
+	}
+ );
+
+db.createUser({
+    user:'rd',
+    pwd:'rd',
+    roles:[{role:'readWrite', db:'test'}]
+})
+
+db.createUser({
+    user:'cd',
+    pwd:'cd',
+    roles:[{role:"userAdminAnyDatabase", db:"admin"}, {role:"readWriteAnyDatabase", db:"admin"}]
+})
+
+5: 数据
+db.test.insert({"name":"test repl"});
+show collections
+
+// 其他节点不允许查看数据需要开启
+SECONDARY> rs.slaveOk();
