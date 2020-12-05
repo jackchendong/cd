@@ -72,3 +72,15 @@ show collections
 
 // 其他节点不允许查看数据需要开启
 SECONDARY> rs.slaveOk();
+
+
+6: 不需要密码
+docker run -d --name mongo1 -p 30001:27017 harbor.faceunity.com/library/mongo:latest mongod --replSet rs1name
+docker run -d --name mongo2 -p 30002:27017 harbor.faceunity.com/library/mongo:latest mongod --replSet rs1name
+docker run -d --name mongo3 -p 30003:27017 harbor.faceunity.com/library/mongo:latest mongod --replSet rs1name
+
+docker exec -it mongo1 mongo
+cfg = {"_id" : "rs1name","members" : 
+    [{"_id" : 0,"host" : "47.96.226.176:30001"},{"_id" : 1,"host" : "47.96.226.176:30002"},{"_id" : 2,"host" : "47.96.226.176:30003"}]
+}
+rs.initiate(cfg)
