@@ -1,0 +1,960 @@
+python解释器:
+    CPython: C语言开发的解释器（官方）
+    IPython: 基于CPython的一种交互式解释器
+    PyPy: 基于Python语言开发的解释器
+    Jython: 运行在Java平台的解释器，直接把Python代码编译成Java字节码执行
+    IornPython: 运行在.Net平台上面的解释器，可以直接把Python代码编译成.Net的字节码
+
+数据类型:
+    int
+    float
+    bool
+    str(字符串)
+    list(列表)
+    tuple(元组)
+    set(集合)
+    dict(字典)
+
+格式化输入:
+    格式化符号:
+        %s: 字符串
+        %d: 有符号的十进制整数
+        %f: 浮点数
+        %c: 字符
+        %u: 无符号的十进制整数
+        %o: 八进制整数
+        %x: 十六进制整数(小写)
+        %X: 十六进制整数(大写)
+        %e: 科学计数法(小写e)
+        %E: 科学计数法(大写E)
+        %g: %f和%e的简写
+        %G: %f和%E的简写
+
+        %06d: 表示输出的整数显示位数,不足以0补全超出当前则原样输出
+        %.2f: 表示小数点后显示的小树位数
+
+
+    例子:
+        print("%s" % "name")
+        print("%d" % 1)
+        print("%f" % 1.1)  # 1.100000
+        print("%03d" % 1)  # 001
+        print("%.3f" % 1.1)  # 1.100
+        print("%s %d" % ("name", 18))
+
+模板字符串（3.6新增）: f''
+     例子:
+        print(f'我的名字是{age}')
+
+交互式输入:
+    VAR = input("提示信息")
+
+数据转换
+    int(X,[base])           将X转换为一个整数
+    float(X)                将X转换为一个浮点数
+    complex(real,[imag])   创建一个复数,real为实部，imag为虚部
+    str(X)                  将对象X转换为字符串
+    repr(X)                 将对象X转换为表达式字符串
+    eval(str)               用来计算在字符串中有效的python表达式,并返回一个对象
+    tuple(S)                将序列s转换为一个元组
+    list(S)                 将序列s转换为一个列表
+    chr(X)                  将一个整数转换为一个unicode字符
+    ord(X)                  将一个整数字符转换为ASCII整数
+    hex(X)                  将一个整数转换为一个16进制的数
+    oct(X)                  将一个整数转换为一个8进制的数
+    bin(X)                  将一个整数转换为一个2进制的数
+
+运算符:
+    算数运算符:
+            + 加
+            - 减
+            / 除
+            * 乘
+            // 整除
+            %  取余
+            ** 指数
+            ()
+            优先级: () 大于 ** 大于 * / // % 大于 + -
+
+    赋值运算符:
+            =
+            单个变量赋值: num1 = 1
+            多个变量赋值: num1,num2 = 1 ,2
+            多变量赋相同值: a = b = 10
+    复合赋值运算符:
+            +=
+            -+
+            *=
+            /=
+            //=
+            %=
+            **=
+    比较运算符(关系运算符):
+            ==
+            !=
+            >
+            <
+            >=
+            <=
+    逻辑运算符:
+        and 与
+        or  或
+        not 非
+
+        数字之间的逻辑运算符
+            # and运算符，只要有一个值为0，则结果为0，否则结果为最后一个数字
+            # or 运算法, 只有所有的值未0结果才为0，否则结果为第一个非0的数字
+
+            拓展: 1 and 2  返回2
+                  0 and 1  返回0
+                  2 and 1  返回1
+                  0 or 1  返回1
+                  2 or 1  返回2
+
+            if age >=18 and age <= 60  化简  if 18 <= age <= 60
+
+     三目运算符:
+            条件成立的表达式 if 条件 else 条件不成立的表达式
+            c =  a if a > b else b  # 返回 a b 中最大的值
+
+
+条件语句:
+    if 条件:
+        代码1
+        代码2
+    elif 条件:
+        代码5
+        代码6
+    else:
+        代码3
+        代码4
+
+
+流程控制:
+    while
+        while 条件:
+            代码1
+            continue
+            代码2
+            break
+
+    while 和 else
+        while 条件:
+            代码块1
+            代码块2
+        else:  # 正常退出之后才执行，break 之后不会执行 continue是会执行的
+            代码块3
+
+    for
+        for 临时变量 in 序列:
+            代码块1
+            代码块2
+        str 1 = "name"
+        for i in str1:
+            print(i)
+
+    for 和 else
+         for 临时变量 in 序列:
+             代码块1
+             代码块2
+         else :
+            代码块3  # 只有正常循环结束的时候才会执行
+
+
+字符串:
+        单引号、双引号和三引号都可以表示字符串
+        字符串切片（切割）:
+            序列[开始:结束:步长]
+            开始: 默认值是0  -1表示最后一个数字
+            结束： 默认只是末尾
+            步长： 默认是1  可以是负数
+
+             序列[:]  表示开始到结束
+             序列[::-1] 表示倒叙
+
+        str.find(子串,开始下标,结束下标) 返回开始的下标 -1表示没有找到
+        str.rfind()  从右侧开始查找 也就是找到的是最后匹配的一个
+        str.index(子串,开始下标,结束下标) 返回开始的下标 不存在就会报错
+        str.rindex() 从右侧开始查找
+        str.count(子串,开始下标,结束下标) 返回出现的次数 0 表示没有出现
+
+        str.replace(旧子串,新子串,替换次数)  返回新串,不会修改原字符串
+        str.split(分割字符,次数) 返回的是分割之后的列表  默认全部分割
+        str.join(字符串组成的序列) 合并列表里面的字符串组成的序列以str字符来合并
+
+        str.capitalize() 将字符串第一个字符转成大写
+        str.title() 每个单词的首字母转大写
+        str.lower()
+        str.upper()
+
+        str.lstrip()删除字符串左侧的空白
+        str.rstrip()删除字符串右侧的空白
+        str.strip()删除字符串两侧的空白
+
+        str.ljust(长度, 填充字符)  返回一个原字符串左对齐，并使用指定字符（默认空格）填充至对应得长度
+        str.rjust(长度, 填充字符) 返回一个原字符串右对齐，并使用指定字符（默认空格）填充至对应得长度
+        str.center(长度, 填充字符)
+
+        str.startswith(子串,开始位置,结束位置)
+        str.endswith(子串,开始位置,结束位置)
+
+        str.isalpha() 如果字符串中至少有一个字符并且所有的字符都是字母则返回True 否则False
+        str.isdigit()  都是数字则返回True
+        str.isalnum()  如果都是数字或字母或组合 则返回True
+        str.isspace()   都是空格才是True
+
+
+列表:
+    list.index(数据,开始,结束) 不存在则报错
+    list.count(数据) 不存在则返回0
+    len(list) 返回list长度
+
+    数据 in list 判断指定的数据是否在列表中
+    数据 not in list 判断指定的数据不在列表中
+
+    list.append(数据) 追加数据，列表数据类型可以改变
+    list.extend(数据)  追加数据, 如果数据是列表，将会列表展开在追加
+    list.insert(位置,数据)
+
+    del  删除数据 del 变量  或者 del list[index]
+    list.pop(index) 删除指定位置的数据 默认删除最后一个数据, 返回被删除之后的列表
+    list.remove(数据)  删除指定的数据 删除第一个匹配的
+    list.clear()  清空列表
+
+    list.reverse()  逆置
+    list.sort(key=None,reverse=False)   排序 reverse=true就是降序，默认升序
+
+    list.copy()
+
+元组: 元组可以存储多个数据，元组内的数据是不能修改的, 引用类型可以修改比如list
+    t = (1,2,3)
+    t= (1,)  单个数据要加,号
+
+    t.index(数据,开始,结束)
+    t.count(数据)
+    len(t)
+
+
+字典:
+    dict = {}
+
+    dict[key] = 数据 更新，增加，查找(不存在就报错)
+    del dict[ket]  删除数据
+    dict.clear() 清空数据
+    dict.get(key,默认值)
+    dict.keys()
+    dict.values()
+    dict.items()  返回列表，列表数据是元组(key,value)
+
+    for key,value in dict items()
+
+
+集合set：去重,没有顺序，不支持下标操作
+    set = {数据}  # 有数据可以用这个
+    set = set() # 没有数据，创建空数据只能用这个
+
+    set.add(数据)  数据类型要只一样，不然会报错
+    set.update([数据])  增加序列
+
+    set.remove(数据)  删除指定的数据，不存在就报错
+    set.discard(数据)   删除指定的数据,不存在没关系
+    set.pop()  随机删除，并返回
+
+    数据 in set 判断在不在集合
+    数据 not in set 判断不在集合
+
+公共运算符:
+    str + str   合并字符串
+    list +list   合并新的列表
+    tuple + tuple 合并元组
+    dict + dict  报错，字典不支持
+
+    str * num 复制
+    list * num 复制
+    tuple * tuple 复制
+
+    数据 in str
+    数据 in list
+    数据 in tuple
+    数据 in set
+    数据 in dict
+
+    数据 not in str
+    数据 not in list
+    数据 not in tuple
+    数据 not in set
+    数据 not in dict
+
+    len()
+    del 或 del()
+    max()   返回容器中最大值
+    min()    返回容器中最小值
+    range(start,end,step) 生成 start 到 end 的数字，步长为step,供 for 循环使用,返回的是一个可迭代的对象
+    enumerate(可遍历对象,start = 0)  用于将一个可遍历的数据对象(如列表元组或字符串)组合成为一个索引序列
+                 同时列出数据和数据下标，一般用在for 循环当中
+                 元组第一个是对应得下标，第二个是迭代对象的数据
+
+        for i in range(1,10,1)  # 默认不写开始就是0  步长默认就是1
+            print(i)
+
+        for i in enumerate(list)
+            print(i)
+
+    如果这里的数据是词典，就会只有key
+    tuple(数据) 将数据转元组
+    list(数据)  将数据转换成列表
+    set(数据)       将数据转集合
+
+
+推导式: 主要用来化简代码
+    列表推导式(列表生成式):
+        用一个表达式创建有规律的列表或控制一个有规律列表
+        list = [i for i in range(10)]
+        list = [i for i in range(10) if i % 2 == 0 ]
+        list = [(i,j) for i in range(1,3)  for j in range(3)]
+
+
+    字典推导式:
+        dict = { i: i**2 for i in range(1,5) }
+        dict = { list1[i]:list2[i] for i in range(len(list))}
+        dict = { key:value for key,value in counts,items() if value > 200 }
+
+
+    集合推导式:
+        set  = { i **2 for i in list1}
+
+
+函数:
+    def 函数名(参数):
+        代码1
+        代码2
+
+    函数说明文档:
+        help(len)
+
+    def sum(a,b):
+        '''
+           :param a: 参数1
+           :param b: 参数2
+           :return: 返回值
+        '''
+        return a + b
+
+
+    局部变量:
+        定义在函数体内部的变量
+    全局变量:
+        修改
+            def test():
+                gloab a
+                a = 200  #这里修改的是全局的变量
+
+    参数:
+        位置参数: 个数一定对应
+        关键字参数: 不分先后顺序,但是位置参数必须在关键字参数的前面
+            def user_info(name,age,gender):
+            user_info('Rose',gender='男',age=20)
+        缺省参数:也叫默认参数,设定默认值得参数必须在最后面
+            def user_info(name,age,gender='男'):
+        不定长参数:也叫可变参数
+            包裹位置传递:
+                def user_info(*args):
+                    print(args) # 这里是元组
+            包裹关键字传递:
+                def user_info(**kwargs):
+                    print(kwargs) #这里是字典
+
+                user_info(name='tom',age=20)
+
+拆包: 有点像解构
+    def return_num():
+        return 100,200
+     num1,num2 = return_num
+
+     dict1 = {"name":"tom","age":10}
+     a,b = dict1  # a =name b = age
+
+交换变量:
+    a,b = 1,2
+    a,b = b,a
+
+引用:
+    python中值都是引用传递
+    id(变量) # 查看地址
+
+    不可变类型
+        int
+        float
+        str
+        tuple
+    可变类型
+        list
+            def test(a):
+                print(id(a))  #这个地址和下面地址一样
+                a += a
+                print(id(a))  #这个地址和上面地址一样
+        set
+
+        dict
+
+
+递归:
+
+lambda 表达式: 如果一个函数有一个返回值，并且只有一句代码，可以使用lambda简化
+    lambda 参数列表: 表达式
+        lambda表达式的参数可有可无，函数的参数在lambda表达式中完全适用
+        lambda表达式能接受任何数量的参数但只能返回一个表达式的值
+
+    def fn1():
+        return 100
+    print(fn1)
+    print(fn1())
+
+    fn2 = lambda: 100
+    print(fn2)
+    print(fn2())
+
+    def add(a,b):
+        return a + b
+
+    add(1,2)
+
+
+    fn1 = lambda a,b: a + b
+    fn1(1,2)
+
+    无参数
+    fn1 = lambda : 100
+    print(fn1())  # 返回100
+
+    一个参数
+    fn1 = lambda a : a
+    print(fn1(100))  # 返回100
+
+    默认参数
+    fn1 = lambda a,b,c=100 : a+b+c
+    print(fn1(10,20))
+
+    可变参数: *args
+    fn1 = lambda *args : args
+    print(fn1(10,20,30))  # 这里返回元组
+
+    可变参数: **kwargs
+    fn1 = lambda **kwargs: kwargs
+    print(fn1(name="py",age=20)) # 这里返回字典
+
+    带判断的lambda:
+        fn1 = lambda a,b : a if a > b else b
+        print(fn1(100,500))  # 返回最大值
+
+    列表数据按字典key的值排序:
+        stus = [{"name":"TOM","age":20},{"name":"ROSE","age":18},{"name":"jack","age":22}]
+        stus.sort(key = lambda x: x["age"],reverse=True)
+
+
+
+高阶函数: 将函数作为参数传入,这样的函数称为高阶函数，高阶函数是函数式编程的体现
+          函数式编程就是指这种高度抽象的编程范式
+
+        abs(-10) 求绝对值
+        round(1.9) 四舍五入
+
+        普通方法:
+        def add_sum(a,b):
+            return abs(a) + abs(b)
+        add_sum(-1,2)
+
+        高阶函数
+        def sum_num(a,b,f):
+            return f(a) + f(b)
+
+
+内置高阶函数:
+    map: 将传入的函数变量func作用到lst变量的每个元素中,并将结果组成新的列表(py2) 或 迭代器(py3) 返回
+        list1 = [1,2,3]
+        def func(x):
+            return x ** 2
+        result = map(func,list1)  # 这里返回的地址
+        print(list(result))
+
+    reduce：每次func计算的结果继续和序列的下一个元素做累计计算
+        reduce(func,list)  #注意func必须有2个参数
+
+
+        import functools
+        def func (a,b):
+            return a + b
+        result = functools.reduce(func,[1,2,3])
+        print(result)
+
+
+        import  functools
+        result = functools.reduce(lambda a,b: a + b ,[1,2,3,4,5])
+        print(result)
+
+
+
+    filter: 函数用于过滤序列，过滤掉不符合条件的元素，返回一个filter对象，如果要转换为list
+            可以使用list() 来转换
+
+            list1 = [1,2,3,4,5,6]
+            def func(x):
+                return x % 2 == 0
+
+            result = filter(func,list1)
+            print(result)  # 返回的filter对象, 获取之后就为空了
+            print(list(result) )
+
+文件操作:
+    打开文件:
+        open(name,mode)  #打开或者创建
+        name: 打开的目标文件名字符串
+        mode: 设置打开文件的模式(访问模式): 只读，写入，追加等
+            r: 只读方式打开文件 文件不存在则报错
+            rb: 二进制打开一个文件只读
+            r+: 读写  不会删除原有的内容
+            rb+: 二进制文件打开读写
+            w: 写 文件不存在则新建
+            wb: 二进制文件写入
+            w+: 读写  会删除原有的内容
+            wb+： 二进制格式打开一个文件用于读写，原有内容会删除，从头开始
+            a: 追加文件
+            ab: 二进制追加
+            a+: 读写
+            ab+: 二进制追加
+    读写文件:
+       文件对象.read(num)  读取的字节长度，默认读取所有的内容
+       文件对象.readline()  一次读取一行
+       文件对象.readlines()
+       文件对象.write('内容')
+       文件对象.seek(偏移量,起始位置) 移动文件指针
+            起始位置: 0文件开头  1当前位置 2文件结尾
+    关闭文件:
+        文件对象.close()
+
+    os 模块:
+        os.rename() 文件和文件夹都行
+        os.remove(目录)
+        os.mkdir(目录)
+        os.rmdir(目录)
+        os.chdir(目录) 修改当前工作目录
+        os.listdir(目录)  列表
+        os.getcwd()
+
+
+
+类:  class 类名():
+        代码
+
+      例子:
+        class Washer():
+            def wash(self):  # self指的是调用该函数的对象
+                print()
+        haier = Washer()
+
+      魔法方法:
+        __XX__() 这样的函数叫做魔法方法，就是指具有特殊功能的函数
+
+        class Washer():
+            def __init__(self):
+                #添加实例属性
+
+        __init__() 方法在创建的时候被默认调用，不需要手动调用
+        __init__(self) 中的self参数不需要传递，解释器会自动把当前的对象引用传递过去
+
+        __init__(self,width,height)  #初始化的时候需要传入参数
+
+
+        __str__() 打印对象的时候默认打印内存地址，可以修改此方法，这样就会打印这个方法中的return地址,一般写解释说明的信息
+
+        __del__() 当删除对象的时候解释器会调用的方法
+
+继承:
+    经典类:  # (默认2.7)
+        class 类名:
+            代码块
+
+    新式类: # (默认3.0以上)
+        class 类名(object):  #默认继承object
+            代码块
+
+    单继承:
+        #父类
+        class A(object):
+            def __init__(self):
+
+        #子类:
+        class B(A):
+            pass
+
+        result = B()
+        result.info_print()
+
+    多继承:
+        class A(B,C): #多继承 当一个类有多个父类的时候，默认使用第一个父类的同名方法和属性
+            pass
+
+    重写: 子类重写父类同名方法和属性
+
+    查看类的层级关系:
+        类名.__mro__  #注意部署实例
+
+
+    子类调用父类的同名方法和属性: #这样的方法繁琐，在加一个又需要添加好多的代码
+        Class A():
+            pass
+
+        Class B(A):
+
+            def fun2(self):
+                self.__init()
+                self.XXXXXX  #这里使用自己的方法
+
+            def fun(self):
+                A.__init__(self)
+                A.XXXX(self) #这里调用A父类的方法
+            pass
+
+    super()调用父类的方法:
+        #这种方法是有参数写法，和上面的方法很像
+        super(当前类型,self).__init()
+        super(当前类型,self).XXXX()
+
+    设置私有权限:
+        定义私有属性和方法: 在属性名字和方法的名字前面加上__
+
+    获取和修改私有属性:
+        get_xxx()
+        set_xxx()
+
+
+    封装:
+        将属性和方法写到类里面的操作就是封装
+    继承:
+        子类继承父类的所有属性和方法
+        子类可以修改和重写父类属性和方法
+    多态:
+        传入不同的对象的时候，产生不同的结果， [有点像面向接口]
+         定义: 多态是一种使用对象的方式，子类重写父类的方法，调用不同的子类对象的相同的父类方法，可以产生不同的结果
+
+        class A:
+            worker()
+            pass
+
+        Class B(A):
+            worker() #重写父类的方法
+            pass
+
+        Class C(A):
+            worker()  worker()
+            pass
+
+        Class D():
+            def fun(xx):  # 这里的XX就是上面的实例，就实现了work的结果不同
+                xx.worker()
+
+
+    类方法:
+        当方法需要使用类对象的私有属性时候, 无需实例化，可以通过类直接调用的方法，但是方法的第一个参数接收的一定是类本身
+        (1).在方法上面添加@classmethod
+        (2).方法的参数为 cls 也可以是其他名称，但是一般默认为cls
+        (3).cls 指向 类对象
+        (5).应用场景：当一个方法中只涉及到静态属性的时候可以使用类方法(类方法用来修改类属性)。
+        (5).使用 可以是 对象名.类方法名。或者是 类名.类方法名
+        class Dog:
+           __A = 10
+
+           @classmethod
+           def fun(self):
+               return self.__A
+
+
+        print(Dog.fun()) #这里可以不用实例化就能用到类中的方法
+
+    静态方法:
+        (1).格式：在方法上面添加 @staticmethod
+        (2).参数：静态方法可以有参数也可以无参数
+        (3).应用场景：一般用于和类对象以及实例对象无关的代码。[这样减少不必要的内存占用]
+        (4).使用方式： 类名.类方法名(或者对象名.类方法名)。
+
+        class Game:
+
+          @staticmethod
+          def menu():  # [注意这里没参数]
+            print('------')
+            print('开始[1]')
+            print('暂停[2]')
+            print('退出[3]')
+
+
+        Game.menu()
+
+
+异常:
+    try:
+        可能发生错误的代码
+    except:
+        异常之后执行的代码
+
+
+    捕获指定异常:
+        try:
+
+        except (异常的名字,异常的名字) as result:
+
+    捕获所有的异常:
+        try:
+        except Exception as result: # Exception是所有异常的父类
+
+    try:
+    except:
+    else: #没有异常时候的执行
+
+    try:
+    except:
+    else:
+    finally: #无论是否有错误都会执行的代码,例如关闭文件
+
+    自定义异常类:
+        class ShortInputError(Exception):
+            def __init__(self):
+                xxx
+            def __str__(self):
+                return ""  #设置异常抛出的信息
+
+
+
+模块和包:
+    导入模块:
+        import 模块名
+        import 功能名
+        import 模块名 as 别名
+        import 模块1,模块2  #不建议
+
+        from 模块名 import 功能名1,功能名2
+
+        from 模块名 import *
+
+        from 模块名 import 功能名 as 别名
+
+
+        if __name__ == "__main__":
+            test()
+
+    模块导入的顺序:
+        1: 当前目录
+        2: PYTHONPATH下的每个目录
+        3: 默认路径 /usr/local/lib/python
+
+
+    __all__ :如果一个模块文件找那个有__all__变量，当使用from xxx import * 导入的时候只能导入这个列表中的元素
+
+       比如: __all__ = ["testA"]
+
+
+
+包: 将有联系的模块组织在一起，放到同一文件夹下面，并且在这个文件夹创建一个名字为__init__.py 文件，这个文件夹就是包
+
+    方式一:
+        import 包名.module
+        包名.module.功能
+    方式二:
+        需要在__init__.py 文件中添加 __all__ = [module]
+        from 包 import *  #这样就能使用了
+
+
+__dict__
+
+    class A:
+    a = 0  # 类属性
+    def __init__(self):  # 类函数 魔法方法
+        self.b = 1  # 实例属性
+    aa = A()
+    print(A.__dict__)  # 这里很多类的很多东西
+    print(aa.__dict__)  # {b:1}
+
+
+    newList = [i.__dict__ for i in self.student_list] # 列表推导式
+
+
+多任务编程:
+    并发: 在一段时间内交替执行
+    并行: 多个内核一起执行软件
+
+    进程:  一个正在运行的程序或者软件就是一个进程,他是操作系统进行资源分配的基本单位
+           也就是说操作系统或给其分配一定的运行资源（内存）保证其运行
+    线程:  一个程序运行之后至少一个进程，一个进程默认有一个线程，进程里面可以创建多个线程，
+            线程是依附在进程里面的，没有进程就没有线程
+
+
+    import mutliprocessing
+
+    Process([group[,target[,name[,args[,kwargs[]]]]]])
+    group: 指定的进程组
+    target: 执行的目标任务
+    name: 进程名字，默认Process-N
+    args: 以元组的方式给执行任务传参
+    kwargs: 以字典方式给执行任务传参
+
+    Process 创建的实例常用方法:
+    start() 启动，创建子进程  #子进程是无序执行，CPU调度的，不过先执行主进程
+    join()  等待子进程执行结束
+    terminate() 不管任务是否完成，立即 停止子进程
+
+    Process.daemon = true 这样主进程退出，子进程也会退出,或者主动执行关闭子进程
+
+    注意:
+        1：进程之间不共享全局变量
+        2：主进程会等待所有的子进程执行结束在结束
+        3： windows会拷贝主进程执行的代码，所以，对于windows来说会递归创建子进程, if __name == __main__ 来解决
+            mac和linux 不会这样
+
+    os.getpid()  获取当前进程编号
+    os.getppid() 获取父进程编号
+
+
+    线程是进程中执行代码的分支，每个分支(线程)执行工作需要CPU调度，也就是说线程是CPU调度的基本单元，每个进程至少一个线程，这个线程就是我们说的主线程
+    import threading
+    Thread(group[,target][,name][,arg][,kwargs])
+    group: 线程组
+    target:执行的目标任务
+    args:元组传参
+    kwargs: 字典传参
+    name: 线程名,不设置的话是 Thread-1
+
+    注意:
+        1: 线程之间的执行是无序的
+        2：主线程会等待所有的子线程执行结束在结束
+        3：线程之间共享全局变量
+        4：线程之前共全局变量出现错误问题,因为是并发，所有有可能加的时候还是老数据
+            a: 解决可以加线程同步, join
+            b: 互斥锁, 对共享数据锁定，保证同时只有一个线程去操作
+            lock = threading.Lock()
+            lock.acquire() #加锁
+                代码操作
+            lock.release() # 解锁
+
+
+        区别:
+            1: 进程不共享全局变量
+            2: 线程共享全局变量
+            3: 创建进程的资源开销比线程资源开销大
+            4： 多进程开发比单进程多线程开发稳定性强，比如子进程挂了，还有其他进程
+
+        优缺点:
+            进程: 可以用多核，资源开销大  # 计算密集型用多进程
+            线程：资源开销小，不能使用多核 # 文件写入 下载,i/o
+
+
+TCP(transmission control protocol): 传输控制协议, 面向连接的，可靠的，基于字节流的传输层通讯协议
+    可靠传输:
+        TCP采用应答机制
+        超市重传
+        错误校验
+        流量控制
+        阻塞管理
+
+socket(套接字): 进程之间通信的工具
+
+    客户端开发:
+        import socket
+
+        if __name__ == '__main__':
+            # AF_INET IPV4地址类型
+            # SOCK_STREAM TCP传输协议
+            tcp_client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            # 客户端绑定端口号，一般不用
+            tcp_client_socket.bind(("",8900))
+            tcp_client_socket.connect(("127.0.0.1",9090))
+            send_content = "hello"
+            send_data = send_content.encode("utf-8")
+            tcp_client_socket.send(send_data)
+            # 1024 表示每次接受的最大字节数
+            # recv_data 接受到的二进制数据
+            recv_data = tcp_client_socket.recv(1024)
+            recv_content = recv_data.decode("utf-8")
+            tcp_client_socket.close()
+
+    服务端开发:
+        import socket
+
+        if __name__ == '__main__':
+            # AF_INET IPV4地址类型
+            # SOCK_STREAM TCP传输协议
+            tcp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            # host 一般不指定,空 port
+            tcp_server_socket.bind(("127.0.0.1", 8080))
+            # SOL_SOCKET 当前套接字
+            # SO_REUSEPORT 端口号复用 不设置的话，服务端程序退出，端口号监听还是存在
+            # True 确定
+            tcp_server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, True)
+            #  backlog 128 表示最大等待的连接数
+            tcp_server_socket.listen(128)
+            # 等待客户端的连接请求，返回新的socket
+            new_client, ip_port = tcp_server_socket.accept()
+
+            """
+             new_client, ip_port =  (SOCKET,(host,port))
+            """
+            # 1024 设置接受到最大字节数
+            recv_data = new_client.recv(1024)
+            recv_content = recv_data.decode("utf-8")
+            # 发送二进制数据
+            new_client.send("hello".encode("utf-8"))
+            new_client.close()
+
+            tcp_server_socket.close()
+
+
+    注意:
+           1: 客户端一般不用绑定端口号
+           2：服务端必须绑定端口号
+           3: listen 后获得的套接字，只负责接受新的客户端的连接请求，不能收发消息
+           4：客户端和服务端连接后，服务端会产生一个新的socket，这个socket负责和客户端收发消息
+           5：关闭accept返回的套接字（就是和客户端收发消息的socket），意味和这个客户端已经通信完毕
+           6：关闭listen后的套接字，意味着服务端的套接字关闭了，会导致新的客户端无法连接
+              但是之前已经连接的客户端还能正常通信
+           7：客户端的套接字close之后，服务端的recv会解阻塞，返回的数据为0，服务端可以通过返回的数据长度来判断客户端是否下线，
+                反之服务端关闭socket，客户端的recv也会解阻塞，返回的数据为0
+
+    recv和send: 发送的时候会将数据写到发送缓冲区，接受数据的时候是冲接受缓存区获取，
+                是操作系统控制网卡的发送和获取
+
+
+
+web服务器:
+    # 启动web服务器
+    python3 -m http.server 9000
+
+    # 自定义服务器，且封装http
+    import  socket
+
+    if __name__ == '__main__':
+        tcp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        tcp_server_socket.bind(("",80))
+        tcp_server_socket.listen(228)
+        while True:
+            new_socket,ip_port = tcp_server_socket.accept()
+            recv_data = new_socket.recv(4096)
+            # 接收到数据了
+            with open("/static/index.html","rb") as file: # 读取二进制兼容图片
+                file_data = file.read()
+            #封装http协议
+            # 响应行
+            response_line = "HTTP/1.1 200 ok\r\n"
+            # 响应头
+            response_header = "Server: PWS/1.0\r\n"
+            # 空行
+            # 响应体
+            response_body = file_data
+            response = (response_line + response_header + "\r\n" ).encode("utf-8")+ response_body
+            new_socket.send(response)
+
+
+
+sys 获取终端参数
+    params = sys.argv # 返回一个列表，第一个是文件名，后面一次是输入的参数
+
+
+
+    
