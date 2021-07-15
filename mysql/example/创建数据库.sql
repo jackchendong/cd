@@ -1,0 +1,1 @@
+UPDATE table_name SET salary = 1000 WHERE name = '陈东';

@@ -1,0 +1,400 @@
+sql语言主要分为:
+    DQL: 数据库查询, select
+    DML: 数据操作语言，对数据进行增加，修改删除，insert,update,delete
+    TPL: 事务处理语言，对事务进行处理，包括，begin,transaction,commit,rollback
+    DCL: 数据控制语言，进行授权，权限回收如: grant,revoke
+    DDL: 数据定义语言，进行数据库，表的管理，如create，drop
+
+
+ubuntu16.04安装mysql:
+    apt-cache show mysql
+    sudo apt-get install mysql-server
+
+
+常用数据类型:
+    整数: int bit
+    小数: decimal
+    字符串: varchar,char
+    日期时间类型: date，time，datetime
+    枚举类型: enum
+
+    decimal: 表示浮点数 decimal（5,2）表示共5位数，小数占2位
+    char： 表示固定长度的字符串，如 char(3), 如果填入"ab" 则会补充一个空格"ab ",3表示字符数
+    varchar:表示可变长度的字符串，varchar(3),填入"ab"的时候，就是"ab"
+    text: 存储大文本，建议大于4000字的时候使用，比如网页，博客
+
+数据约束: 在数据类型限定的基础上额外增加要求
+    主键 primary key: 物理上的存储顺序，mysql建议所有表的主键字段是id,类型int unsigned
+    非空 not null: 此字段不允许为空
+    唯一 unique: 此字段的值不允许重复
+    默认 default: 当不填写的时候使用默认值
+    外键 foreign key: 对关系字段进行约束，当为关系字段填写值时，会到关联表中查询此值是否存在，存在则填写成功，不存在则抛错
+    
+
+排序规则: 是指对指定字符集下不同字符的比较规则
+    _ci结尾表示大小写不敏感（caseinsensitive）
+    _cs表示大小写敏感（case sensitive）
+    _bin表示二进制的比较（binary）
+
+mysql命令行:
+    登录： mysql -u[用户名] -p[密码] 
+
+   查看所有的数据库: show databases;
+   创建数据库: create database [数据库名字] charset=utf8
+   使用数据库: use [数据库名字]
+   查看当前使用的数据库: select database();
+   删除数据库: drop database [数据库名字]
+
+   查看所有表: show tables;
+   创建表: create table students(
+       id int unsigned primary key auto_increment not null,
+       name varchar(20) not null,
+       age tinyint unsigned default 0,
+       height decimal(5,2),
+       gender enum('男','女','人妖','保密')
+   )
+    create table 表名(
+        字段名称 数据类型 约束条件
+    )
+
+    查看表结构: desc [表名]
+
+    修改表：
+        alter table [表名] add 列名 类型 约束
+        alter table 表名 modify 列名 类型 约束 // 注意不能修改字段名字
+        alter table 表名 change 原名 新名 类型及约束 // change 既能对字段重命名又能修改字段类型还能修改约束
+        alter table 表名 drop 列名
+    查看创建数据库的sql语句:
+        show create database 数据库名称
+        show create table 表名
+    删除表:
+        drop table [表名]
+
+
+表数据操作:
+    select * from 表名
+    select 列1,列2... from 表名
+
+    添加数据:
+        全列插入
+        insert into 表名 values()
+        部分列插入
+        insert into 表名 (列1,...) values (值1...)
+        insert into 表名 set id = 5,name=cc;
+        全列多行插入
+        insert into 表名 values(...),(...)...;
+        部分列多插入
+        insert into 表名(列1,...) values(值1,...),(值1...)...;
+
+        注意: 1: 全列插入的时候有默认值,用default占位
+              2：主键是自动增长，但是在全列插入时需要站位，通常用0,null或者default
+
+    修改数据:
+        update 表名 set 列1=值1,列2=值2 ... where 条件
+    删除数据:
+        -- 一条一条删除
+        delete from 表名 where 条件
+        -- 先删除表，在建一张表
+        truncate table tbl_name 或者 truncate tbl_name
+
+as和distinct关键字:
+    as: 取别名，通常可以省略
+    distinct: 去重
+        select distinct age,gender from students
+
+where: 条件查询
+    支持的运算符:
+        1: 比较运算符
+             =
+             >
+             >=
+             <
+             <=
+             != 或 <>
+
+        2: 逻辑运算符
+            and: select * from students where id > 3 and gender = "女"
+            or: select * from students where id < 4 or is_del = 0
+            not: select * from students where not (age >= 10 and age <= 15)
+        3: 模糊查询
+            like是模糊查询的关键字
+            %表示任意多个任意字符
+            _表示一个任意字符,可以多写几个
+                select * from students where name like "黄%"
+                select * from students where name like "黄_"
+                select * from students where name like "黄%" or name like "%靖"
+        4: 范围查询
+            1: between ... and ... 表示一个连续的范围
+                select * from students where id between 3 and 8
+                select * from students where not(id between 3 and 8) 
+            2: in 表示非连续范围查询
+                 select * from students where id in (3,5,7)
+                 select * from students where id not in (3,5,7)
+        5: 空判断
+            is null：
+                select * from students where height is null
+            is not null
+                select * from students where height is not null
+
+
+排序:
+    查询语法:
+        select * from 表名 order by 列1 asc|desc  ...列2 asc|desc
+        1: 先按照列1进行排序，如果列1值相同，就按照列2排序
+        2：asc 从小到大，升序
+        3：desc 从大到小 降序
+        4: 默认按照从小到大
+
+    select * from students where is_del = 0 order by id desc
+    select * from students order by age desc
+    select * from students order by age desc,height desc
+
+分页查询:
+    select * from 表名 limit start,count
+    1:limit分页关键字
+    2: start 开始行索引默认0
+    3: count 查询条数
+
+    select * from students where gender="男" limit 0,10;
+
+聚合函数: 又叫组函数，通常对表中的数据进行统计和计算，一般结合分组(group by)来使用，用于统计和计算分组数据。
+    count(col): 表示求指定列的总行数
+        select count(height) from students;
+        select count(*) from students;
+    max(col): 表示求指定列的最大值
+         select max(id) from students where gender="男"
+    min(col): 表示求指定列的最小值
+
+    sum(col): 表示求指定列的和
+        select sum(height) from students where gender="男"
+    avg(col): 表示求指定列的平均值
+        select sum(height)/count(*) from students where gender="男"
+        select avg(ifnull(height,0)) from students where gender="男"
+    ifnull(列名,默认值): 如果是null，就设置默认值
+    注意: 聚合函数不对空值统计,可以用ifnull
+
+
+分组查询:
+    group by 列名  [HAVING 条件表达式] [WITH ROLLUP]
+    列名: 是指按照指定字段的值进行分组
+    HAVING 条件表达式: 用来过滤分组后的数据
+    WITH ROLLUP: 汇总，在所有记录的最后加上一条记录，显示 select 查询是时聚合函数的统计和计算结果
+
+    select gender from students group by gender; 
+    select gender,name students group by name,gender
+    统计性别中的名字有哪些
+    select gender,group_concat(name) from students group by gender;
+    统计性别的平均年龄
+    select gender,avg(age) from students group by gender;
+    统计性别分组人数
+    select gender,count(*) from students group by gender
+    统计性别分组中大于2的
+    select gender,count(*) from students group by gender having count(*) > 2
+    统计分组的年龄总和
+    select gender,sum(age) from students group by gender;
+    汇总聚合结果
+    select gender,count(*) from students group by gender with rollup;
+
+       | gender | count(*) |
+       | 男     |   8      | 
+       | 女     |   2      |
+       | null   |  10      |
+    汇总聚合
+    select gender,group_concat(age) from students group by gender with rollup;
+
+
+连接查询: 
+    内连接：查询交集 , * 的话就是查询两边的字段都全部显示，相同的也会
+        select 字段 from 表1 inner join 表2 on 表1.字段1 = 表2.字段2
+
+        inner join: 就是内连接查询关键字
+        on: 表示连接查询条件
+
+        select s.name ,c.name from students s inner join classes c on s.c_id = c.id;
+
+    左连接: 以左表为主，根据条件查询右表数据，如果右表数据不存在，则使用null填充
+        select 字段 from 表1 left join 表2 on 表1.字段1 = 表2.字段2 
+
+        left join： 左连接关键字
+        on: 表示查询条件
+        表1： 左表
+        表2:  右表
+
+        select * from students s left join classes c on s.c_id = c.id;
+
+
+    右连接: 以右表为主，根据条件查询左表数据不存在则null填充
+        select 字段 from 表1 right join 表2 on 表1.字段1 = 表2.字段2
+
+        select * from students s right join classes c on s.c_id = c.id;
+
+
+    自连接: 左表和右表是同一个表
+        select c.id,c.title from areas c inner join areas p on c.pid = p.id limit 20;
+
+        
+子查询:
+    select * from students where age  > (select avg(age) from students );
+
+    select * from classes where id in ( select c_id from students where c_id is not null )
+
+    求最大的年龄并且身高也最高
+    select * from students where (age,height) = (select max(age),max(height) from students )
+
+
+
+数据库设计三范式:
+    1: 列的原子性,也就是不能在拆分的情况
+    2: 满足1的情况下,表必须有主键,分主键必须依赖主键,每一列都需要依赖主键
+    3: 满足2的情况下，要直接依赖主键，不能间接依赖
+
+
+外键约束:
+    1：对已经存在的字段添加约束
+    alter table students add foreign key(c_id) references classes(id);
+
+    2: 创建表的时候增加外键约束，外键字段
+ 
+    create table teacher (
+        id int not null primary key auto_increment,
+        name varchar(10),
+        s_id int not null,
+        foreign key(s_id) references school(is)
+    );
+
+   删除外键:
+       获得外键名称
+       show create table school; 
+       删除
+       alter table teacher drop foreign key XXXXXX
+
+
+
+ 将查询结果插入到其他表:
+        -- 创建商品分类表
+        create table good_cates(
+            id int not null primary key auto_increment, 
+            name varchar(50) not null
+        );
+
+        insert into good_cates(name) (select cate_name from goods group by cate_name);
+
+查询并更新: 
+    select * from goods inner join good_cates on goods.cate_name = good_cates.name;
+
+
+    update goods g (inner join good_cates gc on g.cate_name=gc.name ) set g.cate_name=gc.id;
+
+
+创建表增加其他表信息: 
+    create table good_brands (     
+        id int unsigned primary key auto_increment,     
+        name varchar(40) not null) select brand_name as name from goods group by brand_name;
+
+修改列类型:
+    alter table goods (change cate_name cate_id int  not null ), (change brand_name  brand_id int not null);
+
+
+事务:
+    1. 原子性：不可分割
+    2. 一致性： 保证数据的一致性
+    3. 隔离性： 事务是隔离的，未提交的事务是不执行的，和其他事务隔离
+    4. 持久性: 提交成功的事务，持久化保存到数据库
+
+    脏读: 一个事务可以读取到另外一个事务未提交的数据
+    不可重复读: 一个事务多次读取同一条记录，读取的结果不相同  也就是读取到提交之后的记录
+    虚度(幻读):一个事务多次查询整表的数据，由于其他事务新增(删除)记录造成多次查询的记录条数不同
+
+ 隔离级别:
+    read uncommitted： 不做任何隔离，具有 脏读，不可重复读，虚读问题
+    read committed:  可以防止脏读，不能防止 不可重复读，虚读问题
+    Repeatable read: 可以防止脏读，不可重复读 不可以防止虚读问题  这个是默认的
+    Serializable: 数据库运行在串行，没有问题，不过性能非常的低
+
+    set [session/gloab] transaction isolation level ...; 设置隔离级别
+    select @@tx_isolation; -- 查询当前数据库的隔离级别
+
+引擎: INNODB 才支持 事务
+    show engines; -- 查看支持的所有引擎
+
+    常见的有: INNODB和 MyISAM
+    INNODB支持事务
+    MyISAM不支持事务,优势是访问速度块，对事务没有要求或者以select,insert 为主的可以使用这个引擎
+
+    修改引擎:
+     alter table students engine='MyISAM'
+
+    // 创建指定引擎
+    mysql root@(none):jing_dong> show create table goods;
+    +-------+--------------------------------------------------------+
+    | Table | Create Table                                           |
+    +-------+--------------------------------------------------------+
+    | goods | CREATE TABLE `goods` (                                 |
+    |       |   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,       |
+    |       |   `name` varchar(150) NOT NULL,                        |
+    |       |   `cate_id` int(10) unsigned NOT NULL,                 |
+    |       |   `brand_id` int(10) unsigned NOT NULL,                |
+    |       |   `price` decimal(10,3) NOT NULL DEFAULT '0.000',      |
+    |       |   `is_show` bit(1) NOT NULL DEFAULT b'1',              |
+    |       |   `is_saleoff` bit(1) NOT NULL DEFAULT b'0',           |
+    |       |   PRIMARY KEY (`id`)                                   |
+    |       | ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 |
+    +-------+--------------------------------------------------------+
+
+    mysql数据库默认采用自动提交事务模式。
+    set autocommit=0; -- 取消自动提交事务
+
+    开始事务:
+    begin; 或者 start transaction;
+
+    提交事务:
+    commit;
+
+    回滚事务:
+    rollback;
+
+
+
+索引:
+    查看索引: show index from 表名;
+    主键会自动创建索引
+    外键约束也会自动创建索引
+
+    增加索引:
+    alter table classes add index my_name(name) -- 给name字段增加索引
+
+    删除索引:
+    alter table classes drop index my_name; 
+
+联合索引(组合索引，复合索引)：一般用在多个字段一起查询的时候  name和password可以建联合索引
+        -- 创建teacher表
+        create table teacher
+        (
+            id int not null primary key auto_increment,
+            name varchar(10),
+            age int
+        );
+
+        -- 创建联合索引
+        alter table teacher add index(name,age);
+
+    联合索引优势: 减少磁盘空间开销
+
+    注意: 联合索引最左原则，index(name,age) 支持name单个、name和age组合 查询, 不支持age查询
+
+索引缺点: 
+    创建索引需要耗时和空间，并且随着数据量的增加耗时也会增加
+
+        
+使用原则: 
+    1: 经常查询的字段建索引，经常更新的字段不用 
+    2：数据量小的表不用建索引，遍历表可能比遍历索引时间短，索引可能不会产生优化
+    3: 字段很多重复的情况下不要建索引，比如性别 男 和 女
+
+
+监控日志: 
+ set profiling = 1; -- 开启运行时监测
+    执行的sql语句
+ show profiles; -- 查看日志
+
+

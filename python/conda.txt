@@ -1,0 +1,25 @@
+# 激活使用，终端前面会带上 环境名字
+source activate 
+
+# 获取所有的环境,默认有个base环境
+conda env list
+
+# 创建环境 python36 版本为3.6
+conda create -y --name python36 python=3.6
+
+# 使用某个环境
+conda activate env_name
+
+# Linux需要执行这个进入环境
+source /root/.bashrc 进入 conda
+
+# 删除环境
+conda remove -n python36 --all #第一种
+conda env remove -n env_name #第二种
+
+# 退出conda环境
+conda  deactivate 
+
+# 克隆重命名
+conda create -n python2 --clone py2
+conda remove -n py2 --all

@@ -957,4 +957,146 @@ sys 获取终端参数
 
 
 
+闭包:
+    定义:
+        函数嵌套的情况下,内部函数使用了外部函数的变量，并且外部函数返回了内部函数，这个使用外部函数的变量的内部函数叫闭包
+    作用: 可以保存外部函数的变量
     
+    def fun_out():
+        num1 = 10
+        def fun_inner(num2):
+            result = num1 + num2
+            print("结果", result)
+        return fun_inner
+
+    new_func = fun_out()
+    new_func(1)
+    new_func(1)
+
+闭包的使用: 创建实例之后name不用传了
+
+    def config_name(name):
+        def inner(msg):
+            print(name+ ":" +msg)
+        # 说明每次创建的不是同一个闭包
+        print(id(inner))
+        return inner
+
+    # 创建tom 闭包实例
+    tom = config_name("tom")
+    # 创建jerry闭包实例
+    jerry = config_name("jerry")
+
+    tom("jerry 早上好")
+    jerry("tom good morning")
+    tom("i am fine")
+    jerry("ok")
+
+修改闭包外部函数变量:
+    def func_out():
+        num1 =10
+        def func_inner():
+            # num1 = 20 这个其实是在闭包创建了新的变量
+            nonlocal num1
+            num1 =20
+        print("修改前的变量:",num1) # 10 
+        func_inner() #执行闭包看下情况
+        print("修改后的变量:" ,num1) # 20
+        return func_inner
+
+
+装饰器：
+    定义: 给已有的函数增加额外的功能，本质上是一个闭包函数，也就是函数嵌套
+    特点: 
+        1: 不修改已有函数的代码
+        2： 不修改已有函数的调用方式
+        3：给已有函数增加额外的功能
+    例子:
+    def decorator(func): # 如果闭包函数的参数有且仅有一个并且是函数类型，那么这个函数叫装饰器
+        def inner():
+            print("已添加登录验证")
+            func()
+        return inner
+
+    def comment():
+        print("发表评论")
+
+    comment = decorator(comment)
+    comment()
+
+装饰器语法糖:
+
+    def decorator(func): # 如果闭包函数的参数有且仅有一个并且是函数类型，那么这个函数叫装饰器
+        def inner():
+            print("已添加登录验证")
+            func()
+        return inner
+
+    @decorator  # 语法, 扩展功能 等价于comment = decorator(comment)
+    def comment():
+        print("发表评论")
+
+    comment()
+
+
+装饰器执行时序: 在加载模块的时候就执行了，不是在调用的时候执行，
+
+装饰器的使用: 打印程序执行的时间
+
+    def decorator(func):
+        def inner(*arg, **kwargs):
+            print("已添加登录验证")
+            # *arg 把元组里面的参数按照位置进行传参
+            # **kwargs 把字典里面的每个键值对，按照关键字的方式进行传参
+            return func(*arg, **kwargs)
+        return inner
+
+    @decorator
+    def comment():
+        print("发表评论")
+
+    comment()
+
+多个装饰器执行的时序: 由内部到外的一个装饰过程，先执行内部的装饰器，在执行外部的装饰器
+
+    @make_out
+    @make_in     # 这里的逻辑是content= make_out(make_in(content))
+    def content():
+        pass
+
+
+带参数的装饰器: 其实就是在装饰器外面在包一层函数
+
+    def return_decorator(flag):
+        def decorator(func):
+            def inner():
+                if(flag):
+                    print("xxxx")
+                else:
+                    print("bbbbb")
+                func()
+            return inner
+
+
+    @return_decorator(111) # 这里先执行函数，在执行装饰器
+    def sum():
+        print(1 + 1)
+
+
+类装饰器: 
+    dir(xxx)  #可以打印对象的属性
+
+    例子:
+    class MyDecorator(object):
+        def __init__(self,func):
+            self.__func = func
+        def __call__(self, *args, **kwargs):
+            print("类装饰器")
+            self.__func()
+
+    @MyDecorator  # 这里 show = MyDecorator(show) 所以一定要__init__ ,
+    def show():
+        print("xxxx")
+
+    #object is not callable 这里show其实已经变成MyDecorator的实例了，如果想直接使用类方法，需要实现__call__
+    show()
