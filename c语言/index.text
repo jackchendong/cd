@@ -1,0 +1,943 @@
+c程序编译步骤：
+    1： 预处理，宏定义展开，头文件展开，条件编译等,删除代码中的注释,这里不会检查语法
+            gcc -E a.c -o a.i 
+    2:  编译: 检查语法，将预处理后文件编译生成汇编文件
+            gcc -S a.i -o a.s
+    3:  汇编: 将汇编文件生成目标文件(二进制文件)
+            gcc -c a.s -o a.o
+    4:  链接: C语言写的程序需要依赖各种库，编译之后把库链接到程序中
+            gcc a.o -o ccc
+  
+
+内存四区:
+    代码区:
+    数据区:
+    栈区:
+    堆区:
+
+汇编语言:
+        int a;
+        int b;
+        int c;
+    	__asm {
+            mov a,3
+            mov b,4
+            mov eax ,a
+            add eax, b
+            mov c ,eax
+        }
+        printf("%d",c);
+
+数据类型:
+    数据类型关键字:
+        char
+        short
+        int
+        long
+        float
+        double
+        unsigned
+        signed
+        struct
+        union
+        enum
+        void
+    控制语句关键字:
+        if
+        else
+        switch
+        case
+        default
+        for
+        do 
+        while
+        break
+        continue
+        goto : 跳转到任意指定位置，有点像锚点 
+                goto End;
+                    xxxxxxx
+                End:
+                    printf("跳到这里了")
+
+        return
+    存储类关键字
+        auto
+        extern  : 声明一个变量没有简历存储空间
+        register :定义寄存器变量，提高效率，如果CPU有空闲的寄存器，就生效，没有空闲寄存器，就无效
+        static
+        const ：常量，无法修改
+    其他关键字
+        sizeof
+        typedef
+        volatile : 阻止编译器优化代码
+
+    基本类型:
+        整型: int short long
+        字符型: char
+        浮点型: float double
+            float: 占用4字节,7位有效数字
+            double: 8字节, 15~16位有效数字
+    构造类型:
+        数组类型
+        结构类型:struct
+        联合类型: union
+        枚举类型: enum
+    指针类型:
+        char *
+        int *
+        int ** 等等
+
+    定义常量:
+        方式1： #define PI 3.141592653
+        方式2: const int b = 100;
+               在C中，const可以通过指针修改
+
+站位符:
+    %d : 十进制输出
+    %o : 八进制输出
+    %x : 十六进制小写输出
+    %X : 十六进制大写输出
+    %u : 无符号的整型
+    %hd: short类型
+    %l: long类型
+    %ll: long long类型
+    %hu: unsigned short 类型
+    %lu: unsigned long
+    %llu: unsigned long long 类型
+
+    %c: 字符类型占位符
+
+    %s: 字符串类型占位符
+
+    %p: 指针地址
+
+    %f: float double 占位符
+    %.2f: 保留2位小数
+
+    例子:   
+        int a = 2147483647;
+        a += 1;
+        printf("%d", a); // -2147483648 这里其实是-0
+
+
+
+
+运算符:
+    算数运算符:  四则运算
+        +
+        - 
+        *
+        /    除
+        %   取余
+        ++ 前后自增
+        -- 前后自减
+    赋值运算符:  表达式赋值
+        =
+        +=
+        -=
+        *=
+        /=
+        %=
+
+    比较运算符:  表达式的比较，返回一个真或假
+        ==
+        !=
+        >
+        <
+        <=
+        >=
+    逻辑运算符:  根据表达式的值返回真或假
+        !
+        &&
+        ||
+    位运算符:    
+        >>
+        <<
+    sizeof运算符:  求字节数的长度
+
+类型转换:
+    隐式转换:
+        自动低的向高的转换
+    强制转换:
+
+程序流程结构:
+    顺序结构:
+    选择结构:
+        if else
+        三目运算符
+        switch case
+    循环结构:
+        while
+        do while
+        for
+
+数组和字符串:
+    数组声明: 
+        数据类型 变量名[数组长度]  : int a[10];
+    声明并赋值
+        int a[5] = {1,2,3,4,5};
+        int a[5] = {1,2,3};   // 这里其他默认就是0
+         int a[] = {1,2,3};   //不写长度数组长度默认就是3个
+    获取数组长度: 
+        int len = sizeof(数组) / sizeof(数据类型)
+        int len = sizeof(数组) / sizeof(数组[i])
+    数组的内存结构:
+        栈区存储
+        连续的
+    数组名取地址对应得是数组的第一个元素地址.
+
+二维数组:
+    int a[10][3]
+
+    二维数组的大小: sizeof(a)
+    二维数组的一行大小: sizeof(a[0])
+    二维数组的行数: sizeof(a) / sizeof(a[0])
+    二维数组的列数: sizeof(a[0])  / sizeof(a[0][0])
+
+    二维数组的初始化:
+        int arr[2][3] = {
+            {1,2,3},
+            {2,3,4}
+        }
+
+        int arr[][3] = {
+            {1,2,3},
+            {2,3,4}
+        }
+
+        int arr[2][3] = {
+            1,2,3,4,5,6
+        }
+        
+         int arr[3][3] = {
+            {1},
+            {1},
+            {1}
+        }
+
+
+字符数组:
+    char arr[10] = {'H','e','l','l','o'}
+
+   字符串:
+    char site[3]= {'a','b','\0'}
+    char site[] = "RUNOOB";
+
+    char arr2[] = "hello";  // sizeof 长度是 6  这里字符串默认是\0结尾，自动加了
+    char arr3[] = { 'h','h' }; // sizeof 长度是 2  这里没有加 ，这里打印因为没有结尾，打印的都是乱码，找到\0才输出，这里就有很多其他字符
+    char arr3[] = { 'h','\0','h' }; // 长度是 3 ，但是打印只有一个h，\0就结束了
+    
+
+    char arr[100]; //这样设置里面的默认内容不可预见，乱码 一般加一下 {'\0'},这样隐式都默认设置了\0
+    scanf("%s", arr);
+    printf("%s", arr);  // 这里输入hello world ,空格可以作为结束，所以输出hello
+
+    scanf("%[^\n]", arr); // 这里表示换行才是结束
+    printf("%s", arr);  // 这里输入hello world ,输出hello world
+
+    scanf("%[^1-9]", arr);  // 表示 1 - 9不接受 比如 qwe123则输出qwe
+
+
+随机数:
+    srand((unsigned int)time(NULL)); //植入种子
+    rand() // 生成随机数
+    rand() % 100 // 生成随机数 0 -99
+    rand() % 10 + 50 // 生成随机数 50 - 59
+    rand() % 11 + 50 // 生成随机数 50 - 60
+
+
+字符串的处理函数:
+    gets: 容易出现溢出，stdin
+        char ch[100];
+        gets(ch)  //控制台输入字符串，换行结束
+    
+    puts: 输出字符串,自带换行
+        puts(ch) 
+
+    fgets(字符指针,大小,输入流): 
+            如果输入的大小和原始指针对应得区域大小，会在字符串完成时候自动加上\0, 如果有换行会把换行也带上
+            如果接收小于，会将\n 加入到字符串
+            如果大于，不会将\n加入到字符串
+            \0 始终在字符串
+        char arr[10];
+        fgets(arr, 10, stdin);
+        puts(arr)
+    fputs(字符指针,流): 
+        fputs(arr,stdout);
+    
+    scanf: 输入字符
+        char arr[100];
+        1： 接收换行
+            scanf("%[^\n]",arr)
+        2： 多个
+            int a,b
+            scanf("%d %d",&a,&b)
+        3: 限定宽度
+            scanf("%1d%2d",&a,&b) // 这里a就是1位的 b就是2位的
+            scanf("%1s%2s",arr1,arr2)
+        4: 屏蔽字符
+            scanf("%*d%s", arr);  //前面屏蔽数字, 比如 123qwe ,输出 qwe
+            scanf("%*c%s", arr);  // 屏蔽字符
+    printf: 打印
+            printf("%5d\n", 1234);      1234  // 不满足的情况前面加空格 如果是负数，就是左对齐
+            printf("%5d\n", 123456);   123456
+            printf("%05d\n", 123456);  123456
+            printf("%05d\n", 12);      00012
+
+    strlen(arr)：输出字符串的有效长度，注意不能处理字符数组, char arr[] = {'a','b'} 
+                    如果要处理，需要加\0结尾
+
+    strcpy(dest,source):  拷贝字符串 ,成功返回字符串首地址，失败返回NULL
+
+    strncpy(dest,source,num): 拷贝指定长度字符串,注意不会拷贝\0,需要自己主动加\0
+
+    strcat(dest,source): 将src字符串连接到dest的尾部，'\0'也会追加过去
+
+    strncat(dest,source,num): 将src字符串指定个数连接到dest的尾部，'\0'也会追加过去
+
+    strcmp(s1,s2): 比较字符串ascii码的大小，比较\0之前的字符
+        s1: 字符串1首地址
+        s2: 字符串2首地址
+        返回值:
+            相等: 0
+            大于：>0 在不同的操作系统中返回值会不同，返回ascii的差值
+            小于: <0 
+    strncmp(s1,s2,num):  有限比较字符串大小
+
+    sprintf: 格式化字符串
+        1: 将数据格式化后放入在字符串中
+            	int a = 123;
+                char arr[] = "hello";
+                char dest[100];
+                sprintf(dest, "%s %d", arr, a);
+                printf("%s", dest);
+
+
+    sscanf：解析字符串
+            char all[] = "hello 123";
+            char arr[6];
+            int a;
+            sscanf(all, "%s %d", arr, &a);
+            printf("%s\n", arr);
+            printf("%d\n", a);
+    
+    strchr(const char *s,num c): 查询字母c 出现的位置并返回 失败就返回NULL
+                    注意: 如果是中文，那么打印的会出现乱码
+
+        	char arr[] = "abcdef";
+            char ch = 'c';
+            char *p =  strchr(arr, ch);
+            printf("%s", p);  // cdef
+
+
+    strstr(): 查找子字符串
+        	char arr[] = "abc哈def"; 
+            char ch[] = "哈";
+            char *p =  strstr(arr, ch);
+            printf("%s", p); // 哈def
+
+    
+    strtok: 字符串分割,注意会破话原字符串,原字符串会变成第一次切割的样子
+        char *strtok(char *str,const char *delim):
+            str: 被分割的字符串
+            delim: 分割指定字符串
+        返回:
+            成功: 返回分割后字符串首地址
+            失败: 返回NULL
+        例子:
+            	char arr[] = "www.faceunity.com";
+                char *p = strtok(arr, ".");
+                printf("%s\n", p);
+                while (p!=NULL)
+                {
+                    p=strtok(NULL, ".");
+                    printf("%s\n", p);
+                }
+
+    atoi: 将字符串变成 整形 int
+    atof: 将字符串变成 单精度浮点型
+    atol: 将字符串变成 long
+        int atoi(const char *nptr);
+        扫描nptr字符串，跳过前面的空格字符串，直到遇到数字或者正负号才开始转换，而遇到非数字或者字符串结束符('\0')才结束转换,并将结果返回
+
+        例子:
+            	char arr[] = "   +100aaa";
+                int a = atoi(arr);
+                printf("%d", a); // 100
+
+
+函数的定义和使用:  函数可以被声明多次，但是只能定义一次
+    函数声明: 
+        extern int add(int a, int b);
+    
+    函数的定义：
+        int add (int a,int b){
+            return a + b
+        }
+    
+    函数的分类:
+        系统函数（库函数）：
+        用户定义函数: 
+    
+    函数名:
+    形参: 在未出现调用的时候，不占用内存
+    函数体:
+    返回值:
+
+
+多文件联合编程:  注意所有的函数都是全局的，不过没有头文件，就无法转到定义处
+    头文件: 
+        #include "util.h"
+        #include <stdio.h>
+        为了避免同一个文件被include多次，c/c++中有两种方式:
+            1: #pragma once
+            2: 头文件里面
+                #ifndef __XXX__
+                #define  __XXX__
+                    声明语句
+                #endif // !1
+    
+    编译命令: gcc -0 aaa.exe xxx.c xxx.c xxx.h
+
+main函数参数的应用:
+    int main(int argc,char *argv[]) { // argc 个数，第一个是自己
+
+    }
+
+
+指针: 指针是一种数据类型 
+    int a = 10;
+    int* p = &a;  // 此时 p 是一个的地址
+
+    printf("%p\n", &a);
+    printf("%X", p);
+
+    通过指针修改值:
+    *p = 100;
+
+    printf("%d", *p); // 打印指针的值
+    printf("%d", a);
+
+    在32位操作系统中指针大小是 4个字节
+    在64位操作系统中指针大小是 8个字节
+    sizeof(int*) 
+
+    野指针: 指向一个未知的内存空间，可能在读写的时候出现错误
+    int* p = &a
+    p = 100  //内存空间100
+    *p = 101 // 内存空间100的值时101
+
+    系统保护:  0-255都是系统保留，不能读写
+
+    空指针: 就是指向内存空间编号0
+        int *p;
+        p = NULL;
+        *p = 100; // 这里出错，操作了空指针
+    
+    万能指针:
+        int a= 10;
+        void* p = &a;
+        *(int *)p = 100; //这样修改a的值
+        printf("%d",*(int *)p); // 主要是告诉要操作多大的空间
+
+
+        int arr[10] = {0};
+        void *p = arr;
+        *(int *)p = 100; // arr[0]
+        *( (int *)p + 1 ) = 200; // arr[1]
+
+
+
+const:
+    修饰指针: 
+        const int a = 10; // 这种方式不安全，可以通过指针修改
+        int* p =&a;
+        *p = 100;
+
+        修饰指针: 不能修改指针指向的内存变量的值, 可以修改指向的内存空间地址
+        int a = 10;
+        const int* p = &a; // p 无法修改a的值
+        p = &b; // 可以的
+
+
+        修饰指针变量
+        int * const p = &a; // p 无法在修改指针地址了。能改变指针变量的值
+
+        const int * const p = &a; // p 无法修改指针地址，无法修改指针变量值
+
+数组: 数组名是数组的首地址是一个常量,不能修改
+    int arr[10] = {0};
+    int* p = arr; // 这里也可以操作数组
+    for (int i = 0; i < 10; i++)
+	{
+        printf("%d\n", arr[i]);
+	    printf("%d\n", p[i]);
+		printf("%d\n", *(p+i));
+	}
+
+    *p = 100; // arr[0] = 100;
+    *(p+1) = 200; // arr[1] = 100;
+    p[5] = 500; // arr[5] = 500; 
+
+
+    p++;
+    p[10]; //这里下标越界
+
+
+    p = &arr[9]; //去数组下标9的地址
+
+
+    int len = p - arr; //得出地址差值，就是 int 大小的差值比如，间隔的中间个数
+
+    指针循环操作:
+        int arr[10] = {0,1,2,3,4,5,6,7,8,9};
+        int *p;
+        for(p=arr;p<&arr[10],p++){
+            printf("%d",    p[0]);
+            printf("%d",    *p);
+        }
+
+    数组名和指针的区别:
+        数组名通过sizeof可以求出数组大小；
+        指针只包含数组的首地址；
+
+    指针操作冒泡排序:
+        int arr[10] = { 3,8,5,4,1,6,7,2,9,0 };
+        for (int *p  = arr; p < &arr[10]; p++)
+        {
+            for (int* p2 = p; p2 < &arr[10]; p2++)
+            {
+                if (*p2 < *p) {
+                    int tmp = *p2;
+                    *p2 = *p;
+                    *p = tmp;
+                }
+            }
+        }
+    
+    求数组的长度: sizeof(arr)/sizeof(arr[0])
+
+    自己实现: strchr
+        char* mystrchr(char *str,char ch) {
+            int i = 0;
+            while (str[i] != '\0')
+            {
+                if (str[i] == ch) {
+                    return &str[i];
+                }
+                i++;
+            }
+            return NULL;
+        }
+
+
+        char* mystrchr(const char* str,char ch) {
+            char* p = str;
+
+            while (*p != '\0')
+            {
+                if (*p == ch) {
+                    return p;
+                }
+                p++;
+            }
+            return NULL;
+        }
+
+    指针数组:
+        int a = 10;
+        int b = 20;
+        int c = 30;
+        int * arr[] = {&a,&b, &c};
+
+        char* arr[] = {"hello","world"};
+
+    多级指针:
+        	int a = 10;
+            int* p = &a;
+            int** pp = &p; // 二级指针
+            printf("%d", **pp);
+    
+    指针参数:
+        void tab(int* a, int* b) {
+            int tmp = *a;
+            *a = *b;
+            *b = tmp;
+        }
+
+
+    数组传递: 注意函数有数组的时候都是指针，不能作为循环判断条件 sizeof(arr)
+
+        void print(int* arr,int len) {
+            for (int i = 0; i < len; i++)
+            {
+                printf("%d\n", arr[i]);
+            }
+        }
+
+        void main(void) {
+            int arr[] = {0,1,2,3};
+            int len = sizeof(arr) / sizeof(arr[0]);
+            print(arr, len);
+        }
+
+        
+        char * test()
+        {
+            //字符数组  创建位置在栈区  函数结束时销毁
+            //char arr[] = "hello world";
+            //字符串常量  会在程序运行时   常量区  不能被修改的 在程序结束时 销毁
+            char * arr = "hello world";
+            //static 
+            aa = 100;
+            //保证指针地址对应的值是有内容的
+            return arr;
+        }
+
+        int main()
+        {
+            char * p = test();
+            printf("%p\n", p);
+            printf("%s\n", p);
+
+            system("pause");
+            return EXIT_SUCCESS;
+        }
+
+
+    指针和字符串:
+        	char arr[] = "hello world";
+            char* p = arr;
+
+            *p = 'A';
+
+            p++;
+            *p = 'B';
+
+            printf("%s\n", arr); // ABllo world
+            printf("%s\n", p); /// Bllo world
+            printf("%d\n", sizeof(arr)); // 12 算上 \0
+            printf("%d\n", strlen(arr)); // 11 有效长度，不算\0
+            printf("%d\n", sizeof(p)); // 4
+            printf("%d\n", strlen(p)); // 10
+    
+    字符常量: 字符串常量  会在程序运行时   常量区  不能被修改的 在程序结束时 销毁
+        char * arr = "hello world";
+
+
+    	char* arr = "abc";
+        char* p = arr;
+        p = "hello world"; // 这里不是修改，只是 p 换了地址
+        printf("%s\n", p);
+
+
+        在下面这种情况下，p的地址和arr地址是一样的，节省空间
+        char* arr = "abc";
+        char* p = arr;
+        p = "abc";
+    
+    字符数组: 字符数组在栈区，可以修改值
+
+        	char* arr[] = { "ccc", "aac","abc" };
+            printf("%s",*(arr + 1)); // 打印 aac
+            printf("%s",arr[1]); // 打印 aac
+    
+    字符串排序: 这里两个办法
+        void bubble(char ** arr,int len) {
+            for (int i = 0; i < len -1; i++)
+            {
+                for (int  j = 0; j < len - i -1; j++)
+                {
+                    //if (**(arr + j) > **(arr + j + 1)) {
+                    //	char* tmp = *(arr + j);
+                    //	*(arr + j) = *(arr + j + 1);
+                    //	*(arr + j + 1) = tmp;
+                    //}
+                    if (arr[j][0] < arr[j + 1][0]) {
+                        char* tmp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = tmp;
+                    }
+                }
+            }
+        }
+
+
+
+8、内存管理
+    8.1 作用域
+        8.1.1 局部变量
+            代码块作用域（{}之前的代码）
+            函数作用域
+            文件作用域
+
+            栈是从上到下创建的
+                func(int a,int b, int c)  这里 c->b->a 这样创建，所以c的地址最小
+            
+
+            static:
+                静态局部变量,初始化一次，可以多次赋值, 比如写在函数里面，只会初始化一次
+                 void func(){
+                    static int a = 100;
+                 }
+                 
+
+        8.1.2 全局变量
+            extern : 声明一个变量，全局的是其他文件中的变量,不会分配内存空间
+                extern int a;
+            
+            static: 全局静态变量，只能在当前文件，不能在其他文件
+
+    8.2 内存布局
+        siez a.exe
+        text  data   bss  dec    hex  filename
+        100    200   100  300    500   a.exe
+
+        text: 代码区域
+        data: 静态数据/全局初始化数据
+        bss: 未初始化
+        dec: 十进制总和
+        hex: 十六进制总和
+        filename: 文件名字
+
+
+        代码区域: 程序指令 
+
+        数据区: 静态区/全局区
+                1.初始化的数据：
+                        初始化的全局变量
+                        初始化的静态全局变量
+                        初始化的静态局部变量
+                2.未初始化的区域：
+                    未初始化的静态局部变量，有默认值可以使用
+                    未初始化的全局变量，有默认值可以使用
+                    为初始化的静态全局变量，有默认值可以使用
+
+                3.字符常量
+
+                4.define声明的常量
+        
+        堆区: 
+            音频文件
+            视频文件
+            图像文件
+            文本文件
+            大的数据
+
+
+            malloc：开辟堆空间
+                int *p = (int *)malloc(1024*1024)
+                 int *p = (int *)malloc( 1024 * sizeof(int)  )
+
+        栈区：如果创建大的数据应该放堆区
+            局部变量
+            数组: 注意C是这样做的在栈区，其他好像都在堆区
+            结构体
+            指针
+            枚举
+            函数形参
+
+            栈区大小: 在不同操作系统不同
+                windows: 1M-8M  一般回答1M
+                linux；1M - 16M 一般回答1M
+
+
+            
+            代码区    数据区   堆区   栈区
+            内存低地址              内存高地址
+
+
+        memset() 充值内存的值，字节为单位 ，一般充值0，其他可能有问题
+
+        memcpy() 内存拷贝，拷贝地址和目标地址不能冲突
+        memmove() 地址可以冲突，会用临时变量存起来，在放回去，效率比memcpy低
+                int arr[10] = {1,2,3,4,5,6,7,8,9,0}
+                memmove(&arr[2],arr,20); // 这里可以打印
+        memecmp() 比较内存区域
+
+        free() 是否指针
+
+复合类型         
+    结构体: 默认开辟在栈空间，这里有对齐问题。
+            struct students
+            {
+                char name[21];
+                unsigned int age;
+                char tel[16];
+                float scores[3];
+                char sex;
+            };
+
+            void main(void) {
+                // 方式1
+                struct  students stu = {"尼古拉斯",200,"18071996467",10,20,30,'M'};
+                printf("姓名: %s\n", stu.name);
+                printf("年龄: %d\n", stu.age);
+                printf("电话: %s\n", stu.tel);
+                printf("成绩: %.1f %f %f\n", stu.scores[0], stu.scores[1], stu.scores[2]);
+                printf("性别: %s\n", stu.sex == 'M' ? "男" : "女");
+
+                // 方式2
+                struct  students stu2 = { .age=20,.name="张飞",.scores[0]=200,.scores[1]=100};
+                printf("%f", stu2.scores[1]);
+                printf("%f", stu2.scores[0]);
+                printf("%f\n", stu2.scores[2]);
+                // 方式3
+                struct students stu3;
+                stu3.age = 50;
+                strcpy(stu3.name, "张飞");
+                /*stu3.name = "c"; 这样失败，应为字符常量去不能修改，但是 char[] 可以报错了*/
+                stu3.scores[0] = 100;
+                stu.sex = 'F';
+            }
+
+
+            方式4: 定义的时候定义变量
+                    struct students
+                    {
+                        char name[21];
+                        unsigned int age;
+                        char tel[16];
+                        float scores[3];
+                        char sex;
+                    } stu4 = {.age = 100};
+
+                    或者:
+
+                    struct students
+                    {
+                        char name[21];
+                        unsigned int age;
+                        char tel[16];
+                        float scores[3];
+                        char sex;
+                    } stu4,stu5 = {.age = 100};
+
+                    stu4.age=100;
+
+    结构体大小: 内存对齐，最大类型大小的倍数，一般从大到小写
+        struct stus {
+            char name[20]; // 20
+            unsigned int age; // 4
+            char tel[15]; // 15
+            char sex; // 1
+            float scores[3]; // 12
+        } stu;
+
+        sizeof(stu) // 这里打印52
+
+
+        struct stus {
+            char name[20]; // 20
+            unsigned int age; // 4
+            char tel[15]; // 15
+            float scores[3]; // 12
+            char sex; // 1
+        } stu;
+
+        sizeof(stu) // 这里打印56
+
+    结构体里面带指针:
+              struct students
+                {
+                    char* name;
+                    int age;
+                };
+
+
+                struct students s;
+                s.name = (char*)malloc(sizeof(char) * 21);
+                strcpy(s.name, "张三");
+                s.age = 20;
+
+                printf("%s", s.name);
+                printf("%d", s.age);
+
+
+    结构体指针:
+            	struct students * s = &stu;
+                s->name = (char*)malloc(sizeof(char) * 21);
+                strcpy(s->name, "张三");
+                s->age = 18;
+            
+                printf("%s", s->name);
+                printf("%d", s->age);
+
+
+    结构体在堆空间开辟:
+            struct students
+            {
+                char* name;
+                int age;
+            } stu;
+
+            struct students* p = (struct students*)malloc(sizeof(stu));
+            p->name = (char*)malloc(sizeof(char) * 21);
+            strcpy(p->name, "张三");
+            p->age = 17;
+            printf("%s", p->name);
+            printf("%d", p->age);
+    
+    对空间开辟结构体数组
+         struct students* p = (struct students*)malloc(sizeof(struct students) * 3);
+         p[0].age = 19
+
+
+    结构体和函数:
+        1：结构体是按值传递
+        2：结构体可以返回，类似int返回
+        3：返回结构体指针的情况下，如果有字符串，就是乱码，
+            如果想让函数返回一个结构体指针，必须要malloc或者new一个空间，否则返回一个局部变量的地址，结果是无法确定的 。
+
+
+    共用体(联合体)：union 共用一块内存空间,保证最后一次的赋值是准确的，之前的会出现乱码。
+        大小: 是最大的字节长度，不过要保证最大数据的倍数。
+
+
+枚举:
+             enum Colors
+        {
+            RED,
+            BLUE
+
+        };
+
+typedef：类型定义
+    typedef unsigned long long all; // 自定义数据类型
+
+
+    struct students {
+        ...
+    }
+     typedef struct students s; // 自定义数据类型
+
+
+
+文件操作:
+    	FILE* fp = fopen("C:/Users/Administrator/Desktop/面试题--李钱伟.txt", "r");
+        if (fp == NULL) {
+            printf("文件打开失败");
+            return;
+        }
+        printf("文件打开成功");
+        fclose(fp);
+
+    fgetc(FILE *stream): 读取字符  失败就-1
+    fputc(char ch,FILE *stream): 写入或者追加字符
+
+    fgets(char *buf, int n, FILE *fp): 读取行（\0结束）  失败就-1 ，一行超过设定的个数就读取指定格式，下一次接着读取
+    fputs(const char *s, FILE *fp): 写入或者追加字符串
+
+     fprintf：格式化输出
+     fscanf: 一行一行格式化读取
+
+     fread: 读取二进制文件
+     fwrite: 写入二进制文件
+
+
+    fseek: 文件光标操作
+    ftell: 查看光标当前位置
+    rewind: 移动到开头
+    remove:删除文件
+    rename: 重命名文件
+    fflush：缓冲区放到磁盘
